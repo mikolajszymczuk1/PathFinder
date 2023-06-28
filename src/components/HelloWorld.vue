@@ -1,5 +1,7 @@
 <template>
-  <h1>{{ msg }}</h1>
+  <h1 class="text-cyan-500 text-[1.875rem] text-center p-5">
+    {{ msg }}
+  </h1>
 </template>
 
 <script setup lang="ts">
