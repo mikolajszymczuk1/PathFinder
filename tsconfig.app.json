@@ -3,8 +3,15 @@
   "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
+    "typeRoots": ["./types", "./node_modules/@types"],
     "composite": true,
+    "moduleResolution": "node",
     "baseUrl": ".",
+    "module": "ESNext",
+    "target": "ESNext",
+    "resolveJsonModule": true,
+    "useDefineForClassFields": true,
+    "esModuleInterop": true,
     "paths": {
       "@/*": ["./src/*"]
     }
