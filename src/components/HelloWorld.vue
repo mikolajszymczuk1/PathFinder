@@ -3,5 +3,10 @@
 </template>
 
 <script setup lang="ts">
-const msg: string = 'Hello World';
+defineProps({
+  msg: {
+    type: String,
+    default: 'Hello World'
+  }
+});
 </script>
