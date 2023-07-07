@@ -11,6 +11,8 @@ const app = createApp(App);
 library.add(...iconsToLoad);
 
 app.use(createPinia());
+
+/** Usage example: <FontAwesomeIcon :icon="['fas', 'play']" */
 app.component('FontAwesomeIcon', FontAwesomeIcon);
 
 app.mount('#app');
