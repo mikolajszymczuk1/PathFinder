@@ -1,7 +1,7 @@
 <template>
-  <HelloWorld />
+  <GridTable />
 </template>
 
 <script setup lang="ts">
-import HelloWorld from '@/components/HelloWorld.vue';
+import GridTable from '@/components/GridTable.vue';
 </script>
