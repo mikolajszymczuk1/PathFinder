@@ -6,4 +6,8 @@ enum PenDrawModesEnum {
   ERASE_CELL = 'erase_cell',
 }
 
+export const deconstructPenDrawModes = () : Array<string> => {
+  return Object.values(PenDrawModesEnum) as Array<string>;
+}
+
 export default PenDrawModesEnum;
