@@ -1,13 +1,16 @@
 import type { TileCords } from '@/types/CommonTypes';
 import { defineStore } from 'pinia';
+import PenDrawModesEnum from '../modules/enums/penDrawModesEnum';
 
 interface State {
   tableData: string[][],
+  activePenMode: PenDrawModesEnum,
 }
 
 export const usePathEditorStore = defineStore('pathEditor', {
   state: (): State => ({
     tableData: [],
+    activePenMode: PenDrawModesEnum.SELECT,
   }),
   actions: {
     /**
@@ -36,6 +39,10 @@ export const usePathEditorStore = defineStore('pathEditor', {
     doOperation(cords: TileCords): void {
       const { row, col } = cords;
       this.tableData[row][col] = 'W';
+    },
+
+    updatePen(newMode: PenDrawModesEnum): void {
+      this.activePenMode = newMode;
     }
   },
 });

@@ -1,7 +1,7 @@
 <template>
   <FontAwesomeIcon
-    class='h-[1.75rem] py-[1.4rem] px-[.5rem] text-white hover:text-green-300 last:border-none'
-    :class="{ /* TODO: Check if active */ false : 'text-green-300'}"
+    class='h-[1.75rem] py-[1.4rem] px-[.5rem] hover:text-green-200 last:border-none'
+    :class="isActive"
     :icon="['fas', getIcon]"
     @click="selectDrawingTool()"
   />
@@ -14,6 +14,10 @@ import { deconstructPenDrawModes } from '@/modules/enums/penDrawModesEnum';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { computed } from 'vue';
 
+import { pathEditorStore } from '@/stores/PathEditorStore';
+
+const store = pathEditorStore();
+
 const props = defineProps({
   penIcon: {
     type: String,
@@ -25,8 +29,27 @@ const props = defineProps({
 });
 
 const selectDrawingTool = () => {
-  console.log(`Sent ${props.penIcon} to Pinia`);
+  let newMode = PenDrawModesEnum.SELECT;
+  switch (props.penIcon) {
+    case PenDrawModesEnum.DRAW_START:
+      newMode = PenDrawModesEnum.DRAW_START;
+      break;
+    case PenDrawModesEnum.DRAW_GOAL:
+      newMode = PenDrawModesEnum.DRAW_GOAL;
+      break;
+    case PenDrawModesEnum.DRAW_WALL:
+      newMode = PenDrawModesEnum.DRAW_WALL;
+      break;
+    case PenDrawModesEnum.ERASE_CELL:
+      newMode = PenDrawModesEnum.ERASE_CELL;
+      break;
+  }
+  store.updatePen(newMode);
 }
+
+const isActive = computed<string>(() => {
+  return props.penIcon === store.activePenMode.toString() ? "text-green-300" : 'text-gray-100';
+});
 
 const getIcon = computed<string>(() => {
   let icon = 'arrow-pointer';

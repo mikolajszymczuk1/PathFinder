@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex w-fit px-[1rem] rounded-[0.5rem] bg-gray-500"
+    class="flex w-fit p-[1rem] rounded-[0.5rem] bg-gray-500"
     :class="flexDirection">
     <slot></slot>
   </div>
