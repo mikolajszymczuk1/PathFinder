@@ -2,6 +2,7 @@
   <div
     class="flex justify-center items-center w-[40px] h-[40px] rounded-[3px] text-white"
     :class="getClasses"
+    @click="emitCords()"
   >
     <FontAwesomeIcon
       class="h-[auto]"
@@ -14,6 +15,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import type { TileCords } from '@/types/CommonTypes';
 
 const props = defineProps({
   contentType: {
@@ -23,7 +25,19 @@ const props = defineProps({
       return ['E', 'W', 'P', 'S', 'F'].includes(value);
     }
   },
+  row: {
+    type: Number,
+    required: true,
+  },
+  col: {
+    type: Number,
+    required: true,
+  }
 });
+
+const emit = defineEmits<{
+    (e: 'tileCords', cords: TileCords): void
+}>();
 
 /** Return specific icon based on 'contentType' */
 const getIcon = computed<string>(() => {
@@ -68,4 +82,10 @@ const getClasses = computed<string>(() => {
 
   return '';
 });
+
+/** Emit row and col value to parent component */
+const emitCords = (): void => {
+  const cords: TileCords = { row: props.row, col: props.col };
+  emit('tileCords', cords);
+}
 </script>
