@@ -28,7 +28,11 @@ export const usePathEditorStore = defineStore('pathEditor', {
       }
     },
 
-    /** Do editor operation on selected tile */
+    /**
+     * Do editor operation on selected tile
+     * @type {void}
+     * @param {TileCords} cords Specific tile cords
+    */
     doOperation(cords: TileCords): void {
       const { row, col } = cords;
       this.tableData[row][col] = 'W';

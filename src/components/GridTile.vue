@@ -3,12 +3,14 @@
     class="flex justify-center items-center w-[40px] h-[40px] rounded-[3px] text-white"
     :class="getClasses"
     @click="emitCords()"
+    data-test="tile"
   >
     <FontAwesomeIcon
       class="h-[auto]"
       v-if="getIcon"
       :icon="['fas', getIcon]"
       :class="getIconClasses"
+      data-test="tile-icon"
     />
   </div>
 </template>
@@ -36,7 +38,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits<{
-    (e: 'tileCords', cords: TileCords): void
+  (e: 'tileCords', cords: TileCords): void
 }>();
 
 /** Return specific icon based on 'contentType' */
