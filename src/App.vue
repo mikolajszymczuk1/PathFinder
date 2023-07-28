@@ -7,7 +7,11 @@
 <script setup lang="ts">
 import GridTable from '@/components/GridTable.vue';
 import { usePathEditorStore } from '@/stores/PathEditorStore';
+import { useWindowSize } from '@vueuse/core';
+import { getNewTilesSize } from '@/modules/commonFunctions/resizeCommon';
 
 const store = usePathEditorStore();
-store.createTable(7, 11);
+const { width, height } = useWindowSize();
+const { twidth, theight } = getNewTilesSize(width, height);
+store.createTable(twidth, theight);
 </script>
