@@ -20,6 +20,7 @@ import { computed } from 'vue';
 import type { TileCords } from '@/types/CommonTypes';
 
 const props = defineProps({
+  /** Type of tile for example wall, start, stop, ... */
   contentType: {
     type: String,
     default: 'E', // As empty
@@ -27,10 +28,14 @@ const props = defineProps({
       return ['E', 'W', 'P', 'S', 'F'].includes(value);
     }
   },
+
+  /** Index of row position */
   row: {
     type: Number,
     required: true,
   },
+
+  /** Index of column position */
   col: {
     type: Number,
     required: true,
@@ -38,6 +43,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits<{
+  /** Emit object that contains information about tile cords */
   (e: 'tileCords', cords: TileCords): void
 }>();
 
