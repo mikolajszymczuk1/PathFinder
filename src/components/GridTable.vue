@@ -32,6 +32,7 @@ const store = usePathEditorStore();
 const { width, height } = useWindowSize();
 
 defineProps({
+  /** Structure of grid */
   tableData: {
     type: Array,
     required: true
