@@ -18,6 +18,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { TileCords } from '@/types/CommonTypes';
+import CellModesEnum from '@/modules/enums/cellModesEnum';
+import { getEnumValues } from '@/modules/commonFunctions/enumHelpers';
 
 const props = defineProps({
   /** Type of tile for example wall, start, stop, ... */
@@ -25,7 +27,7 @@ const props = defineProps({
     type: String,
     default: 'E', // As empty
     validator(value: string): boolean {
-      return ['E', 'W', 'P', 'S', 'F'].includes(value);
+      return getEnumValues(CellModesEnum).includes(value);
     }
   },
 
@@ -49,9 +51,9 @@ const emit = defineEmits<{
 
 /** Return specific icon based on 'contentType' */
 const getIcon = computed<string>(() => {
-  if (props.contentType === 'S') {
+  if (props.contentType === CellModesEnum.START) {
     return 'location-pin';
-  } else if (props.contentType === 'F') {
+  } else if (props.contentType === CellModesEnum.GOAL) {
     return 'flag-checkered';
   }
 
@@ -60,9 +62,9 @@ const getIcon = computed<string>(() => {
 
 /** Return classes for font awesome icon */
 const getIconClasses = computed<string>(() => {
-  if (props.contentType === 'S') {
+  if (props.contentType === CellModesEnum.START) {
     return 'w-[44%]';
-  } else if (props.contentType === 'F') {
+  } else if (props.contentType === CellModesEnum.GOAL) {
     return 'w-[53%]';
   }
 
@@ -72,19 +74,19 @@ const getIconClasses = computed<string>(() => {
 /** Get classes for main component container */
 const getClasses = computed<string>(() => {
   switch (props.contentType) {
-    case 'E':
+    case CellModesEnum.EMPTY:
       return 'bg-gray-light';
 
-    case 'W':
+    case CellModesEnum.WALL:
       return 'bg-gray-medium';
 
-    case 'P':
+    case CellModesEnum.PATH:
       return 'bg-orange';
 
-    case 'S':
+    case CellModesEnum.START:
       return 'bg-lime';
 
-    case 'F':
+    case CellModesEnum.GOAL:
       return 'bg-red';
   }
 

@@ -10,6 +10,9 @@
 
   <main>
     <div class="flex justify-center md:justify-end md:mr-[33px]">
+      <ButtonContainer>
+        <PenButton v-for="mode in getEnumValues(DrawModesEnum)" :key="mode" :pen-icon="mode" />
+      </ButtonContainer>
       <GridTable ref="el" :table-data="store.tableData" />
     </div>
   </main>
@@ -23,6 +26,10 @@ import { getNewTilesSize } from '@/modules/commonFunctions/resizeCommon';
 
 import GridTable from '@/components/GridTable.vue';
 import LogoIcon from '@/components/icons/LogoIcon.vue';
+import ButtonContainer from '@/components/ButtonContainer.vue';
+import PenButton from '@/components/PenButton.vue';
+import { getEnumValues } from '@/modules/commonFunctions/enumHelpers';
+import DrawModesEnum from '@/modules/enums/drawModesEnum';
 
 // Grid initalization
 const store = usePathEditorStore();
