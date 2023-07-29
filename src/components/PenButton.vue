@@ -14,9 +14,9 @@ import { deconstructPenDrawModes } from '@/modules/enums/penDrawModesEnum';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { computed } from 'vue';
 
-import { pathEditorStore } from '@/stores/PathEditorStore';
+import { usePathEditorStore } from '@/stores/PathEditorStore';
 
-const store = pathEditorStore();
+const store = usePathEditorStore();
 
 const props = defineProps({
   penIcon: {
