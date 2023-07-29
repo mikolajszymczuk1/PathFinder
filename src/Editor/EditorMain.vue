@@ -1,4 +1,6 @@
 <template>
+  <EditorNavControl />
+
   <header>
     <nav
       class="mb-[12px] mt-[33px] mx-auto md:ml-auto md:mr-[33px]"
@@ -23,13 +25,14 @@ import { ref, type Ref } from 'vue';
 import { usePathEditorStore } from '@/stores/PathEditorStore';
 import { useWindowSize, useElementSize } from '@vueuse/core';
 import { getNewTilesSize } from '@/modules/commonFunctions/resizeCommon';
+import { getEnumValues } from '@/modules/commonFunctions/enumHelpers';
+import DrawModesEnum from '@/modules/enums/drawModesEnum';
 
 import GridTable from '@/components/GridTable.vue';
 import LogoIcon from '@/components/icons/LogoIcon.vue';
 import ButtonContainer from '@/components/ButtonContainer.vue';
 import PenButton from '@/components/PenButton.vue';
-import { getEnumValues } from '@/modules/commonFunctions/enumHelpers';
-import DrawModesEnum from '@/modules/enums/drawModesEnum';
+import EditorNavControl from '@/components/EditorNavControl.vue';
 
 // Grid initalization
 const store = usePathEditorStore();
