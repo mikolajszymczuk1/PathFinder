@@ -22,11 +22,12 @@
 
 <script setup lang="ts">
 import { watch } from 'vue';
-import GridTile from '@/components/GridTile.vue';
 import type { TileCords } from '@/types/CommonTypes';
 import { usePathEditorStore } from '@/stores/PathEditorStore';
 import { useWindowSize } from '@vueuse/core';
 import { getNewTilesSize } from '@/modules/commonFunctions/resizeCommon';
+
+import GridTile from '@/components/GridTile.vue';
 
 const store = usePathEditorStore();
 const { width, height } = useWindowSize();
