@@ -4,7 +4,7 @@ import PenDrawModesEnum from '../modules/enums/penDrawModesEnum';
 
 interface State {
   tableData: string[][],
-  activePenMode: PenDrawModesEnum,
+  activePenMode: string,
 }
 
 export const usePathEditorStore = defineStore('pathEditor', {
@@ -41,7 +41,7 @@ export const usePathEditorStore = defineStore('pathEditor', {
       this.tableData[row][col] = 'W';
     },
 
-    updatePen(newMode: PenDrawModesEnum): void {
+    updatePen(newMode: string): void {
       this.activePenMode = newMode;
     }
   },
