@@ -1,17 +1,16 @@
 <template>
-  <EditorNavControl />
-
   <header>
     <nav
-      class="mb-[12px] mt-[33px] mx-auto md:ml-auto md:mr-[33px]"
+      class="flex justify-between items-center mb-[12px] mt-[33px] mx-auto md:ml-auto md:mr-[33px] lg:mt-[24px] lg:mr-[45px] lg:mb-[17px]"
       :style="{ 'width': `${elWidth}px` }"
     >
-      <LogoIcon />
+      <LogoIcon class="md:w-[203px] md:h-auto" />
+      <EditorNavControl />
     </nav>
   </header>
 
   <main>
-    <div class="flex justify-center md:justify-end md:mr-[33px]">
+    <div class="flex justify-center md:justify-end md:mr-[33px] lg:mr-[45px]">
       <ButtonContainer>
         <PenButton v-for="mode in getEnumValues(DrawModesEnum)" :key="mode" :pen-icon="mode" />
       </ButtonContainer>

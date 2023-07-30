@@ -1,14 +1,20 @@
 <template>
   <button
-    class=""
+    class="flex justify-center items-center group"
     @click="emitClick()"
+    data-test="single-control-button"
   >
-    <FontAwesomeIcon class="" :icon="['fas', iconName]" />
+    <FontAwesomeIcon
+      class="text-white group-hover:text-lime md:w-[16px] md:h-auto md:rounded-[8px]"
+      :icon="['fas', iconName]"
+      data-test="single-control-icon"
+    />
   </button>
 </template>
 
 <script setup lang="ts">
 defineProps({
+  /** Special name of fontawesome icon */
   iconName: {
     type: String,
     required: true,
