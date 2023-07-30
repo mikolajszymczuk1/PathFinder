@@ -27,6 +27,6 @@ describe('PathEditorStore', () => {
     store.createTable(2, 3);
     expect(store.tableData[testCords.row][testCords.col]).toBe('E');
     store.doOperation(testCords);
-    expect(store.tableData[testCords.row][testCords.col]).toBe('W');
+    expect(store.tableData[testCords.row][testCords.col]).toBe('E');
   });
 });

@@ -4,15 +4,20 @@ import GridTile from '@/components/GridTile.vue';
 
 describe('GridTile', () => {
   let wrapper: VueWrapper;
-  const createComponent = (config = {}) => { wrapper = mount(GridTile, config); };
+  const createComponent = (config = {}) => {
+    wrapper = mount(GridTile, {
+      global: {
+        stubs: ['FontAwesomeIcon'],
+      },
+      ...config,
+    });
+  };
+
   const findTile = () => wrapper.find('[data-test="tile"]');
   const findTileIcon = () => wrapper.find('[data-test="tile-icon"]');
 
   it('Should set correct styles and icon based on contentType prop', async () => {
     createComponent({
-      global: {
-        stubs: ['FontAwesomeIcon'],
-      },
       props: {
         contentType: 'E',
         col: 3,
@@ -32,16 +37,13 @@ describe('GridTile', () => {
     expect(findTile().classes()).toContain('bg-lime');
     expect(findTileIcon().attributes('icon')).toContain('location-pin');
 
-    await wrapper.setProps({ contentType: 'F' });
+    await wrapper.setProps({ contentType: 'G' });
     expect(findTile().classes()).toContain('bg-red');
     expect(findTileIcon().attributes('icon')).toContain('flag-checkered');
   });
 
   it('Should emit cords when user clicks on tile', async () => {
     createComponent({
-      global: {
-        stubs: ['FontAwesomeIcon'],
-      },
       props: {
         contentType: 'E',
         col: 2,

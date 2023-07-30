@@ -12,7 +12,7 @@ describe('GridTable', () => {
   it('Should correctly render grid based on tableData structure', () => {
     const testData: string[][] = [
       ['S', 'E', 'W'],
-      ['E', 'E', 'F'],
+      ['E', 'E', 'G'],
       ['E', 'W', 'W'],
     ];
 
