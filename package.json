@@ -14,7 +14,8 @@
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
@@ -58,6 +59,7 @@
     "typescript": "~5.0.4",
     "vite": "^4.3.9",
     "vitest": "^0.32.0",
-    "vue-tsc": "^1.6.5"
+    "vue-tsc": "^1.6.5",
+    "husky": "^8.0.0"
   }
 }
