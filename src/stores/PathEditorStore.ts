@@ -1,6 +1,6 @@
-import type { TileCords } from '@/types/CommonTypes';
 import { defineStore } from 'pinia';
-import DrawModesEnum from '../modules/enums/drawModesEnum';
+import type { TileCords } from '@/types/CommonTypes';
+import DrawModesEnum from '@/modules/enums/drawModesEnum';
 import CellModesEnum from '@/modules/enums/cellModesEnum';
 
 interface State {
