@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
+import { getEnumValues } from '@/modules/commonFunctions/enumHelpers';
+import CellModesEnum from '@/modules/enums/cellModesEnum';
 import GridTile from '@/components/GridTile.vue';
 
 const meta: Meta<typeof GridTile> = {
@@ -12,7 +14,7 @@ type Story = StoryObj<typeof GridTile>;
 export const Default: Story = {
   argTypes: {
     contentType: {
-      options: ['E', 'W', 'P', 'S', 'F'],
+      options: getEnumValues(CellModesEnum),
       control: { type: 'select' },
     }
   },
@@ -24,7 +26,7 @@ export const Default: Story = {
     template: '<GridTile v-bind="args" />',
   }),
   args: {
-    contentType: 'E',
+    contentType: CellModesEnum.EMPTY,
     row: 3,
     col: 4,
   },
