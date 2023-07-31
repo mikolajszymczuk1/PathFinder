@@ -1,5 +1,6 @@
 import { expect, it, describe } from 'vitest';
 import { mount, type VueWrapper } from '@vue/test-utils';
+import CellModesEnum from '@/modules/enums/cellModesEnum';
 import GridTile from '@/components/GridTile.vue';
 
 describe('GridTile', () => {
@@ -19,7 +20,7 @@ describe('GridTile', () => {
   it('Should set correct styles and icon based on contentType prop', async () => {
     createComponent({
       props: {
-        contentType: 'E',
+        contentType: CellModesEnum.EMPTY,
         col: 3,
         row: 2,
       }
@@ -27,17 +28,17 @@ describe('GridTile', () => {
 
     expect(findTile().classes()).toContain('bg-gray-light');
 
-    await wrapper.setProps({ contentType: 'W' });
+    await wrapper.setProps({ contentType: CellModesEnum.WALL });
     expect(findTile().classes()).toContain('bg-gray-medium');
 
-    await wrapper.setProps({ contentType: 'P' });
+    await wrapper.setProps({ contentType: CellModesEnum.PATH });
     expect(findTile().classes()).toContain('bg-orange');
 
-    await wrapper.setProps({ contentType: 'S' });
+    await wrapper.setProps({ contentType: CellModesEnum.START });
     expect(findTile().classes()).toContain('bg-lime');
     expect(findTileIcon().attributes('icon')).toContain('location-pin');
 
-    await wrapper.setProps({ contentType: 'G' });
+    await wrapper.setProps({ contentType: CellModesEnum.GOAL });
     expect(findTile().classes()).toContain('bg-red');
     expect(findTileIcon().attributes('icon')).toContain('flag-checkered');
   });
@@ -45,7 +46,7 @@ describe('GridTile', () => {
   it('Should emit cords when user clicks on tile', async () => {
     createComponent({
       props: {
-        contentType: 'E',
+        contentType: CellModesEnum.EMPTY,
         col: 2,
         row: 6,
       }
