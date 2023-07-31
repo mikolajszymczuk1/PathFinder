@@ -7,7 +7,7 @@ const storyTableData: string[][] = [
   ['E', 'W', 'E', 'S', 'E'],
   ['E', 'W', 'E', 'P', 'E'],
   ['E', 'W', 'P', 'P', 'E'],
-  ['F', 'P', 'P', 'E', 'E'],
+  ['G', 'P', 'P', 'E', 'E'],
   ['E', 'E', 'E', 'E', 'E'],
 ];
 
