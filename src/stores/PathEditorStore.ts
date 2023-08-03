@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import type { TileCords } from '@/types/CommonTypes';
 import DrawModesEnum from '@/modules/enums/drawModesEnum';
 import CellModesEnum from '@/modules/enums/cellModesEnum';
+import { preventAndDeleteAdditionalBlocks } from '@/modules/commonFunctions/editorCommon';
 
 interface State {
   tableData: string[][],
@@ -45,10 +46,20 @@ export const usePathEditorStore = defineStore('pathEditor', {
           // Do nothing
           break;
         case DrawModesEnum.DRAW_START:
+          preventAndDeleteAdditionalBlocks({
+            grid: this.tableData,
+            blockToExclude: CellModesEnum.START,
+            maxCount: 0,
+          });
           this.tableData[row][col] = CellModesEnum.START;
           break;
 
         case DrawModesEnum.DRAW_GOAL:
+          preventAndDeleteAdditionalBlocks({
+            grid: this.tableData,
+            blockToExclude: CellModesEnum.GOAL,
+            maxCount: 0,
+          });
           this.tableData[row][col] = CellModesEnum.GOAL;
           break;
 

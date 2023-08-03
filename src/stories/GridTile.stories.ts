@@ -12,7 +12,7 @@ type Story = StoryObj<typeof GridTile>;
 export const Default: Story = {
   argTypes: {
     contentType: {
-      options: ['E', 'W', 'P', 'S', 'F'],
+      options: ['E', 'W', 'P', 'S', 'G'],
       control: { type: 'select' },
     }
   },

@@ -30,7 +30,7 @@ import DrawModesEnum from '@/modules/enums/drawModesEnum';
 import GridTable from '@/components/GridTable.vue';
 import LogoIcon from '@/components/icons/LogoIcon.vue';
 import ButtonContainer from '@/components/ButtonContainer.vue';
-import PenButton from '@/components/PenButton.vue';
+import PenButton from '@/components/buttons/PenButton.vue';
 import EditorNavControl from '@/components/EditorNavControl.vue';
 
 // Grid initalization
