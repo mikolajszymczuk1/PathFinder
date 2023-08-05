@@ -9,12 +9,13 @@
     </nav>
   </header>
 
-  <main>
+  <main class="md:flex md:flex-row-reverse md:items-center">
     <div class="flex justify-center md:justify-end md:mr-[33px] lg:mr-[45px]">
-      <ButtonContainer>
-        <PenButton v-for="mode in getEnumValues(DrawModesEnum)" :key="mode" :pen-icon="mode" />
-      </ButtonContainer>
       <GridTable ref="el" :table-data="store.tableData" />
+    </div>
+
+    <div class="flex justify-center mt-[27.5px] md:mt-0 md:mr-[1%] lg:mr-[31px]">
+      <EditorToolbox />
     </div>
   </main>
 </template>
@@ -24,13 +25,10 @@ import { ref, type Ref } from 'vue';
 import { usePathEditorStore } from '@/stores/PathEditorStore';
 import { useWindowSize, useElementSize } from '@vueuse/core';
 import { getNewTilesSize } from '@/modules/commonFunctions/resizeCommon';
-import { getEnumValues } from '@/modules/commonFunctions/enumHelpers';
-import DrawModesEnum from '@/modules/enums/drawModesEnum';
 
 import GridTable from '@/components/GridTable.vue';
 import LogoIcon from '@/components/icons/LogoIcon.vue';
-import ButtonContainer from '@/components/ButtonContainer.vue';
-import PenButton from '@/components/PenButton.vue';
+import EditorToolbox from '@/widgets/EditorToolbox.vue';
 import EditorNavControl from '@/components/EditorNavControl.vue';
 
 // Grid initalization
