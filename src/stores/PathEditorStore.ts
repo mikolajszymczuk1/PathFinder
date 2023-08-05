@@ -3,7 +3,6 @@ import type { TileCords } from '@/types/CommonTypes';
 import { isValueInEnum } from '@/modules/commonFunctions/enumHelpers';
 import DrawModesEnum from '@/modules/enums/drawModesEnum';
 import CellModesEnum from '@/modules/enums/cellModesEnum';
-import { preventAndDeleteAdditionalBlocks } from '@/modules/commonFunctions/editorCommon';
 
 interface State {
   tableData: string[][],
@@ -48,20 +47,12 @@ export const usePathEditorStore = defineStore('pathEditor', {
           break;
 
         case DrawModesEnum.DRAW_START:
-          preventAndDeleteAdditionalBlocks({
-            grid: this.tableData,
-            blockToExclude: CellModesEnum.START,
-            maxCount: 0,
-          });
+          this.deleteAllTilesByType(CellModesEnum.START);
           this.tableData[row][col] = CellModesEnum.START;
           break;
 
         case DrawModesEnum.DRAW_GOAL:
-          preventAndDeleteAdditionalBlocks({
-            grid: this.tableData,
-            blockToExclude: CellModesEnum.GOAL,
-            maxCount: 0,
-          });
+          this.deleteAllTilesByType(CellModesEnum.GOAL)
           this.tableData[row][col] = CellModesEnum.GOAL;
           break;
 
@@ -83,6 +74,21 @@ export const usePathEditorStore = defineStore('pathEditor', {
       if (newMode === this.activePenMode) return;
       if (!isValueInEnum(DrawModesEnum, newMode)) return;
       this.activePenMode = newMode;
+    },
+
+    /**
+     * Delete all tiles that equal to tileTypeToDelete tile type
+     * @param {string} tileTypeToDelete type of tiles to delete
+     */
+    deleteAllTilesByType(tileTypeToDelete: string): void {
+      for (let i = 0; i < this.tableData.length; i++) {
+        for (let j = 0; j < this.tableData[i].length; j++) {
+          const currentTileCords: TileCords = { row: i, col: j };
+          if (this.tableData[currentTileCords.row][currentTileCords.col] === tileTypeToDelete) {
+            this.tableData[currentTileCords.row][currentTileCords.col] = CellModesEnum.EMPTY;
+          }
+        }
+      }
     },
   },
 });

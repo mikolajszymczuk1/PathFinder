@@ -60,4 +60,22 @@ describe('PathEditorStore', () => {
     store.selectDrawTool(DrawModesEnum.DRAW_WALL);
     expect(store.activePenMode).toBe(DrawModesEnum.DRAW_WALL);
   });
+
+  it('deleteAllTilesByType should correctly delete specific type of tile on board', () => {
+    const testBoard: string[][] = [
+      ['E', 'E', 'S'],
+      ['S', 'S', 'S'],
+      ['E', 'G', 'E'],
+    ];
+
+    const store = usePathEditorStore();
+    store.createTable(3, 3);
+    store.tableData = testBoard;
+    store.deleteAllTilesByType(CellModesEnum.START);
+    expect(store.tableData).toEqual([
+      ['E', 'E', 'E'],
+      ['E', 'E', 'E'],
+      ['E', 'G', 'E'],
+    ]);
+  });
 });
