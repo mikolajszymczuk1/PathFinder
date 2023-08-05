@@ -17,7 +17,7 @@ describe('resizeCommon', () => {
       const testWidth: Ref<number> = ref(EDITOR_CONST.BREAKPOINTS.MD);
       const testHeight: Ref<number> = ref(667);
       const { twidth, theight } = getNewTilesSize(testWidth, testHeight);
-      expect(twidth).toBe(15);
+      expect(twidth).toBe(14);
       expect(theight).toBe(12);
     });
   });

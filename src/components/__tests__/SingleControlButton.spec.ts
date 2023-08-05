@@ -38,4 +38,18 @@ describe('SingleControlButton', () => {
     expect(emited).toHaveLength(1);
     expect(emited![0]).toEqual([]);
   });
+
+  it('Should set correct styles based on largeIcon prop value', async () => {
+    createComponent({
+      props: {
+        iconName: 'fa-play',
+      },
+    });
+
+    expect(findControlIcon().classes()).toContain('md:w-[16px]');
+    expect(findControlIcon().classes()).toContain('md:h-auto');
+    await wrapper.setProps({ largeIcon: true});
+    expect(findControlIcon().classes()).toContain('md:w-auto');
+    expect(findControlIcon().classes()).toContain('md:h-[25px]');
+  });
 });
