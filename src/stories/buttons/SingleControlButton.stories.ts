@@ -24,5 +24,20 @@ export const Default: Story = {
   }),
   args: {
     iconName: 'fa-play',
+    largeIcon: false,
+  },
+};
+
+export const LargeIcon: Story = {
+  render: (args) => ({
+    components: { SingleControlButton },
+    setup() {
+      return { args };
+    },
+    template: '<SingleControlButton v-bind="args" />',
+  }),
+  args: {
+    iconName: 'fa-play',
+    largeIcon: true,
   },
 };
