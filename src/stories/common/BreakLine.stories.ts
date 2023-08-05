@@ -20,6 +20,22 @@ export const Default: Story = {
     setup() {
       return { args };
     },
-    template: '<BreakLine />',
+    template: '<BreakLine v-bind="args" />',
   }),
+  args: {
+    horizontalOnLargeScreens: false,
+  },
+};
+
+export const HorizontalVersion: Story = {
+  render: (args) => ({
+    components: { BreakLine },
+    setup() {
+      return { args };
+    },
+    template: '<BreakLine v-bind="args" />',
+  }),
+  args: {
+    horizontalOnLargeScreens: true,
+  },
 };
