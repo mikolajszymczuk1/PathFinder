@@ -1,6 +1,9 @@
 <template>
   <div class="flex w-[355px] h-[56px] bg-gray-light rounded-[10px] md:w-[77px] md:h-[597px] md:flex-col md:rounded-[8px]">
-    <button class="ml-[16px] mr-[15px] md:flex md:justify-center md:items-center md:mr-0 md:ml-0 md:h-[72px]">
+    <button
+      class="ml-[16px] mr-[15px] md:flex md:justify-center md:items-center md:mr-0 md:ml-0 md:h-[72px]"
+      data-test="menu-button"
+    >
       <img class="md:w-[25px]" :src="MenuIcon" alt="Menu icon" title="Menu icon">
     </button>
 
@@ -16,6 +19,7 @@
         class="flex justify-center items-center w-[54px] my-[3px] mr-[3px] rounded-[8px] bg-lime text-[0.8125rem] font-comfortaa
           md:w-auto md:h-[55px] md:mx-[3px] md:mt-0 md:text-[0.9375rem]"
         @click="changePathAlg()"
+        data-test="change-alg-button"
       >
         BFS
       </button>
