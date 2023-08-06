@@ -29,17 +29,17 @@ describe('GridTile', () => {
     expect(findTile().classes()).toContain('bg-gray-light');
 
     await wrapper.setProps({ contentType: CellModesEnum.WALL });
-    expect(findTile().classes()).toContain('bg-gray-medium');
+    expect(findTile().classes()).toContain('!bg-gray-medium');
 
     await wrapper.setProps({ contentType: CellModesEnum.PATH });
-    expect(findTile().classes()).toContain('bg-orange');
+    expect(findTile().classes()).toContain('!bg-orange');
 
     await wrapper.setProps({ contentType: CellModesEnum.START });
-    expect(findTile().classes()).toContain('bg-lime');
+    expect(findTile().classes()).toContain('!bg-lime');
     expect(findTileIcon().attributes('icon')).toContain('location-pin');
 
     await wrapper.setProps({ contentType: CellModesEnum.GOAL });
-    expect(findTile().classes()).toContain('bg-red');
+    expect(findTile().classes()).toContain('!bg-red');
     expect(findTileIcon().attributes('icon')).toContain('flag-checkered');
   });
 

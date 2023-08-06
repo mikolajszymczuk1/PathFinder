@@ -1,6 +1,7 @@
 <template>
   <div
-    class="flex justify-center items-center w-[40px] h-[40px] rounded-[3px] text-white"
+    class="flex justify-center items-center w-[40px] h-[40px] rounded-[3px] text-white transition-transform
+      hover:scale-[0.90] hover:bg-gray-highlight"
     :class="getClasses"
     @click="emitCords()"
     data-test="tile"
@@ -78,16 +79,16 @@ const getClasses = computed<string>(() => {
       return 'bg-gray-light';
 
     case CellModesEnum.WALL:
-      return 'bg-gray-medium';
+      return '!bg-gray-medium';
 
     case CellModesEnum.PATH:
-      return 'bg-orange';
+      return '!bg-orange';
 
     case CellModesEnum.START:
-      return 'bg-lime';
+      return '!bg-lime';
 
     case CellModesEnum.GOAL:
-      return 'bg-red';
+      return '!bg-red';
   }
 
   return '';
