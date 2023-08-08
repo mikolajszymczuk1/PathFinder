@@ -37,16 +37,75 @@ describe('searchingHelpers', () => {
     });
   });
 
-  it('getStartAndGoalCords should return correct coridnates for start and goal tiles', () => {
-    const testTable = [
-      ['S', 'E', 'E'],
-      ['E', 'E', 'E'],
-      ['E', 'E', 'G'],
-    ];
+  describe('getStartAndGoalCords', () => {
+    it('should return correct coridnates for start and goal tiles', () => {
+      const testTable = [
+        ['S', 'E', 'E'],
+        ['E', 'E', 'E'],
+        ['E', 'E', 'G'],
+      ];
 
-    expect(getStartAndGoalCords(testTable)).toEqual({
-      start: { row: 0, col: 0 },
-      goal: { row: 2, col: 2 },
+      expect(getStartAndGoalCords(testTable)).toEqual({
+        start: { row: 0, col: 0 },
+        goal: { row: 2, col: 2 },
+      });
+    });
+
+    it('should return cooridinates of cells that are nearest 0 index', () => {
+      const testTable = [
+        ['S', 'E', 'E'],
+        ['E', 'E', 'S'],
+        ['G', 'E', 'G'],
+      ];
+
+      expect(getStartAndGoalCords(testTable)).toEqual({
+        start: { row: 0, col: 0 },
+        goal: { row: 2, col: 0 },
+      });
+    });
+
+    it('should return cooridinates of cells that are nearest 0 index', () => {
+      const testTable = [
+        ['E', 'E', 'E', 'E', 'E', 'E', 'G', 'E'],
+        ['E', 'E', 'E', 'E', 'E', 'E', 'E', 'E'],
+        ['E', 'E', 'E', 'S', 'E', 'E', 'S', 'E'],
+        ['E', 'E', 'E', 'E', 'E', 'E', 'E', 'E'],
+        ['E', 'E', 'E', 'E', 'E', 'E', 'E', 'E'],
+        ['G', 'E', 'E', 'E', 'S', 'E', 'E', 'E'],
+        ['E', 'S', 'E', 'E', 'E', 'E', 'E', 'E'],
+        ['E', 'E', 'E', 'E', 'E', 'G', 'E', 'E'],
+      ]
+
+      expect(getStartAndGoalCords(testTable)).toEqual({
+        start: { row: 2, col: 3 },
+        goal: { row: 0, col: 6 }
+      });
+    });
+
+    it('should return { { -1, -1 }, { -1, -1 } } becouse one of the cells doesnt exists', () => {
+      const testTable = [
+        ['E', 'E', 'E'],
+        ['E', 'E', 'E'],
+        ['E', 'E', 'G'],
+      ];
+
+      expect(getStartAndGoalCords(testTable)).toEqual({
+        start: { row: -1, col: -1 },
+        goal: { row: -1, col: -1 },
+      });
+    });
+
+    it('should return { { -1, -1 }, { -1, -1 } } becouse all of the cells doesnt exists', () => {
+      const testTable = [
+        ['E', 'E', 'E'],
+        ['E', 'E', 'E'],
+        ['E', 'E', 'E'],
+      ];
+
+      expect(getStartAndGoalCords(testTable)).toEqual({
+        start: { row: -1, col: -1 },
+        goal: { row: -1, col: -1 },
+      });
     });
   });
 
