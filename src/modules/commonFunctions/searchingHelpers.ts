@@ -7,7 +7,7 @@ import CellModesEnum from "@/modules/enums/cellModesEnum";
  * @param {TileCords} tile The tile whose neighbors the function should return
  * @return {TileCords[]} Array of neighbors
  */
-export const getNeighbors = (grid: string[][], tile: TileCords): TileCords[] => {
+export const getNeighbours = (grid: string[][], tile: TileCords): TileCords[] => {
   const neighbours: TileCords[] = [];
 
   const topCords: TileCords = { row: tile.row - 1, col: tile.col };
@@ -15,9 +15,9 @@ export const getNeighbors = (grid: string[][], tile: TileCords): TileCords[] => 
   const leftCords: TileCords = { row: tile.row, col: tile.col - 1 };
   const rightCords: TileCords = { row: tile.row, col: tile.col + 1 };
 
+  grid?.[leftCords.row]?.[leftCords.col] ? neighbours.push(leftCords) : null;
   grid?.[topCords.row]?.[topCords.col] ? neighbours.push(topCords) : null;
   grid?.[bottomCords.row]?.[bottomCords.col] ? neighbours.push(bottomCords) : null;
-  grid?.[leftCords.row]?.[leftCords.col] ? neighbours.push(leftCords) : null;
   grid?.[rightCords.row]?.[rightCords.col] ? neighbours.push(rightCords) : null;
 
   return neighbours;
