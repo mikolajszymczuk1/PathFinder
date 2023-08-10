@@ -35,11 +35,11 @@ export const getStartAndGoalCords = (grid: string[][]): { start: TileCords, goal
 
   for (let i = 0; i < grid.length; i++) {
     for (let j = 0; j < grid[i].length; j++) {
-      const currentTileCords = grid[i][j];
-      if (currentTileCords === CellModesEnum.START) {
+      const currentTile = grid[i][j];
+      if (currentTile === CellModesEnum.START) {
         start.row = i;
         start.col = j;
-      } else if (currentTileCords === CellModesEnum.GOAL) {
+      } else if (currentTile === CellModesEnum.GOAL) {
         goal.row = i;
         goal.col = j;
       }
@@ -70,4 +70,30 @@ export const areStartAndGoalPlaced = (grid: string[][]): boolean => {
   }
 
   return isStart && isGoal;
+};
+
+/**
+ * Function compares cords of two tiles and return true if they are equal
+ * @param {TileCords} tileCordsA Cords of tile A
+ * @param {TileCords} tileCordsB Cords of tile B
+ * @return {boolean} return true if cords are euqal
+ */
+export const areTilesCordsEqual = (tileCordsA: TileCords, tileCordsB: TileCords): boolean => {
+  return tileCordsA.row === tileCordsB.row && tileCordsA.col === tileCordsB.col;
+};
+
+/**
+ * Check if tile cords are in the array ```arr```
+ * @param {TileCords[]} arr Array where function should search
+ * @param {TileCords} elementToCheck
+ * @return {boolean} True if tile cords in the array
+ */
+export const isTileCordsInArray = (arr: TileCords[], elementToCheck: TileCords): boolean => {
+  for (let i = 0; i < arr.length; i++) {
+    if (areTilesCordsEqual(arr[i], elementToCheck)) {
+      return true;
+    }
+  }
+
+  return false;
 };
