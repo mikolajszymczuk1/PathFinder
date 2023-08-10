@@ -5,15 +5,23 @@
   >
     <SingleControlButton icon-name="fa-backward-step" @clickAction="goToPrevStep()" />
     <BreakLine />
-    <SingleControlButton icon-name="fa-play" @clickAction="playPauseSimulation()" />
+    <SingleControlButton :icon-name="animationStatusIcon" @clickAction="playPauseSimulation()" />
     <BreakLine />
     <SingleControlButton icon-name="fa-forward-step" @clickAction="goToNextStep()" />
   </div>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+import { usePathEditorStore } from '@/stores/PathEditorStore';
+
 import SingleControlButton from '@/components/buttons/SingleControlButton.vue';
 import BreakLine from '@/components/common/BreakLine.vue';
+
+const store = usePathEditorStore();
+
+/** Return icon based on pasue status in store */
+const animationStatusIcon = computed<string>(() => store.isPaused ? 'fa-play' : 'fa-pause');
 
 /** Go to the previous step in simulation */
 const goToPrevStep = (): void => { console.log('Prev Step'); };
@@ -22,5 +30,5 @@ const goToPrevStep = (): void => { console.log('Prev Step'); };
 const goToNextStep = (): void => { console.log('Next Step'); };
 
 /** Play or pause simulation */
-const playPauseSimulation = (): void => { console.log('Play Pause'); };
+const playPauseSimulation = async (): Promise<void> => await store.playPauseSimulation();
 </script>
