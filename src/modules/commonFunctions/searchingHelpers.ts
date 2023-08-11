@@ -2,7 +2,7 @@ import type { TileCords } from "@/types/CommonTypes";
 import CellModesEnum from "@/modules/enums/cellModesEnum";
 
 /**
- * Function returns all neighbours for the given tile cords
+ * Function returns all neigbers for the given tile cords
  * @param {string[][]} grid Area where function should search
  * @param {TileCords} tile The tile whose neighbors the function should return
  * @return {TileCords[]} Array of neighbors
@@ -73,4 +73,30 @@ export const areStartAndGoalPlaced = (grid: string[][]): boolean => {
   });
 
   return isStart && isGoal;
+};
+
+/**
+ * Function compares cords of two tiles and return true if they are equal
+ * @param {TileCords} tileCordsA Cords of tile A
+ * @param {TileCords} tileCordsB Cords of tile B
+ * @return {boolean} return true if cords are euqal
+ */
+export const areTilesCordsEqual = (tileCordsA: TileCords, tileCordsB: TileCords): boolean => {
+  return tileCordsA.row === tileCordsB.row && tileCordsA.col === tileCordsB.col;
+};
+
+/**
+ * Check if tile cords are in the array ```arr```
+ * @param {TileCords[]} arr Array where function should search
+ * @param {TileCords} elementToCheck
+ * @return {boolean} True if tile cords in the array
+ */
+export const isTileCordsInArray = (arr: TileCords[], elementToCheck: TileCords): boolean => {
+  for (let i = 0; i < arr.length; i++) {
+    if (areTilesCordsEqual(arr[i], elementToCheck)) {
+      return true;
+    }
+  }
+
+  return false;
 };

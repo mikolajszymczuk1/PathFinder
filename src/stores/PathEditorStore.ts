@@ -1,14 +1,21 @@
 import { defineStore } from 'pinia';
 import type { TileCords } from '@/types/CommonTypes';
 import { isValueInEnum } from '@/modules/commonFunctions/enumHelpers';
+import { areStartAndGoalPlaced, getStartAndGoalCords, areTilesCordsEqual } from '@/modules/commonFunctions/searchingHelpers';
 import DrawModesEnum from '@/modules/enums/drawModesEnum';
 import CellModesEnum from '@/modules/enums/cellModesEnum';
+import { EDITOR_CONST } from '@/modules/consts/editorConst';
+
+import bfs from '@/modules/pathfindingAlgorithms/bfs';
+import { DFSAlgorithm } from '@/modules/pathfindingAlgorithms/dfs';
 import TableHistory from '@/modules/classes/tableHistory/TableHistory';
 
 interface State {
   tableData: string[][],
   tableHistory: TableHistory,
   activePenMode: string,
+  isPaused: boolean,
+  isAnimFinished: boolean,
 }
 
 export const usePathEditorStore = defineStore('pathEditor', {
@@ -16,6 +23,8 @@ export const usePathEditorStore = defineStore('pathEditor', {
     tableData: [],
     tableHistory: new TableHistory,
     activePenMode: DrawModesEnum.SELECT,
+    isPaused: true,
+    isAnimFinished: true,
   }),
   actions: {
     /**
@@ -33,6 +42,33 @@ export const usePathEditorStore = defineStore('pathEditor', {
       }
 
       this.tableHistory.pushHistory(this.tableData);
+    },
+
+    /** Function clear grid by setting each cell as Empty */
+    clearTable(): void {
+      for (let i = 0; i < this.tableData.length; i++) {
+        for (let j = 0; j < this.tableData[i].length; j++) {
+          if (this.tableData[i][j] !== CellModesEnum.START && this.tableData[i][j] !== CellModesEnum.GOAL && this.tableData[i][j] !== CellModesEnum.WALL) {
+            this.tableData[i][j] = CellModesEnum.EMPTY;
+          }
+        }
+
+      for (let rowId = 0; rowId < height; rowId++) {
+        this.tableData[rowId] = new Array(width).fill(CellModesEnum.EMPTY);
+      }
+
+      this.tableHistory.pushHistory(this.tableData);
+    },
+
+    /** Function clear grid by setting each cell as Empty */
+    clearTable(): void {
+      for (let i = 0; i < this.tableData.length; i++) {
+        for (let j = 0; j < this.tableData[i].length; j++) {
+          if (this.tableData[i][j] !== CellModesEnum.START && this.tableData[i][j] !== CellModesEnum.GOAL && this.tableData[i][j] !== CellModesEnum.WALL) {
+            this.tableData[i][j] = CellModesEnum.EMPTY;
+          }
+        }
+      }
     },
 
     /**
@@ -99,5 +135,87 @@ export const usePathEditorStore = defineStore('pathEditor', {
         });
       });
     },
+
+    /** Function to run or pause simulation */
+    async playPauseSimulation(): Promise<void> {
+      if (!areStartAndGoalPlaced(this.tableData)) return;
+      this.isPaused = !this.isPaused;
+      // User can use pause functionality until simulation is not finished
+      if (!this.isPaused && this.isAnimFinished) {
+        this.isAnimFinished = false;
+        await this.doSimulation();
+      }
+    },
+
+    /** Main animation controller */
+    async doSimulation(): Promise<void> {
+      if (areStartAndGoalPlaced(this.tableData)) {
+        this.clearTable();
+        const { start, goal } = getStartAndGoalCords(this.tableData);
+        const discoverdTiles = DFSAlgorithm(this.tableData, [CellModesEnum.WALL]) as TileCords[];
+        for (const cords of discoverdTiles) {
+          if (this.isPaused) {
+            // When simulation is paused, create promise and wait for resolve
+            await new Promise((res: CallableFunction) => {
+              const interval = setInterval(() => {
+                if (!this.isPaused) {
+                  clearInterval(interval);
+                  res();
+                }
+              }, EDITOR_CONST.ANIMATION_CONTROLLER_CONF.INTERVAL_TIME);
+            });
+          }
+
+          if (!areTilesCordsEqual(cords, start) && !areTilesCordsEqual(cords, goal)) {
+            this.tableData[cords.row][cords.col] = CellModesEnum.DISCOVERED;
+            // Simple promise for animation delay
+            await new Promise((res) => setTimeout(res, EDITOR_CONST.ANIMATION_CONTROLLER_CONF.TILE_DISCOVER_DELAY));
+          }
+        }
+
+        this.isAnimFinished = true;
+      }
+    },
+
+    /** Function to run or pause simulation */
+    async playPauseSimulation(): Promise<void> {
+      if (!areStartAndGoalPlaced(this.tableData)) return;
+      this.isPaused = !this.isPaused;
+      // User can use pause functionality until simulation is not finished
+      if (!this.isPaused && this.isAnimFinished) {
+        this.isAnimFinished = false;
+        await this.doSimulation();
+      }
+    },
+
+    /** Main animation controller */
+    async doSimulation(): Promise<void> {
+      if (areStartAndGoalPlaced(this.tableData)) {
+        this.clearTable();
+        const { start, goal } = getStartAndGoalCords(this.tableData);
+        const discoverdTiles = DFSAlgorithm(this.tableData, [CellModesEnum.WALL]) as TileCords[];
+        for (const cords of discoverdTiles) {
+          if (this.isPaused) {
+            // When simulation is paused, create promise and wait for resolve
+            await new Promise((res: CallableFunction) => {
+              const interval = setInterval(() => {
+                if (!this.isPaused) {
+                  clearInterval(interval);
+                  res();
+                }
+              }, EDITOR_CONST.ANIMATION_CONTROLLER_CONF.INTERVAL_TIME);
+            });
+          }
+
+          if (!areTilesCordsEqual(cords, start) && !areTilesCordsEqual(cords, goal)) {
+            this.tableData[cords.row][cords.col] = CellModesEnum.DISCOVERED;
+            // Simple promise for animation delay
+            await new Promise((res) => setTimeout(res, EDITOR_CONST.ANIMATION_CONTROLLER_CONF.TILE_DISCOVER_DELAY));
+          }
+        }
+
+        this.isAnimFinished = true;
+      }
+    }
   },
 });
