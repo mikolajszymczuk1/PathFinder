@@ -7,6 +7,7 @@ import CellModesEnum from '@/modules/enums/cellModesEnum';
 import { EDITOR_CONST } from '@/modules/consts/editorConst';
 
 import bfs from '@/modules/pathfindingAlgorithms/bfs';
+import { DFSAlgorithm } from '@/modules/pathfindingAlgorithms/dfs';
 
 interface State {
   tableData: string[][],
@@ -126,7 +127,7 @@ export const usePathEditorStore = defineStore('pathEditor', {
       if (areStartAndGoalPlaced(this.tableData)) {
         this.clearTable();
         const { start, goal } = getStartAndGoalCords(this.tableData);
-        const discoverdTiles = bfs(this.tableData, start, goal);
+        const discoverdTiles = DFSAlgorithm(this.tableData, [CellModesEnum.WALL]) as TileCords[];
         for (const cords of discoverdTiles) {
           if (this.isPaused) {
             // When simulation is paused, create promise and wait for resolve
