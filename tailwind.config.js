@@ -28,14 +28,20 @@ module.exports = {
       comfortaa: ['Comfortaa', 'cursive'],
     },
     keyframes: {
-      discover: {
+      discoverTile: {
         '0%': { transform: 'scale(1)', opacity: '1' },
         '50%': { transform: 'scale(0.5)', borderRadius: '50%', opacity: '0.7' },
         '100%': { transform: 'scale(1)', borderRadius: '3px', opacity: '1' },
       },
+      discoverPath: {
+        '0%': { transform: 'scale(1)', opacity: '1' },
+        '50%': { borderRadius: '50%', transform: 'scale(0.2)', opacity: '0.7' },
+        '100%': { transform: 'scale(1)', opacity: '1' },
+      },
     },
     animation: {
-      discover: 'discover 1s ease-out forwards'
+      discoverTile: 'discoverTile 1s ease-out forwards',
+      discoverPath: 'discoverPath 0.5s ease-out forwards',
     },
   },
   plugins: [],
