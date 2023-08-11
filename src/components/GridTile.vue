@@ -2,7 +2,7 @@
   <div
     class="flex justify-center items-center w-[40px] h-[40px] rounded-[3px] text-white hover:scale-[0.90]
       hover:bg-gray-highlight"
-    :class="getClasses"
+    :class="`${getClasses} ${getAnimationClasses}`"
     @click="emitCords()"
     data-test="tile"
   >
@@ -76,25 +76,40 @@ const getIconClasses = computed<string>(() => {
 const getClasses = computed<string>(() => {
   switch (props.contentType) {
     case CellModesEnum.EMPTY:
-      return 'transition-transform bg-gray-light';
+      return 'bg-gray-light';
 
     case CellModesEnum.WALL:
-      return 'transition-transform !bg-gray-medium';
+      return '!bg-gray-medium';
 
     case CellModesEnum.PATH:
-      return 'transition-transform !bg-orange';
+      return '!bg-orange';
 
     case CellModesEnum.START:
-      return 'transition-transform !bg-lime';
+      return '!bg-lime';
 
     case CellModesEnum.GOAL:
-      return 'transition-transform !bg-red';
+      return '!bg-red';
 
     case CellModesEnum.DISCOVERED:
-      return 'transition-all !bg-blue animate-discover';
-  }
+      return '!bg-blue';
 
-  return '';
+    default:
+      return '';
+  }
+});
+
+/** Get classes for animation setup */
+const getAnimationClasses = computed<string>(() => {
+  switch (props.contentType) {
+    case CellModesEnum.DISCOVERED:
+      return 'transition-all animate-discoverTile';
+
+    case CellModesEnum.PATH:
+      return 'transition-all animate-discoverPath';
+
+    default:
+      return 'transition-transform';
+  }
 });
 
 /** Emit row and col value to parent component */
