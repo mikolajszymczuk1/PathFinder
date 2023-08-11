@@ -13,12 +13,12 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { usePathEditorStore } from '@/stores/PathEditorStore';
+import { useAnimationControllerStore } from '@/stores/AnimationControllerStore';
 
 import SingleControlButton from '@/components/buttons/SingleControlButton.vue';
 import BreakLine from '@/components/common/BreakLine.vue';
 
-const store = usePathEditorStore();
+const store = useAnimationControllerStore();
 
 /** Return icon based on pasue status in store */
 const animationStatusIcon = computed<string>(() => store.isPaused ? 'fa-play' : 'fa-pause');
