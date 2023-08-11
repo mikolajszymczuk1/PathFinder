@@ -29,10 +29,10 @@ export const getNeighbors = (grid: string[][], tile: TileCords): TileCords[] => 
   const leftCords: TileCords = { row: tile.row, col: tile.col - 1 };
   const rightCords: TileCords = { row: tile.row, col: tile.col + 1 };
 
-  checkNeighbour(grid, topCords) ? neigbers.push(topCords) : null;
-  checkNeighbour(grid, bottomCords) ? neigbers.push(bottomCords) : null;
-  checkNeighbour(grid, leftCords) ? neigbers.push(leftCords) : null;
   checkNeighbour(grid, rightCords) ? neigbers.push(rightCords) : null;
+  checkNeighbour(grid, bottomCords) ? neigbers.push(bottomCords) : null;
+  checkNeighbour(grid, topCords) ? neigbers.push(topCords) : null;
+  checkNeighbour(grid, leftCords) ? neigbers.push(leftCords) : null;
 
   return neigbers;
 };
