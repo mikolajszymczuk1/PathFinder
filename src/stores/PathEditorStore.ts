@@ -3,15 +3,18 @@ import type { TileCords } from '@/types/CommonTypes';
 import { isValueInEnum } from '@/modules/commonFunctions/enumHelpers';
 import DrawModesEnum from '@/modules/enums/drawModesEnum';
 import CellModesEnum from '@/modules/enums/cellModesEnum';
+import TableHistory from '@/modules/classes/tableHistory/TableHistory';
 
 interface State {
   tableData: string[][],
+  tableHistory: TableHistory,
   activePenMode: string,
 }
 
 export const usePathEditorStore = defineStore('pathEditor', {
   state: (): State => ({
     tableData: [],
+    tableHistory: new TableHistory,
     activePenMode: DrawModesEnum.SELECT,
   }),
   actions: {
@@ -28,6 +31,8 @@ export const usePathEditorStore = defineStore('pathEditor', {
       for (let rowId = 0; rowId < height; rowId++) {
         this.tableData[rowId] = new Array(width).fill(CellModesEnum.EMPTY);
       }
+
+      this.tableHistory.pushHistory(this.tableData);
     },
 
     /**
