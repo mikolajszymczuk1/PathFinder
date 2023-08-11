@@ -4,6 +4,7 @@ import { isValueInEnum } from '@/modules/commonFunctions/enumHelpers';
 import { areStartAndGoalPlaced, getStartAndGoalCords, areTilesCordsEqual } from '@/modules/commonFunctions/searchingHelpers';
 import DrawModesEnum from '@/modules/enums/drawModesEnum';
 import CellModesEnum from '@/modules/enums/cellModesEnum';
+import { EDITOR_CONST } from '@/modules/consts/editorConst';
 
 import bfs from '@/modules/pathfindingAlgorithms/bfs';
 
@@ -135,14 +136,14 @@ export const usePathEditorStore = defineStore('pathEditor', {
                   clearInterval(interval);
                   res();
                 }
-              }, 100);
+              }, EDITOR_CONST.ANIMATION_CONTROLLER_CONF.INTERVAL_TIME);
             });
           }
 
           if (!areTilesCordsEqual(cords, start) && !areTilesCordsEqual(cords, goal)) {
-            this.tableData[cords.row][cords.col] = CellModesEnum.PATH;
+            this.tableData[cords.row][cords.col] = CellModesEnum.DISCOVERED;
             // Simple promise for animation delay
-            await new Promise((res) => setTimeout(res, 10));
+            await new Promise((res) => setTimeout(res, EDITOR_CONST.ANIMATION_CONTROLLER_CONF.TILE_DISCOVER_DELAY));
           }
         }
 
