@@ -2,6 +2,20 @@ import type { TileCords } from "@/types/CommonTypes";
 import CellModesEnum from "@/modules/enums/cellModesEnum";
 
 /**
+ * Function check if given cell is wall or not and if exists
+ * @param {string[][]} grid Area where function should search
+ * @param {TileCords} cords Cords to check
+ * @return {boolean} true if cell is not a wall and exists
+ */
+export const checkNeighbour = (grid: string[][], cords: TileCords): boolean => {
+  if (grid?.[cords.row]?.[cords.col] && grid[cords.row][cords.col] !== CellModesEnum.WALL) {
+    return true;
+  }
+
+  return false;
+};
+
+/**
  * Function returns all neigbers for the given tile cords
  * @param {string[][]} grid Area where function should search
  * @param {TileCords} tile The tile whose neighbors the function should return
@@ -15,10 +29,10 @@ export const getNeighbors = (grid: string[][], tile: TileCords): TileCords[] => 
   const leftCords: TileCords = { row: tile.row, col: tile.col - 1 };
   const rightCords: TileCords = { row: tile.row, col: tile.col + 1 };
 
-  grid?.[topCords.row]?.[topCords.col] ? neigbers.push(topCords) : null;
-  grid?.[bottomCords.row]?.[bottomCords.col] ? neigbers.push(bottomCords) : null;
-  grid?.[leftCords.row]?.[leftCords.col] ? neigbers.push(leftCords) : null;
-  grid?.[rightCords.row]?.[rightCords.col] ? neigbers.push(rightCords) : null;
+  checkNeighbour(grid, topCords) ? neigbers.push(topCords) : null;
+  checkNeighbour(grid, bottomCords) ? neigbers.push(bottomCords) : null;
+  checkNeighbour(grid, leftCords) ? neigbers.push(leftCords) : null;
+  checkNeighbour(grid, rightCords) ? neigbers.push(rightCords) : null;
 
   return neigbers;
 };

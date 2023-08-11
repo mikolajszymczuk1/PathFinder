@@ -4,6 +4,7 @@ enum CellModesEnum {
   GOAL = 'G',
   WALL  = 'W',
   PATH = 'P',
+  DISCOVERED = 'D',
 }
 
 export default CellModesEnum;
