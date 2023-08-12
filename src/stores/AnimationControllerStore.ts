@@ -5,7 +5,7 @@ import { EDITOR_CONST } from '@/modules/consts/editorConst';
 import { delay } from '@/modules/commonFunctions/delayHelpers';
 import CellModesEnum from '@/modules/enums/cellModesEnum';
 import { bfs } from '@/modules/pathfindingAlgorithms/bfs';
-import { recontructShortnesPath } from '@/modules/commonFunctions/pathfindingHelpers';
+import { recontructShortestPath } from '@/modules/commonFunctions/pathfindingHelpers';
 
 interface State {
   isPaused: boolean,
@@ -53,7 +53,7 @@ export const useAnimationControllerStore = defineStore('animationController', {
       // Prepare data for simulation
       const { start, goal } = getStartAndGoalCords(store.tableData);
       const discoverdTiles = bfs(store.tableData, start, goal);
-      const shortnesPath = recontructShortnesPath(store.tableData, discoverdTiles, goal);
+      const shortnesPath = recontructShortestPath(store.tableData, discoverdTiles, goal);
       store.clearTable();
 
       // ------ Simulate searching process ------
