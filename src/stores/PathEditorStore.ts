@@ -3,16 +3,19 @@ import type { TileCords } from '@/types/CommonTypes';
 import { isValueInEnum } from '@/modules/commonFunctions/enumHelpers';
 import DrawModesEnum from '@/modules/enums/drawModesEnum';
 import CellModesEnum from '@/modules/enums/cellModesEnum';
+import PathfindingAlgorithmsEnum from '@/modules/enums/pathfindingAlgorithmsEnum';
 
 interface State {
   tableData: string[][],
   activePenMode: string,
+  selectedAlgorithm: string,
 }
 
 export const usePathEditorStore = defineStore('pathEditor', {
   state: (): State => ({
     tableData: [],
     activePenMode: DrawModesEnum.SELECT,
+    selectedAlgorithm: PathfindingAlgorithmsEnum.BFS,
   }),
   actions: {
     /**
@@ -42,6 +45,14 @@ export const usePathEditorStore = defineStore('pathEditor', {
           }
         }
       }
+    },
+
+    /**
+     * Function change current search algorithm
+     * @param {string} newAlg New search algorithm to set
+     */
+    changeAlgorithm(newAlg: string): void {
+      this.selectedAlgorithm = newAlg;
     },
 
     /**
