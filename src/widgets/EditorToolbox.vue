@@ -21,22 +21,32 @@
         @click="changePathAlg()"
         data-test="change-alg-button"
       >
-        BFS
+        {{ store.selectedAlgorithm.toUpperCase() }}
       </button>
     </div>
   </div>
 </template>
 
 <script setup lang='ts'>
+import { ref, type Ref } from 'vue';
+import { get, set } from '@vueuse/core';
 import { usePathEditorStore } from '@/stores/PathEditorStore';
 import DrawModesEnum from '@/modules/enums/drawModesEnum';
+import PathfindingAlgorithmsEnum from '@/modules/enums/pathfindingAlgorithmsEnum';
 import type { ControlButton } from '@/types/CommonTypes';
+import { getEnumValues } from '@/modules/commonFunctions/enumHelpers';
 import MenuIcon from '@/assets/svg/Menu.svg';
 
 import SingleControlButton from '@/components/buttons/SingleControlButton.vue';
 import BreakLine from '@/components/common/BreakLine.vue';
 
 const store = usePathEditorStore();
+
+/** Current index for algorithm select */
+const currentAlgorithmIndex: Ref<number> = ref(0);
+
+/** Array of all search algorithms */
+const searchAlgorithms = getEnumValues(PathfindingAlgorithmsEnum);
 
 /** Data for render toolbox control buttons */
 const controlButtonsData: ControlButton[] = [
@@ -57,6 +67,12 @@ const setDrawTool = (newTool: string): void => {
 
 /** Switch to another path finding alghoritm */
 const changePathAlg = (): void => {
-  console.log('Change path finding alghoritm');
+  if (get(currentAlgorithmIndex) < searchAlgorithms.length - 1) {
+    set(currentAlgorithmIndex, get(currentAlgorithmIndex) + 1);
+  } else {
+    set(currentAlgorithmIndex, 0);
+  }
+
+  store.changeAlgorithm(searchAlgorithms[get(currentAlgorithmIndex)]);
 };
 </script>
