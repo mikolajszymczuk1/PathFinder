@@ -1,7 +1,11 @@
 {
   "name": "pathfinder",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
+  "authors": [
+    "Mikołaj Szymczuk",
+    "Adrian Czubaty"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check build-only",
