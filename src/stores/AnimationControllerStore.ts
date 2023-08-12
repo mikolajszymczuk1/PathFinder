@@ -4,7 +4,8 @@ import { areStartAndGoalPlaced, getStartAndGoalCords, areTilesCordsEqual } from 
 import { EDITOR_CONST } from '@/modules/consts/editorConst';
 import { delay } from '@/modules/commonFunctions/delayHelpers';
 import CellModesEnum from '@/modules/enums/cellModesEnum';
-import { bfs, bfsShortnesPath } from '@/modules/pathfindingAlgorithms/bfs';
+import { bfs } from '@/modules/pathfindingAlgorithms/bfs';
+import { recontructShortnesPath } from '@/modules/commonFunctions/pathfindingHelpers';
 
 interface State {
   isPaused: boolean,
@@ -49,10 +50,13 @@ export const useAnimationControllerStore = defineStore('animationController', {
       const store = usePathEditorStore();
       if (!areStartAndGoalPlaced(store.tableData)) return;
 
-      // ------ Simulate searching process ------
-      store.clearTable();
+      // Prepare data for simulation
       const { start, goal } = getStartAndGoalCords(store.tableData);
       const discoverdTiles = bfs(store.tableData, start, goal);
+      const shortnesPath = recontructShortnesPath(store.tableData, discoverdTiles, goal);
+      store.clearTable();
+
+      // ------ Simulate searching process ------
       for (const cords of discoverdTiles) {
         await this.pause();
         if (!areTilesCordsEqual(cords, start) && !areTilesCordsEqual(cords, goal)) {
@@ -62,7 +66,6 @@ export const useAnimationControllerStore = defineStore('animationController', {
       }
 
       // ------ Simulate finding path process ------
-      const shortnesPath = bfsShortnesPath(store.tableData, discoverdTiles, goal);
       for (const pathCords of shortnesPath) {
         await this.pause();
         if (!areTilesCordsEqual(pathCords, start) && !areTilesCordsEqual(pathCords, goal)) {
