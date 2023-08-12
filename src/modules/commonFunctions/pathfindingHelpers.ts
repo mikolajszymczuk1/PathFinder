@@ -9,7 +9,7 @@ import { areTilesCordsEqual } from '@/modules/commonFunctions/searchingHelpers';
  * @param {TileCords} goal Cords of goal tile
  * @return {TileCords[]} Reconstructed path
  */
-export const recontructShortnesPath = (grid: string[][], discovered: TileCords[], goal: TileCords): TileCords[] => {
+export const recontructShortestPath = (grid: string[][], discovered: TileCords[], goal: TileCords): TileCords[] => {
   let parrent: TileCords = goal;
   const path: TileCords[] = [];
 
