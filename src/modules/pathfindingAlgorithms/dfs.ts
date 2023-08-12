@@ -1,21 +1,14 @@
-// Implementation of Depth First Search algorithm
-
 import type { TileCords } from "@/types/CommonTypes";
-import { areStartAndGoalPlaced, getNeighbors, getStartAndGoalCords } from "@/modules/commonFunctions/searchingHelpers";
+import { getNeighbors, areTilesCordsEqual } from "@/modules/commonFunctions/searchingHelpers";
 
 /**
- * Function implements Depth First Search algorithm.
- *
- * @param grid grid on which to perform algorithm,
- * @param ingoreCells algorithm will ignore cells of given type,
+ * Function implements DFS (Depth First Search algorithm).
+ * @param {string[][]} grid Grid on which to perform algorithm,
+ * @param {TileCords} start Cordinates of Start
+ * @param {TileCords} goal Cordinates of Goal
  * @returns All visited cellls with start and goal included
  */
-export const DFSAlgorithm = (grid: string[][], ingoreCells: string[]) => {
-  if (!areStartAndGoalPlaced(grid)) {
-    return;
-  }
-
-  const { start, goal } = getStartAndGoalCords(grid);
+export const dfs = (grid: string[][], start: TileCords, goal: TileCords): TileCords[] => {
   let root: TileCords | undefined = undefined;
   const stack: TileCords[] = [start];
   const visitedCells: TileCords[] = [];
@@ -23,7 +16,7 @@ export const DFSAlgorithm = (grid: string[][], ingoreCells: string[]) => {
   while (stack.length > 0) {
     root = stack.pop();
 
-    // Stupid check, compiler needs it to check if root is not undefined later even though it will never be
+    // Compiler needs it to check if root is not undefined later even though it will never be
     if (root === undefined) {
       break;
     }
@@ -31,24 +24,18 @@ export const DFSAlgorithm = (grid: string[][], ingoreCells: string[]) => {
     visitedCells.push(root);
 
     // Break when found the goal
-    if (goal.row === root.row && goal.col === root.col) {
+    if (areTilesCordsEqual(root, goal)) {
       return visitedCells;
     }
 
-    getNeighbors(grid, root)
-      .filter((n) => !ingoreCells.includes(grid[n.row][n.col]))
-      .forEach((n) => {
-        if (
-          visitedCells.some(
-            (visited) => visited.row === n.row && visited.col === n.col
-          )
-        ) {
-          return;
-        }
+    getNeighbors(grid, root).forEach((neighbor: TileCords) => {
+      if (visitedCells.some((visited) => areTilesCordsEqual(visited, neighbor))) {
+        return;
+      }
 
-        stack.push(n);
-      });
+      stack.push(neighbor);
+    });
   }
 
   return visitedCells;
-}
+};
