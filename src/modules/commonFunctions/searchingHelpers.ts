@@ -47,13 +47,13 @@ export const getStartAndGoalCords = (grid: string[][]): { start: TileCords, goal
   let start: TileCords | null = null;
   let goal: TileCords | null = null;
 
-  grid.forEach((row, rowId) => {
+  grid.forEach((row, rowIndex) => {
     if (row.includes(CellModesEnum.START)) {
-      start = start?? { row: rowId, col: row.indexOf(CellModesEnum.START) }
+      start = start ?? { row: rowIndex, col: row.indexOf(CellModesEnum.START) }
     }
 
     if (row.includes(CellModesEnum.GOAL)) {
-      goal = goal?? { row: rowId, col: row.indexOf(CellModesEnum.GOAL) }
+      goal = goal ?? { row: rowIndex, col: row.indexOf(CellModesEnum.GOAL) }
     }
 
   })
