@@ -39,25 +39,30 @@ export const getNeighbors = (grid: string[][], tile: TileCords): TileCords[] => 
 
 /**
  * Function returns cords for start and goal tiles \
- * ```Important thing is that this function only works when the goal and start appear only once on the board```
+ * ```Important thing is this function only returns the lowest indexed start and goal if start ang goal are present in grid, otherwise it returns -1 coordinates```
  * @param {string[][]} grid Area where function should search
  * @return {{ start: TileCords, goal: TileCords }} Object that contains start and goal cords
  */
 export const getStartAndGoalCords = (grid: string[][]): { start: TileCords, goal: TileCords } => {
-  const start: TileCords = { row: 0, col: 0};
-  const goal: TileCords = { row: 0, col: 0};
+  let start: TileCords | null = null;
+  let goal: TileCords | null = null;
 
-  for (let i = 0; i < grid.length; i++) {
-    for (let j = 0; j < grid[i].length; j++) {
-      const currentTile = grid[i][j];
-      if (currentTile === CellModesEnum.START) {
-        start.row = i;
-        start.col = j;
-      } else if (currentTile === CellModesEnum.GOAL) {
-        goal.row = i;
-        goal.col = j;
-      }
+  grid.forEach((row, rowId) => {
+    if (row.includes(CellModesEnum.START)) {
+      start = start?? { row: rowId, col: row.indexOf(CellModesEnum.START) }
     }
+
+    if (row.includes(CellModesEnum.GOAL)) {
+      goal = goal?? { row: rowId, col: row.indexOf(CellModesEnum.GOAL) }
+    }
+
+  })
+
+  if (start === null || goal === null) {
+    return {
+      start: { row: -1, col: -1 },
+      goal: { row: -1, col: -1 },
+    };
   }
 
   return { start, goal };
@@ -72,16 +77,10 @@ export const areStartAndGoalPlaced = (grid: string[][]): boolean => {
   let isStart: boolean = false;
   let isGoal: boolean = false;
 
-  for (let i = 0; i < grid.length; i++) {
-    for (let j = 0; j < grid[i].length; j++) {
-      const currentTileCords = grid[i][j];
-      if (currentTileCords === CellModesEnum.START) {
-        isStart = true;
-      } else if (currentTileCords === CellModesEnum.GOAL) {
-        isGoal = true;
-      }
-    }
-  }
+  grid.forEach((row) => {
+    !isStart && (isStart = row.includes(CellModesEnum.START));
+    !isGoal && (isGoal = row.includes(CellModesEnum.GOAL));
+  });
 
   return isStart && isGoal;
 };
@@ -94,20 +93,4 @@ export const areStartAndGoalPlaced = (grid: string[][]): boolean => {
  */
 export const areTilesCordsEqual = (tileCordsA: TileCords, tileCordsB: TileCords): boolean => {
   return tileCordsA.row === tileCordsB.row && tileCordsA.col === tileCordsB.col;
-};
-
-/**
- * Check if tile cords are in the array ```arr```
- * @param {TileCords[]} arr Array where function should search
- * @param {TileCords} elementToCheck
- * @return {boolean} True if tile cords in the array
- */
-export const isTileCordsInArray = (arr: TileCords[], elementToCheck: TileCords): boolean => {
-  for (let i = 0; i < arr.length; i++) {
-    if (areTilesCordsEqual(arr[i], elementToCheck)) {
-      return true;
-    }
-  }
-
-  return false;
 };
