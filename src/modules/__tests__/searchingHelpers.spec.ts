@@ -1,5 +1,5 @@
 import { expect, it, describe } from 'vitest';
-import { getNeighbors, getStartAndGoalCords, areStartAndGoalPlaced } from '@/modules/commonFunctions/searchingHelpers';
+import { getNeighbours, getStartAndGoalCords, areStartAndGoalPlaced } from '@/modules/commonFunctions/searchingHelpers';
 
 describe('searchingHelpers', () => {
   describe('getNeighbors', () => {
@@ -11,7 +11,7 @@ describe('searchingHelpers', () => {
       ];
 
       const expectedNeighbors = [{ row: 0, col: 1 }, { row: 2, col: 1 }, { row: 1, col: 0 }, { row: 1, col: 2 }];
-      expect(getNeighbors(testTable, { row: 1, col: 1 })).toEqual(expectedNeighbors);
+      expect(getNeighbours(testTable, { row: 1, col: 1 })).toEqual(expectedNeighbors);
     });
 
     it('Should return 3 neighbors when tile is on one of grid edge', () => {
@@ -22,7 +22,7 @@ describe('searchingHelpers', () => {
       ];
 
       const expectedNeighbors = [{ row: 1, col: 1 }, { row: 0, col: 0 }, { row: 0, col: 2 }];
-      expect(getNeighbors(testTable, { row: 0, col: 1 })).toEqual(expectedNeighbors);
+      expect(getNeighbours(testTable, { row: 0, col: 1 })).toEqual(expectedNeighbors);
     });
 
     it('Should return 2 neighbors when tile is on one of grid corner', () => {
@@ -33,7 +33,7 @@ describe('searchingHelpers', () => {
       ];
 
       const expectedNeighbors = [{ row: 1, col: 0 }, { row: 0, col: 1 }];
-      expect(getNeighbors(testTable, { row: 0, col: 0 })).toEqual(expectedNeighbors);
+      expect(getNeighbours(testTable, { row: 0, col: 0 })).toEqual(expectedNeighbors);
     });
   });
 

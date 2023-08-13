@@ -1,3 +1,4 @@
+import CellModesEnum from "@/modules/enums/cellModesEnum";
 import type ITableHistory from "./ITableHistory";
 
 export default class TableHistory implements ITableHistory {
@@ -28,7 +29,15 @@ export default class TableHistory implements ITableHistory {
   }
 
   public static compress(table: string[][]): string | null {
+    let pointer = 0;
+    table.forEach((row, rowId) => {
+      let counter = 0;
+      let cellCode = table[rowId][pointer];
 
+      do {
+
+      } while (true)
+    })
   }
 
   public static parse(table: string): string[][] {

@@ -1,7 +1,7 @@
 // Implementation of Depth First Search algorithm
 
 import type { TileCords } from "@/types/CommonTypes";
-import { areStartAndGoalPlaced, getNeighbors, getStartAndGoalCords } from "@/modules/commonFunctions/searchingHelpers";
+import { areStartAndGoalPlaced, getNeighbours, getStartAndGoalCords } from "@/modules/commonFunctions/searchingHelpers";
 
 /**
  * Function implements Depth First Search algorithm.
@@ -21,12 +21,7 @@ export const DFSAlgorithm = (grid: string[][], ingoreCells: string[]) => {
   const visitedCells: TileCords[] = [];
 
   while (stack.length > 0) {
-    root = stack.pop();
-
-    // Stupid check, compiler needs it to check if root is not undefined later even though it will never be
-    if (root === undefined) {
-      break;
-    }
+    root = stack.pop() as TileCords;
 
     visitedCells.push(root);
 
@@ -35,7 +30,7 @@ export const DFSAlgorithm = (grid: string[][], ingoreCells: string[]) => {
       return visitedCells;
     }
 
-    getNeighbors(grid, root)
+    getNeighbours(grid, root)
       .filter((n) => !ingoreCells.includes(grid[n.row][n.col]))
       .forEach((n) => {
         if (

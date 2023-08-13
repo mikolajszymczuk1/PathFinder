@@ -1,6 +1,7 @@
 import type { TileCords } from '@/types/CommonTypes';
-import { getNeighbors } from '@/modules/commonFunctions/searchingHelpers';
+import { getNeighbours } from '@/modules/commonFunctions/searchingHelpers';
 import { areTilesCordsEqual, isTileCordsInArray } from '@/modules/commonFunctions/searchingHelpers';
+import CellModesEnum from '../enums/cellModesEnum';
 
 const bfs = (grid: string[][], start: TileCords, goal: TileCords): TileCords[] => {
   const visited: TileCords[] = [];
@@ -15,7 +16,7 @@ const bfs = (grid: string[][], start: TileCords, goal: TileCords): TileCords[] =
       break;
     }
 
-    for (const neighbor of getNeighbors(grid, current)) {
+    for (const neighbor of getNeighbours(grid, current).filter(n => grid[n.row][n.col] !== CellModesEnum.WALL)) {
       if (!isTileCordsInArray(visited, neighbor)) {
         visited.push(neighbor);
         queue.push(neighbor);

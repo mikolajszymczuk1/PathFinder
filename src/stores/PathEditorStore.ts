@@ -52,22 +52,6 @@ export const usePathEditorStore = defineStore('pathEditor', {
             this.tableData[i][j] = CellModesEnum.EMPTY;
           }
         }
-
-      for (let rowId = 0; rowId < height; rowId++) {
-        this.tableData[rowId] = new Array(width).fill(CellModesEnum.EMPTY);
-      }
-
-      this.tableHistory.pushHistory(this.tableData);
-    },
-
-    /** Function clear grid by setting each cell as Empty */
-    clearTable(): void {
-      for (let i = 0; i < this.tableData.length; i++) {
-        for (let j = 0; j < this.tableData[i].length; j++) {
-          if (this.tableData[i][j] !== CellModesEnum.START && this.tableData[i][j] !== CellModesEnum.GOAL && this.tableData[i][j] !== CellModesEnum.WALL) {
-            this.tableData[i][j] = CellModesEnum.EMPTY;
-          }
-        }
       }
     },
 
@@ -150,7 +134,7 @@ export const usePathEditorStore = defineStore('pathEditor', {
     /** Main animation controller */
     async doSimulation(): Promise<void> {
       if (areStartAndGoalPlaced(this.tableData)) {
-        this.clearTable();
+        //this.clearTable();
         const { start, goal } = getStartAndGoalCords(this.tableData);
         const discoverdTiles = DFSAlgorithm(this.tableData, [CellModesEnum.WALL]) as TileCords[];
         for (const cords of discoverdTiles) {
@@ -176,46 +160,5 @@ export const usePathEditorStore = defineStore('pathEditor', {
         this.isAnimFinished = true;
       }
     },
-
-    /** Function to run or pause simulation */
-    async playPauseSimulation(): Promise<void> {
-      if (!areStartAndGoalPlaced(this.tableData)) return;
-      this.isPaused = !this.isPaused;
-      // User can use pause functionality until simulation is not finished
-      if (!this.isPaused && this.isAnimFinished) {
-        this.isAnimFinished = false;
-        await this.doSimulation();
-      }
-    },
-
-    /** Main animation controller */
-    async doSimulation(): Promise<void> {
-      if (areStartAndGoalPlaced(this.tableData)) {
-        this.clearTable();
-        const { start, goal } = getStartAndGoalCords(this.tableData);
-        const discoverdTiles = DFSAlgorithm(this.tableData, [CellModesEnum.WALL]) as TileCords[];
-        for (const cords of discoverdTiles) {
-          if (this.isPaused) {
-            // When simulation is paused, create promise and wait for resolve
-            await new Promise((res: CallableFunction) => {
-              const interval = setInterval(() => {
-                if (!this.isPaused) {
-                  clearInterval(interval);
-                  res();
-                }
-              }, EDITOR_CONST.ANIMATION_CONTROLLER_CONF.INTERVAL_TIME);
-            });
-          }
-
-          if (!areTilesCordsEqual(cords, start) && !areTilesCordsEqual(cords, goal)) {
-            this.tableData[cords.row][cords.col] = CellModesEnum.DISCOVERED;
-            // Simple promise for animation delay
-            await new Promise((res) => setTimeout(res, EDITOR_CONST.ANIMATION_CONTROLLER_CONF.TILE_DISCOVER_DELAY));
-          }
-        }
-
-        this.isAnimFinished = true;
-      }
-    }
   },
 });
