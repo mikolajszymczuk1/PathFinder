@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import type { TileCords } from '@/types/CommonTypes';
 import { isValueInEnum } from '@/modules/commonFunctions/enumHelpers';
+import { getStartAndGoalCords } from '@/modules/commonFunctions/searchingHelpers';
 import DrawModesEnum from '@/modules/enums/drawModesEnum';
 import CellModesEnum from '@/modules/enums/cellModesEnum';
 import PathfindingAlgorithmsEnum from '@/modules/enums/pathfindingAlgorithmsEnum';
@@ -17,6 +18,12 @@ export const usePathEditorStore = defineStore('pathEditor', {
     activePenMode: DrawModesEnum.SELECT,
     selectedAlgorithm: PathfindingAlgorithmsEnum.BFS,
   }),
+  getters: {
+    /** Returns position of start and goald tiles */
+    startAndGoalCords(): { start: TileCords, goal: TileCords } {
+      return getStartAndGoalCords(this.tableData);
+    },
+  },
   actions: {
     /**
      * Create new empty data table for grid component with specific size
@@ -35,11 +42,9 @@ export const usePathEditorStore = defineStore('pathEditor', {
 
     /** Function clear grid by setting each cell as Empty */
     clearTable(): void {
-      const ignoreCells: string[] = [CellModesEnum.START, CellModesEnum.GOAL, CellModesEnum.WALL];
-
       for (let i = 0; i < this.tableData.length; i++) {
         for (let j = 0; j < this.tableData[i].length; j++) {
-          if (!ignoreCells.includes(this.tableData[i][j])) {
+          if (this.tableData[i][j] !== CellModesEnum.START && this.tableData[i][j] !== CellModesEnum.GOAL && this.tableData[i][j] !== CellModesEnum.WALL) {
             this.tableData[i][j] = CellModesEnum.EMPTY;
           }
         }

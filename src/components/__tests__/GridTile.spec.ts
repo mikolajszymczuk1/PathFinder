@@ -33,6 +33,8 @@ describe('GridTile', () => {
 
     await wrapper.setProps({ contentType: CellModesEnum.PATH });
     expect(findTile().classes()).toContain('!bg-orange');
+    expect(findTile().classes()).toContain('animate-discoverPath');
+    expect(findTile().classes()).toContain('transition-all');
 
     await wrapper.setProps({ contentType: CellModesEnum.START });
     expect(findTile().classes()).toContain('!bg-lime');
@@ -41,6 +43,11 @@ describe('GridTile', () => {
     await wrapper.setProps({ contentType: CellModesEnum.GOAL });
     expect(findTile().classes()).toContain('!bg-red');
     expect(findTileIcon().attributes('icon')).toContain('flag-checkered');
+
+    await wrapper.setProps({ contentType: CellModesEnum.DISCOVERED });
+    expect(findTile().classes()).toContain('!bg-blue');
+    expect(findTile().classes()).toContain('animate-discoverTile');
+    expect(findTile().classes()).toContain('transition-all');
   });
 
   it('Should emit cords when user clicks on tile', async () => {
