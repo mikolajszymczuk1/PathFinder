@@ -1,5 +1,5 @@
 import type { TileCords } from '@/types/CommonTypes';
-import { getNeighbours, areTilesCordsEqual } from '@/modules/commonFunctions/searchingHelpers';
+import { getNeighbors, areTilesCordsEqual, isTileCordsInArray } from '@/modules/commonFunctions/searchingHelpers';
 
 /**
  * BFS (Breadth-first search) algorithm
