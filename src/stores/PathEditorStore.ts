@@ -39,7 +39,7 @@ export const usePathEditorStore = defineStore('pathEditor', {
 
       for (let i = 0; i < this.tableData.length; i++) {
         for (let j = 0; j < this.tableData[i].length; j++) {
-          if (ignoreCells.includes(this.tableData[i][j])) {
+          if (!ignoreCells.includes(this.tableData[i][j])) {
             this.tableData[i][j] = CellModesEnum.EMPTY;
           }
         }
