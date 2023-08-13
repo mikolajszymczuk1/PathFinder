@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { usePathEditorStore } from '@/stores/PathEditorStore';
-import { areStartAndGoalPlaced, getStartAndGoalCords, areTilesCordsEqual } from '@/modules/commonFunctions/searchingHelpers';
+import { areStartAndGoalPlaced, areTilesCordsEqual } from '@/modules/commonFunctions/searchingHelpers';
 import { EDITOR_CONST } from '@/modules/consts/editorConst';
 import { delay } from '@/modules/commonFunctions/delayHelpers';
 import CellModesEnum from '@/modules/enums/cellModesEnum';
@@ -21,9 +21,10 @@ export const useAnimationControllerStore = defineStore('animationController', {
     isAnimFinished: true,
   }),
   getters: {
-    getAlgorithmData(): { discovered: TileCords[], path: TileCords[] } {
+    /** Returns data for each type of algorithm */
+    algorithmData(): { discovered: TileCords[], path: TileCords[] } {
       const store = usePathEditorStore();
-      const { start, goal } = getStartAndGoalCords(store.tableData);
+      const { start, goal } = store.startAndGoalCords;
       let discovered: TileCords[];
       let path: TileCords[];
 
@@ -48,7 +49,7 @@ export const useAnimationControllerStore = defineStore('animationController', {
     },
   },
   actions: {
-    /** Function to create pasue and wait until ```pauseState``` will be again true */
+    /** Function to create pasue and wait until ```isPaused``` will be again true */
     async pause(): Promise<void> {
       if (this.isPaused) {
         // When is paused, create promise and wait for resolve
@@ -75,35 +76,40 @@ export const useAnimationControllerStore = defineStore('animationController', {
       }
     },
 
+    /**
+     * Animate tiles based on ```tilesArr``` array
+     * @param {TileCords[]} tilesArr Array of tiles to animate
+     * @param {string} tileToShow The type of tile that should be placed instead of empty tiles
+    */
+    async animateFromArray(tilesArr: TileCords[], tileToShow: string): Promise<void> {
+      const store = usePathEditorStore();
+      const { start, goal } = store.startAndGoalCords;
+
+      for (const cords of tilesArr) {
+        await this.pause();
+        if (!areTilesCordsEqual(cords, start) && !areTilesCordsEqual(cords, goal)) {
+          store.tableData[cords.row][cords.col] = tileToShow;
+          await delay(EDITOR_CONST.ANIMATION_CONTROLLER_CONF.TILE_DISCOVER_DELAY);
+        }
+      }
+    },
+
     /** Main animation controller */
     async doSimulation(): Promise<void> {
       const store = usePathEditorStore();
       if (!areStartAndGoalPlaced(store.tableData)) return;
 
       // Prepare data for simulation
-      const { start, goal } = getStartAndGoalCords(store.tableData);
-      const { discovered, path } = this.getAlgorithmData;
+      const { discovered, path } = this.algorithmData;
       store.clearTable();
 
       // ------ Simulate searching process ------
-      for (const cords of discovered) {
-        await this.pause();
-        if (!areTilesCordsEqual(cords, start) && !areTilesCordsEqual(cords, goal)) {
-          store.tableData[cords.row][cords.col] = CellModesEnum.DISCOVERED;
-          await delay(EDITOR_CONST.ANIMATION_CONTROLLER_CONF.TILE_DISCOVER_DELAY);
-        }
-      }
+      await this.animateFromArray(discovered, CellModesEnum.DISCOVERED);
 
       // ------ Simulate finding path process ------
-      for (const pathCords of path) {
-        await this.pause();
-        if (!areTilesCordsEqual(pathCords, start) && !areTilesCordsEqual(pathCords, goal)) {
-          store.tableData[pathCords.row][pathCords.col] = CellModesEnum.PATH;
-          await delay(EDITOR_CONST.ANIMATION_CONTROLLER_CONF.TILE_DISCOVER_DELAY);
-        }
-      }
+      await this.animateFromArray(path, CellModesEnum.PATH);
 
       this.isAnimFinished = true;
-    }
+    },
   },
 });

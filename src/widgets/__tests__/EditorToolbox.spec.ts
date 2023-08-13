@@ -4,6 +4,7 @@ import { createTestingPinia } from '@pinia/testing';
 import { usePathEditorStore } from '@/stores/PathEditorStore';
 import { getEnumValues } from '@/modules/commonFunctions/enumHelpers';
 import DrawModesEnum from '@/modules/enums/drawModesEnum';
+import PathfindingAlgorithmsEnum from '@/modules/enums/pathfindingAlgorithmsEnum';
 import EditorToolbox from '@/widgets/EditorToolbox.vue';
 import SingleControlButton from '@/components/buttons/SingleControlButton.vue';
 
@@ -20,6 +21,7 @@ describe('EditorToolbox', () => {
   };
 
   const findAllControlButtons = () => wrapper.findAllComponents(SingleControlButton);
+  const findChangeAlgButton = () => wrapper.find('[data-test="change-alg-button"]');
 
   it('Should correctly set draw mode when click on control buttons', async () => {
     createComponent();
@@ -32,5 +34,17 @@ describe('EditorToolbox', () => {
       expect(allControlButtons[i].emitted()).toHaveProperty('clickAction');
       expect(store.activePenMode).toBe(expectedDrawModes[i]);
     }
+  });
+
+  it('When click change algorithm button, should correctly switch between exist algorithms', async () => {
+    createComponent();
+    const store = usePathEditorStore();
+    expect(store.selectedAlgorithm).toBe(PathfindingAlgorithmsEnum.BFS);
+
+    await findChangeAlgButton().trigger('click');
+    expect(store.selectedAlgorithm).toBe(PathfindingAlgorithmsEnum.DFS);
+
+    await findChangeAlgButton().trigger('click');
+    expect(store.selectedAlgorithm).toBe(PathfindingAlgorithmsEnum.BFS);
   });
 });

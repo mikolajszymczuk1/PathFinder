@@ -1,15 +1,42 @@
-// import { expect, it, describe } from 'vitest';
-// import { mount, type VueWrapper } from '@vue/test-utils';
-// import EditorNavControl from '../EditorNavControl.vue';
+import { expect, it, describe, vi } from 'vitest';
+import { mount, type VueWrapper } from '@vue/test-utils';
+import { createTestingPinia } from '@pinia/testing';
+import { useAnimationControllerStore } from '@/stores/AnimationControllerStore';
+import { usePathEditorStore } from '@/stores/PathEditorStore';
+import EditorNavControl from '@/components/EditorNavControl.vue';
 
-// describe('EditorNavControl', () => {
-//   let wrapper: VueWrapper;
-//   const createComponent = (config = {}) => { wrapper = mount(EditorNavControl, config); };
+describe('EditorNavControl', () => {
+  let wrapper: VueWrapper;
+  const createComponent = (config = {}) => {
+    wrapper = mount(EditorNavControl, {
+      global: {
+        plugins: [createTestingPinia({ createSpy: vi.fn, stubActions: false, })],
+        stubs: ['FontAwesomeIcon'],
+      },
+      ...config,
+    });
+  };
 
-//   // TODO: If any special logic will be added, complete tests
-//   it('', () => {});
-// });
+  // const findUndoButton = () => wrapper.find('[data-test="undo-button"]');
+  // const findRedoButton = () => wrapper.find('[data-test="redo-button"]');
+  const findPlayPauseButton = () => wrapper.find('[data-test="play-pause-button"]');
 
-// TODO: Delete these lines when you will add tests for this component
-import { it } from 'vitest';
-it('', () => {});
+  it('After click playPause buttons should call plauPauseSimulation store action', async () => {
+    createComponent();
+    const animationControllerStore = useAnimationControllerStore();
+    const pathEditorStore = usePathEditorStore();
+    const playPauseButton = findPlayPauseButton();
+
+    pathEditorStore.tableData = [
+      ['S', 'E', 'E', 'E'],
+      ['E', 'E', 'E', 'E'],
+      ['E', 'E', 'E', 'E'],
+      ['E', 'G', 'E', 'E'],
+    ];
+
+    expect(animationControllerStore.isPaused).toBeTruthy();
+    await playPauseButton.trigger('click');
+    expect(animationControllerStore.playPauseSimulation).toHaveBeenCalled();
+    expect(animationControllerStore.isPaused).toBeFalsy();
+  });
+});
