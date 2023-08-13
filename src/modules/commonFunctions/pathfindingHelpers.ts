@@ -1,5 +1,5 @@
 import type { TileCords } from '@/types/CommonTypes';
-import { getNeighbors } from '@/modules/commonFunctions/searchingHelpers';
+import { getNeighbours } from '@/modules/commonFunctions/searchingHelpers';
 import { areTilesCordsEqual } from '@/modules/commonFunctions/searchingHelpers';
 
 /**
@@ -14,7 +14,7 @@ export const recontructShortestPath = (grid: string[][], discovered: TileCords[]
   const path: TileCords[] = [];
 
   for (let i = discovered.length - 1; i >= 0; i--) {
-    const neighbors = getNeighbors(grid, discovered[i]);
+    const neighbors = getNeighbours(grid, discovered[i]);
     for (const neighbor of neighbors) {
       if (areTilesCordsEqual(neighbor, parrent)) {
         parrent = discovered[i];

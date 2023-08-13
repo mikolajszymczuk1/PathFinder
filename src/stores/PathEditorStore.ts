@@ -32,14 +32,11 @@ export const usePathEditorStore = defineStore('pathEditor', {
      * @param {number} height Height of the table
     */
     createTable(width: number, height: number): void {
-      this.tableData = []; // Reset table before create structure
-      for (let i = 0; i < height; i++) {
-        const row: string[] = [];
-        for (let j = 0; j < width; j++) {
-          row.push(CellModesEnum.EMPTY);
-        }
+      // Reset and set new heigth before create structure
+      this.tableData = new Array(height);
 
-        this.tableData.push(row);
+      for (let rowIndex = 0; rowIndex < height; rowIndex++) {
+        this.tableData[rowIndex] = new Array(width).fill(CellModesEnum.EMPTY);
       }
     },
 
@@ -111,14 +108,19 @@ export const usePathEditorStore = defineStore('pathEditor', {
      * @param {string} tileTypeToDelete type of tiles to delete
      */
     deleteAllTilesByType(tileTypeToDelete: string): void {
-      for (let i = 0; i < this.tableData.length; i++) {
-        for (let j = 0; j < this.tableData[i].length; j++) {
-          const currentTileCords: TileCords = { row: i, col: j };
-          if (this.tableData[currentTileCords.row][currentTileCords.col] === tileTypeToDelete) {
-            this.tableData[currentTileCords.row][currentTileCords.col] = CellModesEnum.EMPTY;
-          }
+      this.tableData.forEach((row, rowIndex) => {
+        if (!row.includes(tileTypeToDelete)) {
+          return;
         }
-      }
+
+        row.forEach((cell, colIndex) => {
+          if (cell !== tileTypeToDelete) {
+            return;
+          }
+
+          this.tableData[rowIndex][colIndex] = CellModesEnum.EMPTY;
+        })
+      });
     },
   },
 });
