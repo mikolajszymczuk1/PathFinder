@@ -9,7 +9,7 @@ import { EDITOR_CONST } from '@/modules/consts/editorConst';
  * @param {number} width Current window width
  * @returns {number} Specific const value based on window width
  */
-const getCalcualtionNumberForWidth = (width: number): number => {
+export const getCalcualtionNumberForWidth = (width: number): number => {
   if (width > EDITOR_CONST.BREAKPOINTS.XLG) {
     return EDITOR_CONST.TILE_WIDTH_CALC_NUMBER_C;
   } else if (width > EDITOR_CONST.BREAKPOINTS.MD) {
@@ -24,7 +24,7 @@ const getCalcualtionNumberForWidth = (width: number): number => {
  * @param {number} width Current window width
  * @return {number} Specific const value based on window width
  */
-const getCalcualtionNumberForHeight = (width: number): number => {
+export const getCalcualtionNumberForHeight = (width: number): number => {
   return width >= EDITOR_CONST.BREAKPOINTS.SM
     ? EDITOR_CONST.TILE_HEIGHT_CALC_NUMBER_B
     : EDITOR_CONST.TILE_HEIGHT_CALC_NUMBER_A;
