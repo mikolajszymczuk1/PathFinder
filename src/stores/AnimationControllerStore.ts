@@ -104,6 +104,7 @@ export const useAnimationControllerStore = defineStore('animationController', {
       }
 
       this.isAnimFinished = true;
+      this.isPaused = true;
     }
   },
 });

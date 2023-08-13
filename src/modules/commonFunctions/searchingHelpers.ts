@@ -16,25 +16,25 @@ export const checkNeighbour = (grid: string[][], cords: TileCords): boolean => {
 };
 
 /**
- * Function returns all neigbers for the given tile cords
+ * Function returns all neighbours for the given tile cords
  * @param {string[][]} grid Area where function should search
  * @param {TileCords} tile The tile whose neighbors the function should return
  * @return {TileCords[]} Array of neighbors
  */
-export const getNeighbors = (grid: string[][], tile: TileCords): TileCords[] => {
-  const neigbers: TileCords[] = [];
+export const getNeighbours = (grid: string[][], tile: TileCords): TileCords[] => {
+  const neighbours: TileCords[] = [];
 
   const topCords: TileCords = { row: tile.row - 1, col: tile.col };
   const bottomCords: TileCords = { row: tile.row + 1, col: tile.col };
   const leftCords: TileCords = { row: tile.row, col: tile.col - 1 };
   const rightCords: TileCords = { row: tile.row, col: tile.col + 1 };
 
-  checkNeighbour(grid, topCords) ? neigbers.push(topCords) : null;
-  checkNeighbour(grid, bottomCords) ? neigbers.push(bottomCords) : null;
-  checkNeighbour(grid, leftCords) ? neigbers.push(leftCords) : null;
-  checkNeighbour(grid, rightCords) ? neigbers.push(rightCords) : null;
+  checkNeighbour(grid, topCords) ? neighbours.push(topCords) : null;
+  checkNeighbour(grid, bottomCords) ? neighbours.push(bottomCords) : null;
+  checkNeighbour(grid, leftCords) ? neighbours.push(leftCords) : null;
+  checkNeighbour(grid, rightCords) ? neighbours.push(rightCords) : null;
 
-  return neigbers;
+  return neighbours;
 };
 
 /**

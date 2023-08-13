@@ -25,22 +25,21 @@ export const usePathEditorStore = defineStore('pathEditor', {
      * @param {number} height Height of the table
     */
     createTable(width: number, height: number): void {
-      this.tableData = []; // Reset table before create structure
-      for (let i = 0; i < height; i++) {
-        const row: string[] = [];
-        for (let j = 0; j < width; j++) {
-          row.push(CellModesEnum.EMPTY);
-        }
+      // Reset and set new heigth before create structure
+      this.tableData = new Array(height);
 
-        this.tableData.push(row);
+      for (let rowId = 0; rowId < height; rowId++) {
+        this.tableData[rowId] = new Array(width).fill(CellModesEnum.EMPTY);
       }
     },
 
     /** Function clear grid by setting each cell as Empty */
     clearTable(): void {
+      const ignoreCells: string[] = [CellModesEnum.START, CellModesEnum.GOAL, CellModesEnum.WALL];
+
       for (let i = 0; i < this.tableData.length; i++) {
         for (let j = 0; j < this.tableData[i].length; j++) {
-          if (this.tableData[i][j] !== CellModesEnum.START && this.tableData[i][j] !== CellModesEnum.GOAL && this.tableData[i][j] !== CellModesEnum.WALL) {
+          if (ignoreCells.includes(this.tableData[i][j])) {
             this.tableData[i][j] = CellModesEnum.EMPTY;
           }
         }
@@ -103,14 +102,19 @@ export const usePathEditorStore = defineStore('pathEditor', {
      * @param {string} tileTypeToDelete type of tiles to delete
      */
     deleteAllTilesByType(tileTypeToDelete: string): void {
-      for (let i = 0; i < this.tableData.length; i++) {
-        for (let j = 0; j < this.tableData[i].length; j++) {
-          const currentTileCords: TileCords = { row: i, col: j };
-          if (this.tableData[currentTileCords.row][currentTileCords.col] === tileTypeToDelete) {
-            this.tableData[currentTileCords.row][currentTileCords.col] = CellModesEnum.EMPTY;
-          }
+      this.tableData.forEach((row, rowId) => {
+        if (!row.includes(tileTypeToDelete)) {
+          return;
         }
-      }
+
+        row.forEach((cell, colId) => {
+          if (cell !== tileTypeToDelete) {
+            return;
+          }
+
+          this.tableData[rowId][colId] = CellModesEnum.EMPTY;
+        })
+      })
     },
   },
 });

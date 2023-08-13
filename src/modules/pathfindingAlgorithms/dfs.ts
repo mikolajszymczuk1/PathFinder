@@ -1,5 +1,5 @@
 import type { TileCords } from "@/types/CommonTypes";
-import { getNeighbors, areTilesCordsEqual } from "@/modules/commonFunctions/searchingHelpers";
+import { getNeighbours, areTilesCordsEqual } from "@/modules/commonFunctions/searchingHelpers";
 
 /**
  * Function implements DFS (Depth First Search algorithm).
@@ -14,27 +14,21 @@ export const dfs = (grid: string[][], start: TileCords, goal: TileCords): TileCo
   const visitedCells: TileCords[] = [];
 
   while (stack.length > 0) {
-    root = stack.pop();
-
-    // Compiler needs it to check if root is not undefined later even though it will never be
-    if (root === undefined) {
-      break;
-    }
+    root = stack.pop() as TileCords;
 
     visitedCells.push(root);
 
-    // Break when found the goal
-    if (areTilesCordsEqual(root, goal)) {
-      return visitedCells;
-    }
-
-    getNeighbors(grid, root).forEach((neighbor: TileCords) => {
-      if (visitedCells.some((visited) => areTilesCordsEqual(visited, neighbor))) {
-        return;
+    for (const neighbour of getNeighbours(grid, root)) {
+      if (areTilesCordsEqual(root, goal)) {
+        return visitedCells;
       }
 
-      stack.push(neighbor);
-    });
+      if (visitedCells.some((visited) => areTilesCordsEqual(visited, neighbour))) {
+        continue;
+      }
+
+      stack.push(neighbour);
+    }
   }
 
   return visitedCells;
