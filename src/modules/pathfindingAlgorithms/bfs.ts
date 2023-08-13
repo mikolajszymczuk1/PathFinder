@@ -1,5 +1,5 @@
 import type { TileCords } from '@/types/CommonTypes';
-import { getNeighbors, areTilesCordsEqual, isTileCordsInArray } from '@/modules/commonFunctions/searchingHelpers';
+import { getNeighbours, areTilesCordsEqual } from '@/modules/commonFunctions/searchingHelpers';
 
 /**
  * BFS (Breadth-first search) algorithm
@@ -11,24 +11,24 @@ import { getNeighbors, areTilesCordsEqual, isTileCordsInArray } from '@/modules/
 export const bfs = (grid: string[][], start: TileCords, goal: TileCords): TileCords[] => {
   const visited: TileCords[] = [];
   const queue: TileCords[] = [start];
-  const discoveredTiles: TileCords[] = [start];
   visited.push(start);
 
   while (queue.length > 0) {
     const current = queue.shift() as TileCords;
 
-    for (const neighbor of getNeighbors(grid, current)) {
-      if (areTilesCordsEqual(neighbor, goal)) {
-        return discoveredTiles;
+    for (const neighbour of getNeighbours(grid, current)) {
+      if (areTilesCordsEqual(neighbour, goal)) {
+        return visited;
       }
 
-      if (!isTileCordsInArray(visited, neighbor)) {
-        visited.push(neighbor);
-        queue.push(neighbor);
-        discoveredTiles.push(neighbor);
+      if (visited.some((visitedCords) => areTilesCordsEqual(visitedCords, neighbour))) {
+        continue;
       }
+
+      visited.push(neighbour);
+      queue.push(neighbour);
     }
   }
 
-  return discoveredTiles;
+  return visited;
 };

@@ -110,6 +110,7 @@ export const useAnimationControllerStore = defineStore('animationController', {
       await this.animateFromArray(path, CellModesEnum.PATH);
 
       this.isAnimFinished = true;
-    },
+      this.isPaused = true;
+    }
   },
 });
