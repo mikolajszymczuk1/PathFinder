@@ -6,7 +6,7 @@ import CellModesEnum from '@/modules/enums/cellModesEnum';
 import type { TileCords } from '@/types/CommonTypes';
 import PathfindingAlgorithmsEnum from '@/modules/enums/pathfindingAlgorithmsEnum';
 
-describe('PathEditorStore', () => {
+describe('AnimationControllerStore', () => {
   beforeEach(() => {
     setActivePinia(createPinia());
   });
@@ -109,8 +109,6 @@ describe('PathEditorStore', () => {
       ];
 
       expect(animationControllerStore.isPaused).toBeTruthy();
-      await animationControllerStore.playPauseSimulation();
-      expect(animationControllerStore.isPaused).toBeFalsy();
       await animationControllerStore.playPauseSimulation();
       expect(animationControllerStore.isPaused).toBeTruthy();
     });

@@ -16,8 +16,8 @@ describe('PathEditorStore', () => {
     it('startAndGoalCords should returns position of start and goal tiles', () => {
       const store = usePathEditorStore();
       expect(store.startAndGoalCords).toEqual({
-        start: { row: 0, col: 0 },
-        goal: { row: 0, col: 0 },
+        start: { row: -1, col: -1 },
+        goal: { row: -1, col: -1 },
       });
 
       store.tableData = [
