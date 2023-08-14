@@ -1,4 +1,4 @@
-import TableHistory from "@/modules/classes/TableHistory";
+import TableHistory from "@/modules/classes/TableHistoryStore";
 import { describe, expect, it } from "vitest";
 
 describe('Table history', () => {
