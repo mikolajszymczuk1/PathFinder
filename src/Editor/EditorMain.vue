@@ -11,6 +11,7 @@
           <SingleControlButton icon-name="fa-trash" :large-icon="true" @click-action="resetTable()" />
         </div>
 
+        <EditorHistoryControl />
         <EditorNavControl />
       </div>
     </nav>
@@ -38,6 +39,7 @@ import LogoIcon from '@/components/icons/LogoIcon.vue';
 import EditorToolbox from '@/widgets/EditorToolbox.vue';
 import EditorNavControl from '@/components/EditorNavControl.vue';
 import SingleControlButton from '@/components/buttons/SingleControlButton.vue';
+import EditorHistoryControl from '@/components/EditorHistoryControl.vue';
 
 // Grid initalization
 const store = usePathEditorStore();
