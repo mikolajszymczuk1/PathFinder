@@ -44,7 +44,7 @@ export const usePathEditorStore = defineStore('pathEditor', {
     clearTable(): void {
       for (let i = 0; i < this.tableData.length; i++) {
         for (let j = 0; j < this.tableData[i].length; j++) {
-          if (this.tableData[i][j] !== CellModesEnum.START && this.tableData[i][j] !== CellModesEnum.GOAL && this.tableData[i][j] !== CellModesEnum.WALL) {
+          if (!tilesToAvoid.includes(this.tableData[i][j])) {
             this.tableData[i][j] = CellModesEnum.EMPTY;
           }
         }
