@@ -8,6 +8,8 @@ import PathfindingAlgorithmsEnum from '@/modules/enums/pathfindingAlgorithmsEnum
 import { toast } from '@/modules/toasts/pathFinderToasts';
 import ToastTypeEnum from '@/modules/enums/toastTypesEnum';
 
+import { useTableHistoryStore } from './TableHistoryStore';
+
 interface State {
   tableData: string[][],
   activePenMode: string,
@@ -40,6 +42,9 @@ export const usePathEditorStore = defineStore('pathEditor', {
       for (let rowIndex = 0; rowIndex < height; rowIndex++) {
         this.tableData[rowIndex] = new Array(width).fill(CellModesEnum.EMPTY);
       }
+
+      const historyStore = useTableHistoryStore();
+      historyStore.pushHistory(this.tableData);
     },
 
     /** Function clear grid by setting each cell as Empty without cells: `start`, `goal`, `wall` */
@@ -107,6 +112,8 @@ export const usePathEditorStore = defineStore('pathEditor', {
       }
 
       this.clearTable();
+      const historyStore = useTableHistoryStore();
+      historyStore.pushHistory(this.tableData);
     },
 
     /**
