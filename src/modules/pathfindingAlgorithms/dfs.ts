@@ -11,7 +11,7 @@ import { getNeighbours, areTilesCordsEqual } from "@/modules/commonFunctions/sea
 export const dfs = (grid: string[][], start: TileCords, goal: TileCords): TileCords[] => {
   let root: TileCords | undefined = undefined;
   const stack: TileCords[] = [start];
-  const visited: TileCords[] = [];
+  const visitedCells: TileCords[] = [];
 
   while (stack.length > 0) {
     root = stack.pop() as TileCords;
@@ -31,5 +31,5 @@ export const dfs = (grid: string[][], start: TileCords, goal: TileCords): TileCo
     }
   }
 
-  return visited;
+  return visitedCells;
 };

@@ -5,7 +5,10 @@
       :style="{ 'width': `${elWidth}px` }"
     >
       <LogoIcon class="md:w-[203px] md:h-auto" />
-      <EditorNavControl />
+      <div class="flex flex-row gap-8">
+        <EditorHistoryControl />
+        <EditorNavControl />
+      </div>
     </nav>
   </header>
 
@@ -30,6 +33,7 @@ import GridTable from '@/components/GridTable.vue';
 import LogoIcon from '@/components/icons/LogoIcon.vue';
 import EditorToolbox from '@/widgets/EditorToolbox.vue';
 import EditorNavControl from '@/components/EditorNavControl.vue';
+import EditorHistoryControl from '@/components/EditorHistoryControl.vue';
 
 // Grid initalization
 const store = usePathEditorStore();

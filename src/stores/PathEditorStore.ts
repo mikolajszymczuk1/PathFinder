@@ -6,6 +6,8 @@ import DrawModesEnum from '@/modules/enums/drawModesEnum';
 import CellModesEnum from '@/modules/enums/cellModesEnum';
 import PathfindingAlgorithmsEnum from '@/modules/enums/pathfindingAlgorithmsEnum';
 
+import { useTableHistoryStore } from './TableHistoryStore';
+
 interface State {
   tableData: string[][],
   activePenMode: string,
@@ -38,10 +40,15 @@ export const usePathEditorStore = defineStore('pathEditor', {
       for (let rowId = 0; rowId < height; rowId++) {
         this.tableData[rowId] = new Array(width).fill(CellModesEnum.EMPTY);
       }
+
+      const historyStore = useTableHistoryStore();
+      historyStore.pushHistory(this.tableData);
     },
 
     /** Function clear grid by setting each cell as Empty */
     clearTable(): void {
+      const tilesToAvoid = [CellModesEnum.START.toString(), CellModesEnum.GOAL.toString(), CellModesEnum.WALL.toString()];
+
       for (let i = 0; i < this.tableData.length; i++) {
         for (let j = 0; j < this.tableData[i].length; j++) {
           if (!tilesToAvoid.includes(this.tableData[i][j])) {
@@ -90,6 +97,9 @@ export const usePathEditorStore = defineStore('pathEditor', {
           this.tableData[row][col] = CellModesEnum.EMPTY;
           break;
       }
+
+      const historyStore = useTableHistoryStore();
+      historyStore.pushHistory(this.tableData);
     },
 
     /**

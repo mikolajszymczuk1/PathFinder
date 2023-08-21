@@ -7,6 +7,8 @@ import { faBackwardStep } from '@fortawesome/free-solid-svg-icons';
 import { faForwardStep } from '@fortawesome/free-solid-svg-icons';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faPause } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRotateRight } from '@fortawesome/free-solid-svg-icons';
 
 const iconsToLoad = [
   faArrowPointer,
@@ -18,6 +20,8 @@ const iconsToLoad = [
   faForwardStep,
   faPlay,
   faPause,
+  faArrowRotateLeft,
+  faArrowRotateRight,
 ];
 
 export default iconsToLoad;
