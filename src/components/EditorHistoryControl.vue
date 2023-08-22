@@ -1,9 +1,9 @@
 <template>
   <div class="flex items-center justify-center gap-[13px] px-[15px] py-[7px] rounded-[10px]
     bg-gray-medium md:px-[22px] md:py-[11px] md:gap-[19px]">
-    <SingleControlButton icon-name="fa-arrow-rotate-left" @click-action="undoHistory()"></SingleControlButton>
+    <SingleControlButton icon-name="fa-arrow-rotate-left" @click-action="undoHistory()" data-test="UndoActionButton"></SingleControlButton>
     <BreakLine></BreakLine>
-    <SingleControlButton icon-name="fa-arrow-rotate-right" @click-action="redoHistory()"></SingleControlButton>
+    <SingleControlButton icon-name="fa-arrow-rotate-right" @click-action="redoHistory()" data-test="RedoActionButton"></SingleControlButton>
   </div>
 </template>
 
