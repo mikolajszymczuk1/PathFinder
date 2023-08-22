@@ -11,7 +11,7 @@ interface ITableHistory {
 export const useTableHistoryStore = defineStore("tableHistory", {
   state: (): ITableHistory => ({
     _tables: [],
-    pointer: 0,
+    pointer: -1,
     length: -1,
   }),
 
@@ -53,8 +53,18 @@ export const useTableHistoryStore = defineStore("tableHistory", {
   },
 
   actions: {
+    /**
+     * Appends history with specified table, if table is equal to pointed table functions only hashes table passed in param
+     *
+     * @param table table to push into history
+     * @returns hash of passed table
+     */
     pushHistory(table: string[][]): string {
       const hash = hashTable(table);
+
+      if (hash === this._tables.at(-1)) {
+        return hash;
+      }
 
       if (this.length > 0 && this._tables.length > this.length) {
         while (this._tables.length <= this.length) {
@@ -63,7 +73,7 @@ export const useTableHistoryStore = defineStore("tableHistory", {
       }
 
       if (this._tables.length > this.pointer) {
-        this._tables = this._tables.slice(0, this.pointer);
+        this._tables = this._tables.slice(0, this.pointer + 1);
       }
 
       this._tables.push(hash);
@@ -102,7 +112,17 @@ export const useTableHistoryStore = defineStore("tableHistory", {
     },
 
     setMaxLength(maxLength: number): void {
+      if (maxLength <= -1 || maxLength >= this.length) {
+        this.length = maxLength;
+        return;
+      }
 
+      this._tables = this._tables.slice(-maxLength);
+      this.pointer = this.pointer - (maxLength);
+
+      if (this.pointer < 0) {
+        this.pointer = 0;
+      }
     }
   },
 });
