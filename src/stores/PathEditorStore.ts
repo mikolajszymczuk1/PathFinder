@@ -7,6 +7,7 @@ import CellModesEnum from '@/modules/enums/cellModesEnum';
 import PathfindingAlgorithmsEnum from '@/modules/enums/pathfindingAlgorithmsEnum';
 
 import { useTableHistoryStore } from './TableHistoryStore';
+import { hashTable } from '@/modules/commonFunctions/tableHashHelpers';
 
 interface State {
   tableData: string[][],
@@ -99,7 +100,10 @@ export const usePathEditorStore = defineStore('pathEditor', {
       }
 
       const historyStore = useTableHistoryStore();
-      historyStore.pushHistory(this.tableData);
+
+      if (this.activePenMode !== DrawModesEnum.SELECT) {
+        historyStore.pushHistory(this.tableData);
+      }
     },
 
     /**
