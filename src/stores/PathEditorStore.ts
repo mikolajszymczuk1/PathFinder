@@ -5,6 +5,7 @@ import { getStartAndGoalCords } from '@/modules/commonFunctions/searchingHelpers
 import DrawModesEnum from '@/modules/enums/drawModesEnum';
 import CellModesEnum from '@/modules/enums/cellModesEnum';
 import PathfindingAlgorithmsEnum from '@/modules/enums/pathfindingAlgorithmsEnum';
+import { useAnimationControllerStore } from './AnimationControllerStore';
 
 interface State {
   tableData: string[][],
@@ -67,6 +68,12 @@ export const usePathEditorStore = defineStore('pathEditor', {
     */
     doOperation(cords: TileCords): void {
       const { row, col } = cords;
+
+      const animStore = useAnimationControllerStore();
+
+      if (!animStore.isPaused) {
+        return;
+      }
 
       switch (this.activePenMode) {
         case DrawModesEnum.SELECT:

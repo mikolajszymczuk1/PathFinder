@@ -1,11 +1,11 @@
 <template>
   <button
-    class="flex justify-center items-center group"
+    class="flex justify-center items-center group disabled:text-red"
     @click="emitClick()"
     data-test="single-control-button"
   >
     <FontAwesomeIcon
-      class="text-white group-hover:text-lime md:rounded-[8px]"
+      class="text-white group-hover:text-lime md:rounded-[8px] group-disabled:text-red"
       :class="largeIcon ? 'md:w-auto md:h-[25px]' : 'md:w-[16px] md:h-auto'"
       :icon="['fas', iconName]"
       data-test="single-control-icon"

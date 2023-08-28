@@ -10,7 +10,7 @@
     <div class="flex justify-between flex-1 pl-[22px] bg-gray-medium rounded-[10px] md:flex-col md:pl-0 md:pt-[40px] md:rounded-t-[12px] md:rounded-b-[8px]">
       <div class="flex items-center md:flex-col">
         <template v-for="controlButton, index in controlButtonsData" :key="controlButton.icon">
-          <SingleControlButton :icon-name="controlButton.icon" large-icon @clickAction="setDrawTool(controlButton.drawTool)" />
+          <SingleControlButton :icon-name="controlButton.icon" large-icon @clickAction="setDrawTool(controlButton.drawTool)" :disabled="!animStore.isPaused" />
           <BreakLine v-if="index !== (controlButtonsData.length - 1)" class="mx-[15px] md:mx-0 md:my-[21px]" horizontal-on-large-screens />
         </template>
       </div>
@@ -21,7 +21,7 @@
         @click="changePathAlg()"
         data-test="change-alg-button"
       >
-        {{ store.selectedAlgorithm.toUpperCase() }}
+        {{ pathStore.selectedAlgorithm.toUpperCase() }}
       </button>
     </div>
   </div>
@@ -39,8 +39,10 @@ import MenuIcon from '@/assets/svg/Menu.svg';
 
 import SingleControlButton from '@/components/buttons/SingleControlButton.vue';
 import BreakLine from '@/components/common/BreakLine.vue';
+import { useAnimationControllerStore } from '@/stores/AnimationControllerStore';
 
-const store = usePathEditorStore();
+const pathStore = usePathEditorStore();
+const animStore = useAnimationControllerStore();
 
 /** Current index for algorithm select */
 const currentAlgorithmIndex: Ref<number> = ref(0);
@@ -62,7 +64,7 @@ const controlButtonsData: ControlButton[] = [
  * @param newTool new tool to set
  */
 const setDrawTool = (newTool: string): void => {
-  store.selectDrawTool(newTool);
+  pathStore.selectDrawTool(newTool);
 };
 
 /** Switch to another path finding alghoritm */
@@ -73,6 +75,6 @@ const changePathAlg = (): void => {
     set(currentAlgorithmIndex, 0);
   }
 
-  store.changeAlgorithm(searchAlgorithms[get(currentAlgorithmIndex)]);
+  pathStore.changeAlgorithm(searchAlgorithms[get(currentAlgorithmIndex)]);
 };
 </script>
