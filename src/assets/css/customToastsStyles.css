@@ -1,0 +1,54 @@
+.Vue-Toastification__toast.customToast {
+  display: flex;
+  align-items: center;
+
+  padding: 4px 10px 4px 4px;
+  height: 76px;
+}
+
+.Vue-Toastification__toast.customToast > .toastIconContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 44px;
+
+  border-radius: 6px;
+}
+
+.Vue-Toastification__toast.customToast > .toastIconContainer > svg {
+  width: 24px;
+  height: auto;
+
+  fill: white;
+}
+
+.Vue-Toastification__toast--success.customToast {
+  background-color: #9EE37D;
+}
+
+.Vue-Toastification__toast--success.customToast > .toastIconContainer {
+  background-color: #B7EB9E;
+}
+
+.Vue-Toastification__toast--warning.customToast {
+  background-color: #FFAE64;
+}
+
+.Vue-Toastification__toast--warning.customToast > .toastIconContainer {
+  background-color: #FDC28D;
+}
+
+.Vue-Toastification__toast--error.customToast {
+  background-color: #FC6060;
+}
+
+.Vue-Toastification__toast--error.customToast > .toastIconContainer {
+  background-color: #FD8F8F;
+}
+
+.Vue-Toastification__toast-body.customToastBody {
+  font-family: 'Rubik', sans-serif;
+  font-size: 0.875rem;
+  color: white;
+}
