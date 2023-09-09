@@ -105,6 +105,8 @@ export const usePathEditorStore = defineStore('pathEditor', {
           this.tableData[row][col] = CellModesEnum.EMPTY;
           break;
       }
+
+      this.clearTable();
     },
 
     /**
