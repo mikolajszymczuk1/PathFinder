@@ -7,6 +7,7 @@ import CellModesEnum from '@/modules/enums/cellModesEnum';
 import PathfindingAlgorithmsEnum from '@/modules/enums/pathfindingAlgorithmsEnum';
 import { bfs } from '@/modules/pathfindingAlgorithms/bfs';
 import { dfs } from '@/modules/pathfindingAlgorithms/dfs';
+import { gbfs } from '@/modules/pathfindingAlgorithms/gbfs';
 import { recontructShortestPath } from '@/modules/commonFunctions/pathfindingHelpers';
 import type { TileCords } from '@/types/CommonTypes';
 import { toast } from '@/modules/toasts/pathFinderToasts';
@@ -38,6 +39,11 @@ export const useAnimationControllerStore = defineStore('animationController', {
 
         case PathfindingAlgorithmsEnum.DFS:
           discovered = dfs(store.tableData, start, goal);
+          path = recontructShortestPath(store.tableData, discovered, goal);
+          break;
+
+        case PathfindingAlgorithmsEnum.GBFS:
+          discovered = gbfs(store.tableData, start, goal);
           path = recontructShortestPath(store.tableData, discovered, goal);
           break;
 

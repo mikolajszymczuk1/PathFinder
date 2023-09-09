@@ -1,6 +1,5 @@
 import type { TileCords } from '@/types/CommonTypes';
-import { getNeighbours } from '@/modules/commonFunctions/searchingHelpers';
-import { areTilesCordsEqual } from '@/modules/commonFunctions/searchingHelpers';
+import { areTilesCordsEqual, getNeighbours } from '@/modules/commonFunctions/searchingHelpers';
 
 /**
  * Function recontructs path based on discovered tiles
