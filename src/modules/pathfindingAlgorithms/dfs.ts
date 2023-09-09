@@ -1,5 +1,5 @@
-import type { TileCords } from "@/types/CommonTypes";
-import { getNeighbours, areTilesCordsEqual } from "@/modules/commonFunctions/searchingHelpers";
+import type { TileCords } from '@/types/CommonTypes';
+import { getNeighbours, areTilesCordsEqual } from '@/modules/commonFunctions/searchingHelpers';
 
 /**
  * Function implements DFS (Depth First Search algorithm).
@@ -11,7 +11,7 @@ import { getNeighbours, areTilesCordsEqual } from "@/modules/commonFunctions/sea
 export const dfs = (grid: string[][], start: TileCords, goal: TileCords): TileCords[] => {
   let root: TileCords | undefined = undefined;
   const stack: TileCords[] = [start];
-  const visitedCells: TileCords[] = [];
+  const visited: TileCords[] = [];
 
   while (stack.length > 0) {
     root = stack.pop() as TileCords;
@@ -31,5 +31,5 @@ export const dfs = (grid: string[][], start: TileCords, goal: TileCords): TileCo
     }
   }
 
-  return visitedCells;
+  return visited;
 };

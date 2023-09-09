@@ -1,11 +1,21 @@
 <template>
-  <div class="flex w-[355px] h-[56px] bg-gray-light rounded-[10px] md:w-[77px] md:h-[597px] md:flex-col md:rounded-[8px]">
+  <div class="flex relative w-[355px] h-[56px] bg-gray-light rounded-[10px] md:w-[77px] md:h-[597px] md:flex-col md:rounded-[8px]">
     <button
       class="ml-[16px] mr-[15px] md:flex md:justify-center md:items-center md:mr-0 md:ml-0 md:h-[72px]"
+      @click="toggleMenu()"
       data-test="menu-button"
     >
       <img class="md:w-[25px]" :src="MenuIcon" alt="Menu icon" title="Menu icon">
     </button>
+
+    <div
+      class="flex justify-between absolute top-[calc(-100%-3px)] w-full h-[56px]"
+      v-if="isMenuActive"
+      data-test="menu"
+    >
+      <EditorResetButton class="md:hidden" />
+      <EditorHistoryControl class="md:hidden" />
+    </div>
 
     <div class="flex justify-between flex-1 pl-[22px] bg-gray-medium rounded-[10px] md:flex-col md:pl-0 md:pt-[40px] md:rounded-t-[12px] md:rounded-b-[8px]">
       <div class="flex items-center md:flex-col">
@@ -30,20 +40,25 @@
 <script setup lang='ts'>
 import { ref, type Ref } from 'vue';
 import { get, set } from '@vueuse/core';
+import type { ControlButton } from '@/types/CommonTypes';
 import { usePathEditorStore } from '@/stores/PathEditorStore';
+import { getEnumValues } from '@/modules/commonFunctions/enumHelpers';
 import DrawModesEnum from '@/modules/enums/drawModesEnum';
 import PathfindingAlgorithmsEnum from '@/modules/enums/pathfindingAlgorithmsEnum';
-import type { ControlButton } from '@/types/CommonTypes';
-import { getEnumValues } from '@/modules/commonFunctions/enumHelpers';
 import MenuIcon from '@/assets/svg/Menu.svg';
 
 import SingleControlButton from '@/components/buttons/SingleControlButton.vue';
 import BreakLine from '@/components/common/BreakLine.vue';
+import EditorHistoryControl from '@/widgets/EditorHistoryControl.vue';
+import EditorResetButton from '@/widgets/EditorResetButton.vue';
 
 const store = usePathEditorStore();
 
 /** Current index for algorithm select */
 const currentAlgorithmIndex: Ref<number> = ref(0);
+
+/** Menu active status */
+const isMenuActive: Ref<boolean> = ref(false);
 
 /** Array of all search algorithms */
 const searchAlgorithms = getEnumValues(PathfindingAlgorithmsEnum);
@@ -75,4 +90,7 @@ const changePathAlg = (): void => {
 
   store.changeAlgorithm(searchAlgorithms[get(currentAlgorithmIndex)]);
 };
+
+/** Activate or deactivate menu */
+const toggleMenu = (): void => set(isMenuActive, !get(isMenuActive));
 </script>

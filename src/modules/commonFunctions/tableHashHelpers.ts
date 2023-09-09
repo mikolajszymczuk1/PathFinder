@@ -1,5 +1,6 @@
+/** TODO: Add comment here */
 export const hashTable = (table: string[][]): string => {
-  let hash = "";
+  let hash = '';
   let counter = 0;
 
   table.forEach((row) => {
@@ -22,21 +23,22 @@ export const hashTable = (table: string[][]): string => {
         break;
       }
     }
-    counter = 0;
 
-    hash = hash.concat("\n");
+    counter = 0;
+    hash = hash.concat('\n');
   });
+
   return hash.trimEnd();
 };
 
+/** TODO: Add comment here */
 export const unHashTable = (hash: string): string[][] => {
   const table: string[][] = [];
-
   const rows: string[] = [];
 
   for (let i = 0; i < hash.length; i++) {
-    let row = "";
-    while (hash[i] !== "\n") {
+    let row = '';
+    while (hash[i] !== '\n') {
       row = row.concat(hash[i++]);
       if (i > hash.length - 1) {
         break;
@@ -48,11 +50,10 @@ export const unHashTable = (hash: string): string[][] => {
 
   rows.forEach((row, rowId) => {
     const END = -1;
-
     table.push([]);
 
     const chunks: string[] = [];
-    let chunk: string = "";
+    let chunk: string = '';
 
     for (let i = 0; i < row.length; i++) {
       const parse = parseInt(row[i]);
@@ -60,7 +61,7 @@ export const unHashTable = (hash: string): string[][] => {
       if (isNaN(parse)) {
         chunk = chunk.concat(row[i]);
         chunks.push(chunk);
-        chunk = "";
+        chunk = '';
       } else {
         chunk = chunk.concat(parse.toString());
       }
