@@ -47,6 +47,9 @@ describe('EditorToolbox', () => {
     expect(store.selectedAlgorithm).toBe(PathfindingAlgorithmsEnum.DFS);
 
     await findChangeAlgButton().trigger('click');
+    expect(store.selectedAlgorithm).toBe(PathfindingAlgorithmsEnum.GBFS);
+
+    await findChangeAlgButton().trigger('click');
     expect(store.selectedAlgorithm).toBe(PathfindingAlgorithmsEnum.BFS);
   });
 

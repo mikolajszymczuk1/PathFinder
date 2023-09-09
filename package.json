@@ -27,6 +27,7 @@
     "@fortawesome/vue-fontawesome": "^3.0.3",
     "@vueuse/core": "^10.2.1",
     "pinia": "^2.1.4",
+    "ts-priority-queue": "^0.1.1",
     "vue": "^3.3.4",
     "vue-toastification": "^2.0.0-rc.5"
   },

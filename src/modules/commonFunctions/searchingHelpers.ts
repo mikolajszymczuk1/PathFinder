@@ -56,7 +56,7 @@ export const getStartAndGoalCords = (grid: string[][]): { start: TileCords, goal
       goal = goal ?? { row: rowIndex, col: row.indexOf(CellModesEnum.GOAL) }
     }
 
-  })
+  });
 
   if (start === null || goal === null) {
     return {
@@ -93,4 +93,14 @@ export const areStartAndGoalPlaced = (grid: string[][]): boolean => {
  */
 export const areTilesCordsEqual = (tileCordsA: TileCords, tileCordsB: TileCords): boolean => {
   return tileCordsA.row === tileCordsB.row && tileCordsA.col === tileCordsB.col;
+};
+
+/**
+ * Manhattan distance on a square grid
+ * @param {number} cordsA Cords of tile A
+ * @param {number} cordsB Cords of tile B
+ * @return {number} distance on square grid
+ */
+export const heuristic = (cordsA: TileCords, cordsB: TileCords): number => {
+  return Math.abs(cordsA.row - cordsB.row) + Math.abs(cordsA.col - cordsB.col);
 };
