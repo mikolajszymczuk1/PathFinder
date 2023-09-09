@@ -3,7 +3,7 @@ import { mount, type VueWrapper } from '@vue/test-utils';
 import { createTestingPinia } from '@pinia/testing';
 import { useAnimationControllerStore } from '@/stores/AnimationControllerStore';
 import { usePathEditorStore } from '@/stores/PathEditorStore';
-import EditorNavControl from '@/components/EditorNavControl.vue';
+import EditorNavControl from '@/widgets/EditorNavControl.vue';
 
 describe('EditorNavControl', () => {
   let wrapper: VueWrapper;

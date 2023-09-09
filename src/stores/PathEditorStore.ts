@@ -9,7 +9,6 @@ import { toast } from '@/modules/toasts/pathFinderToasts';
 import ToastTypeEnum from '@/modules/enums/toastTypesEnum';
 
 import { useTableHistoryStore } from './TableHistoryStore';
-import { hashTable } from '@/modules/commonFunctions/tableHashHelpers';
 
 interface State {
   tableData: string[][],
@@ -87,6 +86,7 @@ export const usePathEditorStore = defineStore('pathEditor', {
     */
     doOperation(cords: TileCords): void {
       const { row, col } = cords;
+      const historyStore = useTableHistoryStore();
 
       switch (this.activePenMode) {
         case DrawModesEnum.SELECT:
@@ -113,8 +113,6 @@ export const usePathEditorStore = defineStore('pathEditor', {
       }
 
       this.clearTable();
-      const historyStore = useTableHistoryStore();
-
       if (this.activePenMode !== DrawModesEnum.SELECT) {
         historyStore.pushHistory(this.tableData);
       }

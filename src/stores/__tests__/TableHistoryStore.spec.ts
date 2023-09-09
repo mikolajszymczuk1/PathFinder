@@ -1,6 +1,6 @@
-import { createPinia, setActivePinia } from "pinia";
-import { expect, describe, it, beforeEach } from "vitest";
-import { useTableHistoryStore } from "../TableHistoryStore";
+import { createPinia, setActivePinia } from 'pinia';
+import { expect, describe, it, beforeEach } from 'vitest';
+import { useTableHistoryStore } from '@/stores/TableHistoryStore';
 
 describe('TableHistoryStore', () => {
   beforeEach(() => {
@@ -23,8 +23,8 @@ describe('TableHistoryStore', () => {
       const testString = 'there should be history hash value';
 
       // Set history manually
-      store._tables.push(testString);
-      store._tables.push(testString);
+      store.tables.push(testString);
+      store.tables.push(testString);
       store.pointer = 1
 
       expect(store.getPreviousTable()).toEqual(testString);
@@ -35,8 +35,8 @@ describe('TableHistoryStore', () => {
       const testString = 'there should be history hash value';
 
       // Set history manually
-      store._tables.push(testString);
-      store._tables.push(testString);
+      store.tables.push(testString);
+      store.tables.push(testString);
       store.pointer = 0;
 
       expect(store.getNextTable()).toEqual(testString);
@@ -50,7 +50,7 @@ describe('TableHistoryStore', () => {
 
       store.pushHistory(testTable);
       expect({
-        tables: store._tables,
+        tables: store.tables,
         pointer: store.pointer,
       }).toStrictEqual({
         tables: ['3a'],
@@ -61,13 +61,13 @@ describe('TableHistoryStore', () => {
     it('Should pop history', () => {
       const store = useTableHistoryStore();
 
-      store._tables = ['3a', '4a', '5a'];
+      store.tables = ['3a', '4a', '5a'];
       store.pointer = 2;
 
       store.popHistory();
 
       expect({
-        tables: store._tables,
+        tables: store.tables,
         pointer: store.pointer,
       }).toStrictEqual({
         tables: ['4a', '5a'],
@@ -85,14 +85,14 @@ describe('TableHistoryStore', () => {
     it('Should change table length and remove overflowing data', () => {
       const store = useTableHistoryStore();
 
-      store._tables = ['1a', '2a', '3a', '4a', '5a', '6a'];
+      store.tables = ['1a', '2a', '3a', '4a', '5a', '6a'];
       store.pointer = 5;
       store.length = 6;
 
       store.setMaxLength(3);
 
       expect({
-        tables: store._tables,
+        tables: store.tables,
         pointer: store.pointer,
       }).toStrictEqual({
         tables: ['4a', '5a', '6a'],

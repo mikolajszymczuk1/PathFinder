@@ -22,6 +22,8 @@ describe('EditorToolbox', () => {
 
   const findAllControlButtons = () => wrapper.findAllComponents(SingleControlButton);
   const findChangeAlgButton = () => wrapper.find('[data-test="change-alg-button"]');
+  const findMenuButton = () => wrapper.find('[data-test="menu-button"]');
+  const findMenu = () => wrapper.find('[data-test="menu"]');
 
   it('Should correctly set draw mode when click on control buttons', async () => {
     createComponent();
@@ -46,5 +48,12 @@ describe('EditorToolbox', () => {
 
     await findChangeAlgButton().trigger('click');
     expect(store.selectedAlgorithm).toBe(PathfindingAlgorithmsEnum.BFS);
+  });
+
+  it('Should activate or deactivate menu correctly', async () => {
+    createComponent();
+    expect(findMenu().exists()).toBeFalsy();
+    await findMenuButton().trigger('click');
+    expect(findMenu().exists()).toBeTruthy();
   });
 });
