@@ -1,7 +1,21 @@
 import { expect, it, describe } from 'vitest';
-import { getNeighbours, getStartAndGoalCords, areStartAndGoalPlaced } from '@/modules/commonFunctions/searchingHelpers';
+import type { TileCords } from '@/types/CommonTypes';
+import { checkNeighbour, getNeighbours, getStartAndGoalCords, areStartAndGoalPlaced, areTilesCordsEqual, heuristic } from '@/modules/commonFunctions/searchingHelpers';
 
 describe('searchingHelpers', () => {
+  describe('checkNeighbour', () => {
+    it('Should return true if tile with cords `cords` are not a wall', () => {
+      const testTable = [
+        ['W', 'E', 'E'],
+        ['E', 'S', 'E'],
+        ['E', 'E', 'E'],
+      ];
+
+      expect(checkNeighbour(testTable, { row: 0, col: 1 })).toBeTruthy();
+      expect(checkNeighbour(testTable, { row: 0, col: 0 })).toBeFalsy();
+    });
+  });
+
   describe('getNeighbors', () => {
     it('Should return 4 neighbors when tile is on some place in the middle part of grid', () => {
       const testTable = [
@@ -138,6 +152,26 @@ describe('searchingHelpers', () => {
       ];
 
       expect(areStartAndGoalPlaced(testTable)).toBeFalsy();
+    });
+  });
+
+  describe('areTilesCordsEqual', () => {
+    it('Should return true if cords of two tiles are equal', () => {
+      const cordsA: TileCords = { row: 0, col: 5 };
+      const cordsB: TileCords = { row: 0, col: 5 };
+      const cordsC: TileCords = { row: 2, col: 8 };
+
+      expect(areTilesCordsEqual(cordsA, cordsB)).toBeTruthy();
+      expect(areTilesCordsEqual(cordsA, cordsC)).toBeFalsy();
+    });
+  });
+
+  describe('heuristic', () => {
+    it('Should return correct heurisitc value', () => {
+      const start: TileCords = { row: 0, col: 2 };
+      const goal: TileCords = { row: 5, col: 2 };
+
+      expect(heuristic(start, goal)).toBe(5);
     });
   });
 });
