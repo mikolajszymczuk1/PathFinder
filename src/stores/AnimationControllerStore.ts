@@ -9,6 +9,8 @@ import { bfs } from '@/modules/pathfindingAlgorithms/bfs';
 import { dfs } from '@/modules/pathfindingAlgorithms/dfs';
 import { recontructShortestPath } from '@/modules/commonFunctions/pathfindingHelpers';
 import type { TileCords } from '@/types/CommonTypes';
+import { toast } from '@/modules/toasts/pathFinderToasts';
+import ToastTypeEnum from '@/modules/enums/toastTypesEnum';
 
 interface State {
   isPaused: boolean,
@@ -67,7 +69,11 @@ export const useAnimationControllerStore = defineStore('animationController', {
     /** Function to run or pause simulation */
     async playPauseSimulation(): Promise<void> {
       const store = usePathEditorStore();
-      if (!areStartAndGoalPlaced(store.tableData)) return;
+      if (!areStartAndGoalPlaced(store.tableData)) {
+        toast(ToastTypeEnum.WARNING, 'Put start and goal tiles to run simulation !');
+        return;
+      }
+
       this.isPaused = !this.isPaused;
       // User can use pause functionality until simulation is not finished
       if (!this.isPaused && this.isAnimFinished) {
@@ -111,6 +117,7 @@ export const useAnimationControllerStore = defineStore('animationController', {
 
       this.isAnimFinished = true;
       this.isPaused = true;
+      toast(ToastTypeEnum.SUCCESS, 'Simulation finished :)');
     }
   },
 });

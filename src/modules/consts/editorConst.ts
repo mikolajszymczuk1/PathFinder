@@ -14,4 +14,8 @@ export const EDITOR_CONST = {
     INTERVAL_TIME: 100,
     TILE_DISCOVER_DELAY: 10,
   },
+  TOAST: {
+    MAIN_CLASS: 'customToast',
+    BODY_CLASS: 'customToastBody',
+  },
 };

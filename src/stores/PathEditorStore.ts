@@ -5,6 +5,8 @@ import { getStartAndGoalCords } from '@/modules/commonFunctions/searchingHelpers
 import DrawModesEnum from '@/modules/enums/drawModesEnum';
 import CellModesEnum from '@/modules/enums/cellModesEnum';
 import PathfindingAlgorithmsEnum from '@/modules/enums/pathfindingAlgorithmsEnum';
+import { toast } from '@/modules/toasts/pathFinderToasts';
+import ToastTypeEnum from '@/modules/enums/toastTypesEnum';
 import { useAnimationControllerStore } from './AnimationControllerStore';
 
 interface State {
@@ -59,6 +61,7 @@ export const usePathEditorStore = defineStore('pathEditor', {
      */
     changeAlgorithm(newAlg: string): void {
       this.selectedAlgorithm = newAlg;
+      toast(ToastTypeEnum.SUCCESS, `Switched to ${newAlg.toUpperCase()} algorithm`);
     },
 
     /**
