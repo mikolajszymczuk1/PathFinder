@@ -26,6 +26,7 @@ module.exports = {
     },
     fontFamily: {
       comfortaa: ['Comfortaa', 'cursive'],
+      rubik: ['Rubik', 'sans-serif'],
     },
     keyframes: {
       discoverTile: {
