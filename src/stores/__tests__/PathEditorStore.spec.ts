@@ -66,6 +66,26 @@ describe('PathEditorStore', () => {
       ]);
     });
 
+    it('resetTable should reset all table by setting each cell as Empty', () => {
+      const store = usePathEditorStore();
+      store.tableData = [
+        ['S', 'P', 'P', 'D'],
+        ['W', 'W', 'P', 'D'],
+        ['D', 'W', 'P', 'P'],
+        ['D', 'W', 'W', 'P'],
+        ['G', 'P', 'P', 'P'],
+      ];
+
+      store.resetTable();
+      expect(store.tableData).toEqual([
+        ['E', 'E', 'E', 'E'],
+        ['E', 'E', 'E', 'E'],
+        ['E', 'E', 'E', 'E'],
+        ['E', 'E', 'E', 'E'],
+        ['E', 'E', 'E', 'E'],
+      ]);
+    });
+
     it('changeAlgorithm should set correctly new algorithm', () => {
       const store = usePathEditorStore();
       expect(store.selectedAlgorithm).toBe(PathfindingAlgorithmsEnum.BFS);

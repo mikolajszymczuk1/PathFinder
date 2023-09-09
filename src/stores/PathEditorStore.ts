@@ -43,7 +43,7 @@ export const usePathEditorStore = defineStore('pathEditor', {
       }
     },
 
-    /** Function clear grid by setting each cell as Empty */
+    /** Function clear grid by setting each cell as Empty without cells: `start`, `goal`, `wall` */
     clearTable(): void {
       const tilesToAvoid: string[] = [CellModesEnum.START, CellModesEnum.GOAL, CellModesEnum.WALL];
       for (let i = 0; i < this.tableData.length; i++) {
@@ -53,6 +53,17 @@ export const usePathEditorStore = defineStore('pathEditor', {
           }
         }
       }
+    },
+
+    /** Function reset all table */
+    resetTable(): void {
+      for (let i = 0; i < this.tableData.length; i++) {
+        for (let j = 0; j < this.tableData[i].length; j++) {
+          this.tableData[i][j] = CellModesEnum.EMPTY;
+        }
+      }
+
+      toast(ToastTypeEnum.SUCCESS, 'Board have been successfully reset');
     },
 
     /**
