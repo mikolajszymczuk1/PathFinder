@@ -1,5 +1,5 @@
-import type { TileCords } from "@/types/CommonTypes";
-import CellModesEnum from "@/modules/enums/cellModesEnum";
+import type { TileCords } from '@/types/CommonTypes';
+import CellModesEnum from '@/modules/enums/cellModesEnum';
 
 /**
  * Function check if given cell is wall or not and if exists

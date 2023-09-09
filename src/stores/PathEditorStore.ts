@@ -10,7 +10,6 @@ import ToastTypeEnum from '@/modules/enums/toastTypesEnum';
 import { useAnimationControllerStore } from './AnimationControllerStore';
 
 import { useTableHistoryStore } from './TableHistoryStore';
-import { hashTable } from '@/modules/commonFunctions/tableHashHelpers';
 
 interface State {
   tableData: string[][],
@@ -88,6 +87,7 @@ export const usePathEditorStore = defineStore('pathEditor', {
     */
     doOperation(cords: TileCords): void {
       const { row, col } = cords;
+      const historyStore = useTableHistoryStore();
 
       const animStore = useAnimationControllerStore();
 
@@ -120,8 +120,6 @@ export const usePathEditorStore = defineStore('pathEditor', {
       }
 
       this.clearTable();
-      const historyStore = useTableHistoryStore();
-
       if (this.activePenMode !== DrawModesEnum.SELECT) {
         historyStore.pushHistory(this.tableData);
       }

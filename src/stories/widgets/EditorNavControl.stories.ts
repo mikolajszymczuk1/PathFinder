@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
-import EditorNavControl from '@/components/EditorNavControl.vue';
+import EditorNavControl from '@/widgets/EditorNavControl.vue';
 
 const meta: Meta<typeof EditorNavControl> = {
   component: EditorNavControl,
@@ -16,7 +16,7 @@ export const Default: Story = {
       return { args };
     },
     template: `
-      <div style='display: flex'>
+      <div class="flex">
         <EditorNavControl />
       </div>
     `,

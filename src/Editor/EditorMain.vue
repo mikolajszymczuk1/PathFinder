@@ -7,11 +7,8 @@
       <LogoIcon class="md:w-[203px] md:h-auto" />
 
       <div class="flex self-end gap-[14px]">
-        <div class="flex justify-center w-[50px] rounded-[9px] bg-lime">
-          <SingleControlButton icon-name="fa-trash" :large-icon="true" @click-action="resetTable()" />
-        </div>
-
-        <EditorHistoryControl />
+        <EditorResetButton class="hidden md:flex" />
+        <EditorHistoryControl class="hidden md:flex" />
         <EditorNavControl />
       </div>
     </nav>
@@ -37,9 +34,9 @@ import { getNewTilesSize } from '@/modules/commonFunctions/resizeCommon';
 import GridTable from '@/components/GridTable.vue';
 import LogoIcon from '@/components/icons/LogoIcon.vue';
 import EditorToolbox from '@/widgets/EditorToolbox.vue';
-import EditorNavControl from '@/components/EditorNavControl.vue';
-import SingleControlButton from '@/components/buttons/SingleControlButton.vue';
-import EditorHistoryControl from '@/components/EditorHistoryControl.vue';
+import EditorNavControl from '@/widgets/EditorNavControl.vue';
+import EditorHistoryControl from '@/widgets/EditorHistoryControl.vue';
+import EditorResetButton from '@/widgets/EditorResetButton.vue';
 
 // Grid initalization
 const store = usePathEditorStore();
@@ -50,7 +47,4 @@ store.createTable(twidth, theight);
 // Helper for correctly nav bar positioning
 const el: Ref<HTMLElement | null> = ref(null);
 const { width: elWidth } = useElementSize(el);
-
-/** Reset grid table */
-const resetTable = (): void => store.resetTable();
 </script>
