@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { gbfs } from '@/modules/pathfindingAlgorithms/gbfs';
 import { getStartAndGoalCords } from '@/modules/commonFunctions/searchingHelpers';
 
-describe('bfs', () => {
+describe('gbfs', () => {
   it('Should correctly returns array with visited tiles', () => {
     const testTableData: string[][] = [
       ['E', 'S', 'E', 'E'],
