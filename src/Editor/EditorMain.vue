@@ -5,8 +5,12 @@
       :style="{ 'width': `${elWidth}px` }"
     >
       <LogoIcon class="md:w-[203px] md:h-auto" />
-      <div class="flex self-end gap-4">
-        <ClearTableButton />
+
+      <div class="flex self-end gap-[14px]">
+        <div class="flex justify-center w-[50px] rounded-[9px] bg-lime">
+          <SingleControlButton icon-name="fa-trash" :large-icon="true" @click-action="resetTable()" />
+        </div>
+
         <EditorNavControl />
       </div>
     </nav>
@@ -33,7 +37,7 @@ import GridTable from '@/components/GridTable.vue';
 import LogoIcon from '@/components/icons/LogoIcon.vue';
 import EditorToolbox from '@/widgets/EditorToolbox.vue';
 import EditorNavControl from '@/components/EditorNavControl.vue';
-import ClearTableButton from '@/components/buttons/ClearTableButton.vue';
+import SingleControlButton from '@/components/buttons/SingleControlButton.vue';
 
 // Grid initalization
 const store = usePathEditorStore();
@@ -44,4 +48,7 @@ store.createTable(twidth, theight);
 // Helper for correctly nav bar positioning
 const el: Ref<HTMLElement | null> = ref(null);
 const { width: elWidth } = useElementSize(el);
+
+/** Reset grid table */
+const resetTable = (): void => store.resetTable();
 </script>
