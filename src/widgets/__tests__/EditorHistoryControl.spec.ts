@@ -1,17 +1,19 @@
 import { mount, type VueWrapper } from '@vue/test-utils';
 import { describe, expect, it, vi } from 'vitest';
-import EditorHistoryControl from '@/widgets/EditorHistoryControl.vue';
 import { createTestingPinia } from '@pinia/testing';
 import { useTableHistoryStore } from '@/stores/TableHistoryStore';
 import { usePathEditorStore } from '@/stores/PathEditorStore';
+import EditorHistoryControl from '@/widgets/EditorHistoryControl.vue';
 
 describe('EditorHistoryControl', () => {
   let wrapper: VueWrapper;
+  const tippy = vi.fn();
   const createComponent = (config = {}) => {
     wrapper = mount(EditorHistoryControl, {
       global: {
         plugins: [createTestingPinia({ createSpy: vi.fn, stubActions: false })],
-        stubs: ['FontAwesomeIcon'],
+        stubs: ['FontAwesomeIcon', 'tippy'],
+        directives: { tippy },
       },
       ...config,
     });

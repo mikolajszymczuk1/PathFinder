@@ -7,11 +7,13 @@ import EditorNavControl from '@/widgets/EditorNavControl.vue';
 
 describe('EditorNavControl', () => {
   let wrapper: VueWrapper;
+  const tippy = vi.fn();
   const createComponent = (config = {}) => {
     wrapper = mount(EditorNavControl, {
       global: {
         plugins: [createTestingPinia({ createSpy: vi.fn, stubActions: false, })],
         stubs: ['FontAwesomeIcon'],
+        directives: { tippy },
       },
       ...config,
     });
