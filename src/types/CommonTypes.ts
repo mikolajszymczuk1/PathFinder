@@ -6,6 +6,7 @@ export type TileCords = {
 export type ControlButton = {
   icon: string,
   drawTool: string,
+  tooltipContent: string,
 };
 
 export type PriorityTileCords = {
