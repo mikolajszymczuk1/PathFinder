@@ -5,7 +5,7 @@
     data-test="single-control-button"
   >
     <FontAwesomeIcon
-      class="text-white group-hover:text-lime md:rounded-[8px]"
+      class="text-white group-hover:text-lime dark:group-hover:text-purple md:rounded-[8px]"
       :class="largeIcon ? 'md:w-auto md:h-[25px]' : 'md:w-[16px] md:h-auto'"
       :icon="['fas', iconName]"
       data-test="single-control-icon"

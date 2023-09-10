@@ -5,6 +5,7 @@ module.exports = {
     "./index.html",
     "./src/**/*.{ts,vue,js,jsx,tsx}",
   ],
+  darkMode: 'class',
   theme: {
     colors: {
       white: "#FFFFFF",
@@ -18,6 +19,15 @@ module.exports = {
       orange: "#FFAE64",
       red: "#FC6060",
       blue: "#B3D8FA",
+
+      // For Dark Mode
+      purple: '#5E43F3',
+      dark: {
+        hard: '#040404',
+        medium: '#202020',
+        soft: '#373737',
+        light: '#868686',
+      },
     },
     screens: {
       sm: '640px',
