@@ -20,7 +20,13 @@
     <div class="flex justify-between flex-1 pl-[22px] bg-gray-medium rounded-[10px] dark:bg-dark-medium md:flex-col md:pl-0 md:pt-[40px] md:rounded-t-[12px] md:rounded-b-[8px]">
       <div class="flex items-center md:flex-col">
         <template v-for="controlButton, index in controlButtonsData" :key="controlButton.icon">
-          <SingleControlButton :icon-name="controlButton.icon" large-icon @clickAction="setDrawTool(controlButton.drawTool)" />
+          <SingleControlButton
+            :icon-name="controlButton.icon"
+            large-icon
+            @clickAction="setDrawTool(controlButton.drawTool)"
+            v-tippy="{ content: controlButton.tooltipContent, theme: 'material', placement: 'auto', animation: 'shift-away' }"
+          />
+
           <BreakLine v-if="index !== (controlButtonsData.length - 1)" class="mx-[15px] md:mx-0 md:my-[21px]" horizontal-on-large-screens />
         </template>
       </div>
@@ -65,11 +71,11 @@ const searchAlgorithms = getEnumValues(PathfindingAlgorithmsEnum);
 
 /** Data for render toolbox control buttons */
 const controlButtonsData: ControlButton[] = [
-  { icon: 'fa-arrow-pointer', drawTool: DrawModesEnum.SELECT },
-  { icon: 'fa-location-pin', drawTool: DrawModesEnum.DRAW_START },
-  { icon: 'fa-flag-checkered', drawTool: DrawModesEnum.DRAW_GOAL },
-  { icon: 'fa-square-xmark', drawTool: DrawModesEnum.DRAW_WALL },
-  { icon: 'fa-eraser', drawTool: DrawModesEnum.ERASE_CELL },
+  { icon: 'fa-arrow-pointer', drawTool: DrawModesEnum.SELECT, tooltipContent: 'Pointer' },
+  { icon: 'fa-location-pin', drawTool: DrawModesEnum.DRAW_START, tooltipContent: 'Start' },
+  { icon: 'fa-flag-checkered', drawTool: DrawModesEnum.DRAW_GOAL, tooltipContent: 'Goal' },
+  { icon: 'fa-square-xmark', drawTool: DrawModesEnum.DRAW_WALL, tooltipContent: 'Wall' },
+  { icon: 'fa-eraser', drawTool: DrawModesEnum.ERASE_CELL, tooltipContent: 'Erase' },
 ];
 
 /**

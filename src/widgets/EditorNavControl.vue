@@ -3,11 +3,30 @@
     class="flex items-center justify-center gap-[13px] px-[15px] py-[7px] rounded-[10px]
     bg-gray-medium dark:bg-dark-medium md:px-[22px] md:py-[11px] md:gap-[19px]"
   >
-    <SingleControlButton icon-name="fa-backward-step" @clickAction="goToPrevStep()" data-test="undo-button" />
+    <SingleControlButton
+      icon-name="fa-backward-step"
+      @clickAction="goToPrevStep()"
+      data-test="undo-button"
+      v-tippy="{ content: 'Prev Step', theme: 'material', placement: 'bottom', animation: 'shift-away' }"
+    />
+
     <BreakLine />
-    <SingleControlButton :icon-name="animationStatusIcon" @clickAction="playPauseSimulation()" data-test="play-pause-button" />
+
+    <SingleControlButton
+      :icon-name="animationStatusIcon"
+      @clickAction="playPauseSimulation()"
+      data-test="play-pause-button"
+      v-tippy="{ content: 'Play / Pause', theme: 'material', placement: 'bottom', animation: 'shift-away' }"
+    />
+
     <BreakLine />
-    <SingleControlButton icon-name="fa-forward-step" @clickAction="goToNextStep()" data-test="redo-button" />
+
+    <SingleControlButton
+      icon-name="fa-forward-step"
+      @clickAction="goToNextStep()"
+      data-test="redo-button"
+      v-tippy="{ content: 'Next Step', theme: 'material', placement: 'bottom', animation: 'shift-away' }"
+    />
   </div>
 </template>
 
