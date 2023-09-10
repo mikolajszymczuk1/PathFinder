@@ -2,6 +2,16 @@
 
 PathFinder is a simulator environment that let you observe and play with different pathfinding algorithms.
 
+## Editor in action
+
+### Dark mode version
+
+![](./docs/EditorInActionPreview2.gif)
+
+### Light mode version
+
+![](./docs//EditorInActionPreview.gif)
+
 ## Project stack:
 
 | Tables | About |

@@ -1,7 +1,7 @@
 <template>
   <div
     class="flex items-center justify-center gap-[15px] px-[20px] py-[14px] rounded-[10px]
-    bg-gray-medium md:px-[18px] md:py-[11px] md:gap-[19px]"
+    bg-gray-medium dark:bg-dark-medium md:px-[18px] md:py-[11px] md:gap-[19px]"
   >
     <SingleControlButton icon-name="fa-arrow-rotate-left" large-icon @click-action="undoHistory()" data-test="undo-action-button" />
     <BreakLine />

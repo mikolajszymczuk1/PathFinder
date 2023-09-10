@@ -1,7 +1,7 @@
 <template>
   <div
     class="flex justify-center items-center w-[40px] h-[40px] rounded-[3px] text-white hover:scale-[0.90]
-      hover:bg-gray-highlight"
+      hover:bg-gray-highlight dark:hover:bg-white/20"
     :class="`${getClasses} ${getAnimationClasses}`"
     @click="emitCords()"
     data-test="tile"
@@ -76,13 +76,13 @@ const getIconClasses = computed<string>(() => {
 const getClasses = computed<string>(() => {
   switch (props.contentType) {
     case CellModesEnum.EMPTY:
-      return 'bg-gray-light';
+      return 'bg-gray-light dark:bg-dark-medium';
 
     case CellModesEnum.WALL:
-      return '!bg-gray-medium';
+      return '!bg-gray-medium dark:!bg-dark-light';
 
     case CellModesEnum.PATH:
-      return '!bg-orange';
+      return '!bg-orange dark:!bg-purple';
 
     case CellModesEnum.START:
       return '!bg-lime';
@@ -91,7 +91,7 @@ const getClasses = computed<string>(() => {
       return '!bg-red';
 
     case CellModesEnum.DISCOVERED:
-      return '!bg-blue';
+      return '!bg-blue dark:!bg-dark-soft';
 
     default:
       return '';
