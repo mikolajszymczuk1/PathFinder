@@ -36,6 +36,7 @@ import { useAnimationControllerStore } from '@/stores/AnimationControllerStore';
 
 import SingleControlButton from '@/components/buttons/SingleControlButton.vue';
 import BreakLine from '@/components/common/BreakLine.vue';
+import { useTableHistoryStore } from '@/stores/TableHistoryStore';
 
 const store = useAnimationControllerStore();
 
@@ -49,5 +50,12 @@ const goToPrevStep = (): void => { console.log('Prev Step'); };
 const goToNextStep = (): void => { console.log('Next Step'); };
 
 /** Play or pause simulation */
-const playPauseSimulation = async (): Promise<void> => await store.playPauseSimulation();
+const playPauseSimulation = async (): Promise<void> => {
+  const historyStore = useTableHistoryStore();
+
+  if (store.isAnimFinished) {
+    store.animStartHashCode = historyStore.getNextTable(0) as string;
+  }
+
+  return await store.playPauseSimulation()};
 </script>

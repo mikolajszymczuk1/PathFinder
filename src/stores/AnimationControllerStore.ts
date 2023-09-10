@@ -12,16 +12,19 @@ import { recontructShortestPath } from '@/modules/commonFunctions/pathfindingHel
 import type { TileCords } from '@/types/CommonTypes';
 import { toast } from '@/modules/toasts/pathFinderToasts';
 import ToastTypeEnum from '@/modules/enums/toastTypesEnum';
+import { useTableHistoryStore } from './TableHistoryStore';
 
 interface State {
   isPaused: boolean,
   isAnimFinished: boolean,
+  animStartHashCode: string,
 }
 
 export const useAnimationControllerStore = defineStore('animationController', {
   state: (): State => ({
     isPaused: true,
     isAnimFinished: true,
+    animStartHashCode: '',
   }),
   getters: {
     /** Returns data for each type of algorithm */
@@ -93,17 +96,23 @@ export const useAnimationControllerStore = defineStore('animationController', {
      * @param {TileCords[]} tilesArr Array of tiles to animate
      * @param {string} tileToShow The type of tile that should be placed instead of empty tiles
     */
-    async animateFromArray(tilesArr: TileCords[], tileToShow: string): Promise<void> {
+    async animateFromArray(tilesArr: TileCords[], tileToShow: string): Promise<boolean> {
       const store = usePathEditorStore();
+      const historyStore = useTableHistoryStore();
       const { start, goal } = store.startAndGoalCords;
 
       for (const cords of tilesArr) {
         await this.pause();
+        if (!this.isAnimFinished && this.animStartHashCode !== historyStore.getNextTable(0)) {
+          return false;
+        }
         if (!areTilesCordsEqual(cords, start) && !areTilesCordsEqual(cords, goal)) {
           store.tableData[cords.row][cords.col] = tileToShow;
           await delay(EDITOR_CONST.ANIMATION_CONTROLLER_CONF.TILE_DISCOVER_DELAY);
         }
       }
+
+      return true;
     },
 
     /** Main animation controller */
@@ -116,14 +125,18 @@ export const useAnimationControllerStore = defineStore('animationController', {
       store.clearTable();
 
       // ------ Simulate searching process ------
-      await this.animateFromArray(discovered, CellModesEnum.DISCOVERED);
+      let finishedSearching = await this.animateFromArray(discovered, CellModesEnum.DISCOVERED);
 
       // ------ Simulate finding path process ------
-      await this.animateFromArray(path, CellModesEnum.PATH);
+      if (finishedSearching) {
+        finishedSearching = await this.animateFromArray(path, CellModesEnum.PATH);
+      }
 
       this.isAnimFinished = true;
       this.isPaused = true;
-      toast(ToastTypeEnum.SUCCESS, 'Simulation finished :)');
+      finishedSearching?
+        toast(ToastTypeEnum.SUCCESS, 'Simulation finished :)') :
+        toast(ToastTypeEnum.ERROR, 'Simulation interrupted')
     }
   },
 });

@@ -25,6 +25,7 @@
             large-icon
             @clickAction="setDrawTool(controlButton.drawTool)"
             v-tippy="{ content: controlButton.tooltipContent, theme: 'material', placement: 'auto', animation: 'shift-away' }"
+            :disabled="!animStore.isPaused"
           />
 
           <BreakLine v-if="index !== (controlButtonsData.length - 1)" class="mx-[15px] md:mx-0 md:my-[21px]" horizontal-on-large-screens />
