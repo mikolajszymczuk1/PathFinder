@@ -6,7 +6,7 @@
   >
     <FontAwesomeIcon
       class="text-white group-hover:text-lime dark:group-hover:text-purple md:rounded-[8px]"
-      :class="largeIcon ? 'md:w-auto md:h-[25px]' : 'md:w-[16px] md:h-auto'"
+      :class="[largeIcon ? 'md:w-auto md:h-[25px]' : 'md:w-[16px] md:h-auto', isActive ? 'text-orange' : 'text-white']"
       :icon="['fas', iconName]"
       data-test="single-control-icon"
     />
@@ -23,6 +23,11 @@ defineProps({
 
   /** Change icon size and responsive behaviour for it */
   largeIcon: {
+    type: Boolean,
+    default: false,
+  },
+
+  isActive: {
     type: Boolean,
     default: false,
   }
