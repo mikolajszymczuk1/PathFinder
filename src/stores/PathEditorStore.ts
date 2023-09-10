@@ -44,6 +44,7 @@ export const usePathEditorStore = defineStore('pathEditor', {
       }
 
       const historyStore = useTableHistoryStore();
+      historyStore.$reset();
       historyStore.pushHistory(this.tableData);
     },
 
