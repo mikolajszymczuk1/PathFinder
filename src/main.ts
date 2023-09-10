@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
-import { library } from '@fortawesome/fontawesome-svg-core';
+import { library, type IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { EDITOR_CONST } from '@/modules/consts/editorConst';
 import iconsToLoad from '@/modules/fontawesomeIcons/iconLibrary';
@@ -12,7 +12,7 @@ import 'vue-toastification/dist/index.css';
 
 const app = createApp(App);
 
-library.add(...iconsToLoad);
+library.add(...iconsToLoad as IconDefinition[]);
 
 const options: PluginOptions = {
   hideProgressBar: true,
