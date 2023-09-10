@@ -10,11 +10,13 @@ import SingleControlButton from '@/components/buttons/SingleControlButton.vue';
 
 describe('EditorToolbox', () => {
   let wrapper: VueWrapper;
+  const tippy = vi.fn();
   const createComponent = (config = {}) => {
     wrapper = mount(EditorToolbox, {
       global: {
         plugins: [createTestingPinia({ createSpy: vi.fn, stubActions: false, })],
         stubs: ['FontAwesomeIcon'],
+        directives: { tippy },
       },
       ...config,
     });
