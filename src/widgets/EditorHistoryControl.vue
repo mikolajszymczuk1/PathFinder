@@ -3,9 +3,21 @@
     class="flex items-center justify-center gap-[15px] px-[20px] py-[14px] rounded-[10px]
     bg-gray-medium dark:bg-dark-medium md:px-[18px] md:py-[11px] md:gap-[19px]"
   >
-    <SingleControlButton icon-name="fa-arrow-rotate-left" large-icon @click-action="undoHistory()" data-test="undo-action-button" />
+    <SingleControlButton
+      icon-name="fa-arrow-rotate-left"
+      large-icon @click-action="undoHistory()"
+      data-test="undo-action-button"
+      v-tippy="{ content: 'Undo', theme: 'material', placement: 'top', animation: 'shift-away' }"
+    />
+
     <BreakLine />
-    <SingleControlButton icon-name="fa-arrow-rotate-right" large-icon @click-action="redoHistory()" data-test="redo-action-button" />
+
+    <SingleControlButton
+      icon-name="fa-arrow-rotate-right"
+      large-icon @click-action="redoHistory()"
+      data-test="redo-action-button"
+      v-tippy="{ content: 'Redo', theme: 'material', placement: 'top', animation: 'shift-away' }"
+    />
   </div>
 </template>
 

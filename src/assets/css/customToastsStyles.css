@@ -1,3 +1,7 @@
+.Vue-Toastification__container {
+  z-index: 10000 !important;
+}
+
 .Vue-Toastification__toast.customToast {
   display: flex;
   align-items: center;
