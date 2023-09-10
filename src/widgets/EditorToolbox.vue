@@ -23,6 +23,7 @@
           <SingleControlButton
             :icon-name="controlButton.icon"
             large-icon
+            :is-active="controlButton.drawTool === store.activePenMode"
             @clickAction="setDrawTool(controlButton.drawTool)"
             v-tippy="{ content: controlButton.tooltipContent, theme: 'material', placement: 'auto', animation: 'shift-away' }"
           />
@@ -44,7 +45,7 @@
 </template>
 
 <script setup lang='ts'>
-import { ref, type Ref } from 'vue';
+import { computed, ref, type Ref } from 'vue';
 import { get, set } from '@vueuse/core';
 import type { ControlButton } from '@/types/CommonTypes';
 import { usePathEditorStore } from '@/stores/PathEditorStore';
@@ -99,4 +100,6 @@ const changePathAlg = (): void => {
 
 /** Activate or deactivate menu */
 const toggleMenu = (): void => set(isMenuActive, !get(isMenuActive));
+
+const isToolActive = (toolToCheck: string) => store.activePenMode === toolToCheck;
 </script>
