@@ -12,7 +12,8 @@
           :content-type="col"
           :row="indexRow"
           :col="indexCol"
-          @tileCords="handleTileCords"
+          @tile-cords-brush="handleTileCordsBrush"
+          @tile-cords-point="handleTileCordsPoint"
           :data-content-type="col"
           data-test="single-tile"
         />
@@ -21,16 +22,23 @@
 </template>
 
 <script setup lang="ts">
-import { watch } from 'vue';
+import { ref, watch } from 'vue';
 import type { TileCords } from '@/types/CommonTypes';
 import { usePathEditorStore } from '@/stores/PathEditorStore';
 import { useWindowSize } from '@vueuse/core';
 import { getNewTilesSize } from '@/modules/commonFunctions/resizeCommon';
+import { useMousePressed } from '@vueuse/core';
 
 import GridTile from '@/components/GridTile.vue';
+import DrawModesEnum from '@/modules/enums/drawModesEnum';
+import CellModesEnum from '@/modules/enums/cellModesEnum';
 
 const store = usePathEditorStore();
 const { width, height } = useWindowSize();
+const { pressed } = useMousePressed();
+
+const tileAtcoords = ref<string | null>(null);
+const tileCoords = ref<TileCords | null>(null);
 
 defineProps({
   /** Structure of grid */
@@ -46,7 +54,35 @@ watch([width, height], () => {
 });
 
 /** Handle emited cords from tile component and do store operation */
-const handleTileCords = (cords: TileCords): void => {
+const handleTileCordsBrush = (cords: TileCords): void => {
+  if (!pressed.value) {
+    tileAtcoords.value = null;
+    tileCoords.value = null;
+    return;
+  }
+
+  if (store.activePenMode === DrawModesEnum.SELECT) {
+    grabTile(cords);
+    return;
+  }
+
   store.doOperation(cords);
+}
+
+const handleTileCordsPoint = (cords: TileCords): void => {
+  store.doOperation(cords);
+}
+
+const grabTile = (cords: TileCords): void => {
+  if (tileAtcoords.value === null) {
+    tileAtcoords.value = store.tableData[cords.row][cords.col];
+  }
+
+  if(tileCoords.value !== null) {
+    store.tableData[tileCoords.value.row][tileCoords.value.col] = CellModesEnum.EMPTY;
+  }
+  store.tableData[cords.row][cords.col] = tileAtcoords.value;
+
+  tileCoords.value = cords;
 }
 </script>

@@ -3,7 +3,8 @@
     class="flex justify-center items-center w-[40px] h-[40px] rounded-[3px] text-white hover:scale-[0.90]
       hover:bg-gray-highlight dark:hover:bg-white/20"
     :class="`${getClasses} ${getAnimationClasses}`"
-    @click="emitCords()"
+    @mousemove="emitCordsBrush"
+    @click="emitCoordsPoint"
     data-test="tile"
   >
     <FontAwesomeIcon
@@ -47,7 +48,8 @@ const props = defineProps({
 
 const emit = defineEmits<{
   /** Emit object that contains information about tile cords */
-  (e: 'tileCords', cords: TileCords): void
+  (e: 'tileCordsBrush', cords: TileCords): void,
+  (e: 'tileCordsPoint', cords: TileCords): void,
 }>();
 
 /** Return specific icon based on 'contentType' */
@@ -113,8 +115,13 @@ const getAnimationClasses = computed<string>(() => {
 });
 
 /** Emit row and col value to parent component */
-const emitCords = (): void => {
+const emitCordsBrush = (): void => {
   const cords: TileCords = { row: props.row, col: props.col };
-  emit('tileCords', cords);
+  emit('tileCordsBrush', cords);
+}
+
+const emitCoordsPoint = (): void => {
+  const cords: TileCords = { row: props.row, col: props.col };
+  emit('tileCordsPoint', cords);
 }
 </script>
