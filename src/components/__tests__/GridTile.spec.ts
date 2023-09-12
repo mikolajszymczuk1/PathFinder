@@ -60,7 +60,7 @@ describe('GridTile', () => {
     });
 
     await wrapper.trigger('click');
-    const emitedCords = wrapper.emitted('tileCords');
+    const emitedCords = wrapper.emitted('tileCordsPoint');
     expect(emitedCords).toHaveLength(1);
     expect(emitedCords![0]).toEqual([{ col: 2, row: 6 }]);
   });
