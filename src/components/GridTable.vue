@@ -32,13 +32,17 @@ import { useMousePressed } from '@vueuse/core';
 import GridTile from '@/components/GridTile.vue';
 import DrawModesEnum from '@/modules/enums/drawModesEnum';
 import CellModesEnum from '@/modules/enums/cellModesEnum';
+import { useTableHistoryStore } from '@/stores/TableHistoryStore';
 
 const store = usePathEditorStore();
+const historyStore = useTableHistoryStore();
 const { width, height } = useWindowSize();
 const { pressed } = useMousePressed();
 
 const tileAtcoords = ref<string | null>(null);
 const tileCoords = ref<TileCords | null>(null);
+
+const recordedTiles = ref<TileCords[] | null>(null);
 
 defineProps({
   /** Structure of grid */
@@ -58,6 +62,8 @@ const handleTileCordsBrush = (cords: TileCords): void => {
   if (!pressed.value) {
     tileAtcoords.value = null;
     tileCoords.value = null;
+
+    endRecordChanges();
     return;
   }
 
@@ -66,11 +72,25 @@ const handleTileCordsBrush = (cords: TileCords): void => {
     return;
   }
 
-  store.doOperation(cords);
+  recordChanges(cords);
 }
 
 const handleTileCordsPoint = (cords: TileCords): void => {
   store.doOperation(cords);
+}
+
+const recordChanges = (coords: TileCords) => {
+  if (recordedTiles.value === null) {
+    recordedTiles.value = [];
+  }
+
+  recordedTiles.value.push(coords);
+  store.updateTableWothTilesCoords(recordedTiles.value)
+}
+
+const endRecordChanges = () => {
+  historyStore.pushHistory(store.tableData);
+  recordedTiles.value = null;
 }
 
 const grabTile = (cords: TileCords): void => {

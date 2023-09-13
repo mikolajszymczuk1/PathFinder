@@ -71,6 +71,32 @@ export const usePathEditorStore = defineStore('pathEditor', {
       toast(ToastTypeEnum.SUCCESS, 'Board have been successfully reset');
     },
 
+    updateTableWothTilesCoords(coords: TileCords[]) {
+      coords.forEach((coord, id) => {
+        this.tableData[coord.row][coord.col] = ((): string => {
+          switch (this.activePenMode) {
+            case DrawModesEnum.SELECT:
+              return this.tableData[coord.row][coord.col];
+
+            case DrawModesEnum.DRAW_WALL:
+              return CellModesEnum.WALL;
+
+            case DrawModesEnum.ERASE_CELL:
+              return CellModesEnum.EMPTY;
+
+            case DrawModesEnum.DRAW_GOAL:
+              return id === 0? CellModesEnum.GOAL : CellModesEnum.EMPTY;
+
+            case DrawModesEnum.DRAW_START:
+              return id === 0? CellModesEnum.START : CellModesEnum.EMPTY;
+
+            default:
+              return CellModesEnum.EMPTY;
+          }
+        })()
+      });
+    },
+
     /**
      * Function change current search algorithm
      * @param {string} newAlg New search algorithm to set
