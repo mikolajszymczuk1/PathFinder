@@ -1,11 +1,12 @@
 <template>
   <div
     class="flex justify-center items-center w-[40px] h-[40px] rounded-[3px] text-white hover:scale-[0.90]
-      hover:bg-gray-highlight dark:hover:bg-white/20"
+      hover:bg-gray-highlight dark:hover:bg-white/20 select-none"
     :class="`${getClasses} ${getAnimationClasses}`"
-    @mousemove="emitCordsBrush"
-    @click="emitCoordsPoint"
+    @mousemove.left="emitCordsBrush"
+    @click.left="emitCoordsPoint"
     data-test="tile"
+    draggable="false"
   >
     <FontAwesomeIcon
       class="h-[auto]"
