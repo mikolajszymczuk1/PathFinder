@@ -93,25 +93,30 @@ describe('PathEditorStore', () => {
       expect(store.selectedAlgorithm).toBe(PathfindingAlgorithmsEnum.DFS);
     });
 
-    it('doOperation should correctly change state of specific tile', () => {
+    it('updateTableWithTilesCoords should correctly change state of specific tiles', () => {
       const store = usePathEditorStore();
-      const testCords: TileCords = { row: 0, col: 1 };
+      const testCords: TileCords[] = [{ row: 0, col: 1 }, { row: 1, col: 2 }];
       store.createTable(2, 3);
-      expect(store.tableData[testCords.row][testCords.col]).toBe(CellModesEnum.EMPTY);
-      store.doOperation(testCords);
-      expect(store.tableData[testCords.row][testCords.col]).toBe(CellModesEnum.EMPTY);
+      expect(store.tableData[testCords[0].row][testCords[0].col]).toBe(CellModesEnum.EMPTY);
+
+      store.updateTableWithTilesCoords(testCords);
+      expect(store.tableData[testCords[0].row][testCords[0].col]).toBe(CellModesEnum.EMPTY);
+      expect(store.tableData[testCords[1].row][testCords[1].col]).toBe(CellModesEnum.EMPTY);
 
       store.selectDrawTool(DrawModesEnum.DRAW_GOAL);
-      store.doOperation(testCords);
-      expect(store.tableData[testCords.row][testCords.col]).toBe(CellModesEnum.GOAL);
+      store.updateTableWithTilesCoords(testCords);
+      expect(store.tableData[testCords[0].row][testCords[0].col]).toBe(CellModesEnum.EMPTY);
+      expect(store.tableData[testCords[1].row][testCords[1].col]).toBe(CellModesEnum.GOAL);
 
       store.selectDrawTool(DrawModesEnum.DRAW_START);
-      store.doOperation(testCords);
-      expect(store.tableData[testCords.row][testCords.col]).toBe(CellModesEnum.START);
+      store.updateTableWithTilesCoords(testCords);
+      expect(store.tableData[testCords[0].row][testCords[0].col]).toBe(CellModesEnum.EMPTY);
+      expect(store.tableData[testCords[1].row][testCords[1].col]).toBe(CellModesEnum.START);
 
       store.selectDrawTool(DrawModesEnum.DRAW_WALL);
-      store.doOperation(testCords);
-      expect(store.tableData[testCords.row][testCords.col]).toBe(CellModesEnum.WALL);
+      store.updateTableWithTilesCoords(testCords);
+      expect(store.tableData[testCords[0].row][testCords[0].col]).toBe(CellModesEnum.WALL);
+      expect(store.tableData[testCords[1].row][testCords[1].col]).toBe(CellModesEnum.WALL);
     });
 
     it('selectDrawTool should correctly set new pen mode', () => {
