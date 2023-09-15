@@ -39,8 +39,9 @@ const historyStore = useTableHistoryStore();
 const { width, height } = useWindowSize();
 const { pressed } = useMousePressed();
 
-const tileAtcoords = ref<string | null>(null);
-const tileCoords = ref<TileCords | null>(null);
+const grabbedTile = ref<string | null>(null);
+const grabbedTileCoords = ref<TileCords>({row: -1, col: -1});
+const tileUnderneathGrabbed = ref<string>(CellModesEnum.EMPTY);
 
 const recordedTiles = ref<TileCords[] | null>(null);
 
@@ -60,8 +61,8 @@ watch([width, height], () => {
 /** Handle emited cords from tile component and do store operation */
 const handleTileCordsBrush = (cords: TileCords): void => {
   if (!pressed.value) {
-    tileAtcoords.value = null;
-    tileCoords.value = null;
+    grabbedTile.value = null;
+    grabbedTileCoords.value = {row: -1, col: -1};
 
     endRecordChanges();
     return;
@@ -76,7 +77,7 @@ const handleTileCordsBrush = (cords: TileCords): void => {
 }
 
 const handleTileCordsPoint = (cords: TileCords): void => {
-  store.doOperation(cords);
+  store.updateTableWithTilesCoords([cords]);
 }
 
 const recordChanges = (coords: TileCords) => {
@@ -85,7 +86,7 @@ const recordChanges = (coords: TileCords) => {
   }
 
   recordedTiles.value.push(coords);
-  store.updateTableWothTilesCoords(recordedTiles.value)
+  store.updateTableWithTilesCoords(recordedTiles.value as TileCords[]);
 }
 
 const endRecordChanges = () => {
@@ -94,15 +95,16 @@ const endRecordChanges = () => {
 }
 
 const grabTile = (cords: TileCords): void => {
-  if (tileAtcoords.value === null) {
-    tileAtcoords.value = store.tableData[cords.row][cords.col];
+  /** Check if there is already grabbed tile */
+  if (grabbedTile.value === null) {
+    grabbedTile.value = store.tableData[cords.row][cords.col];
+    grabbedTileCoords.value = cords;
   }
 
-  if(tileCoords.value !== null) {
-    store.tableData[tileCoords.value.row][tileCoords.value.col] = CellModesEnum.EMPTY;
-  }
-  store.tableData[cords.row][cords.col] = tileAtcoords.value;
+  store.tableData[grabbedTileCoords.value.row][grabbedTileCoords.value.col] = tileUnderneathGrabbed.value;
+  tileUnderneathGrabbed.value = store.tableData[cords.row][cords.col];
+  store.tableData[cords.row][cords.col] = grabbedTile.value;
 
-  tileCoords.value = cords;
+  grabbedTileCoords.value = cords;
 }
 </script>

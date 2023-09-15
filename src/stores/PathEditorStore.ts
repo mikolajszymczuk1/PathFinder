@@ -71,7 +71,7 @@ export const usePathEditorStore = defineStore('pathEditor', {
       toast(ToastTypeEnum.SUCCESS, 'Board have been successfully reset');
     },
 
-    updateTableWothTilesCoords(coords: TileCords[]) {
+    updateTableWithTilesCoords(coords: TileCords[]) {
       coords.forEach((coord, id) => {
         this.tableData[coord.row][coord.col] = ((): string => {
           switch (this.activePenMode) {
@@ -85,16 +85,20 @@ export const usePathEditorStore = defineStore('pathEditor', {
               return CellModesEnum.EMPTY;
 
             case DrawModesEnum.DRAW_GOAL:
-              return id === 0? CellModesEnum.GOAL : CellModesEnum.EMPTY;
+              this.deleteAllTilesByType(CellModesEnum.GOAL);
+              return id >= coords.length - 1? CellModesEnum.GOAL : CellModesEnum.EMPTY;
 
             case DrawModesEnum.DRAW_START:
-              return id === 0? CellModesEnum.START : CellModesEnum.EMPTY;
+              this.deleteAllTilesByType(CellModesEnum.START);
+              return id >= coords.length - 1? CellModesEnum.START : CellModesEnum.EMPTY;
 
             default:
               return CellModesEnum.EMPTY;
           }
-        })()
+        })();
       });
+
+      this.clearTable();
     },
 
     /**
@@ -104,45 +108,6 @@ export const usePathEditorStore = defineStore('pathEditor', {
     changeAlgorithm(newAlg: string): void {
       this.selectedAlgorithm = newAlg;
       toast(ToastTypeEnum.SUCCESS, `Switched to ${newAlg.toUpperCase()} algorithm`);
-    },
-
-    /**
-     * Do editor operation on selected tile
-     * @type {void}
-     * @param {TileCords} cords Specific tile cords
-    */
-    doOperation(cords: TileCords): void {
-      const { row, col } = cords;
-      const historyStore = useTableHistoryStore();
-
-      switch (this.activePenMode) {
-        case DrawModesEnum.SELECT:
-          // Do nothing
-          break;
-
-        case DrawModesEnum.DRAW_START:
-          this.deleteAllTilesByType(CellModesEnum.START);
-          this.tableData[row][col] = CellModesEnum.START;
-          break;
-
-        case DrawModesEnum.DRAW_GOAL:
-          this.deleteAllTilesByType(CellModesEnum.GOAL)
-          this.tableData[row][col] = CellModesEnum.GOAL;
-          break;
-
-        case DrawModesEnum.DRAW_WALL:
-          this.tableData[row][col] = CellModesEnum.WALL;
-          break;
-
-        case DrawModesEnum.ERASE_CELL:
-          this.tableData[row][col] = CellModesEnum.EMPTY;
-          break;
-      }
-
-      this.clearTable();
-      if (this.activePenMode !== DrawModesEnum.SELECT) {
-        historyStore.pushHistory(this.tableData);
-      }
     },
 
     /**
