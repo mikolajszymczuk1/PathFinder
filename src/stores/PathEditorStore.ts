@@ -4,6 +4,7 @@ import { isValueInEnum } from '@/modules/commonFunctions/enumHelpers';
 import { getStartAndGoalCords } from '@/modules/commonFunctions/searchingHelpers';
 import { toast } from '@/modules/toasts/pathFinderToasts';
 import { useTableHistoryStore } from '@/stores/TableHistoryStore';
+import { useAnimationControllerStore } from '@/stores/AnimationControllerStore';
 import DrawModesEnum from '@/modules/enums/drawModesEnum';
 import CellModesEnum from '@/modules/enums/cellModesEnum';
 import PathfindingAlgorithmsEnum from '@/modules/enums/pathfindingAlgorithmsEnum';
@@ -93,7 +94,15 @@ export const usePathEditorStore = defineStore('pathEditor', {
      * TODO: Add comment here
      * @param {TileCords[]} cords Array of tile cords
      */
-    updateTableWithTilesCords(cords: TileCords[]) {
+    updateTableWithTilesCords(cords: TileCords[]): void {
+      const animationControllerStore = useAnimationControllerStore();
+
+      // Block toolbox when animation is running
+      if (!animationControllerStore.isPaused) {
+        toast(ToastTypeEnum.ERROR, 'You cannot use tools while the animation is running !');
+        return;
+      }
+
       cords.forEach((cord, index) => {
         this.tableData[cord.row][cord.col] = ((): string => {
           switch (this.activePenMode) {
