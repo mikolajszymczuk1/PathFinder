@@ -52,4 +52,16 @@ describe('SingleControlButton', () => {
     expect(findControlIcon().classes()).toContain('md:w-auto');
     expect(findControlIcon().classes()).toContain('md:h-[25px]');
   });
+
+  it('When isActive prop is active, should highlight icon', () => {
+    createComponent({
+      props: {
+        iconName: 'fa-play',
+        isActive: true,
+      }
+    });
+
+    expect(findControlIcon().classes()).toContain('text-lime');
+    expect(findControlIcon().classes()).toContain('dark:text-orange');
+  });
 });

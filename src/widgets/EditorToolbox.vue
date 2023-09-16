@@ -23,7 +23,7 @@
           <SingleControlButton
             :icon-name="controlButton.icon"
             large-icon
-            :is-active="controlButton.drawTool === store.activePenMode"
+            :is-active="isToolActive(controlButton.drawTool)"
             @clickAction="setDrawTool(controlButton.drawTool)"
             v-tippy="{ content: controlButton.tooltipContent, theme: 'material', placement: 'auto', animation: 'shift-away' }"
           />
@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang='ts'>
-import { computed, ref, type Ref } from 'vue';
+import { ref, type Ref } from 'vue';
 import { get, set } from '@vueuse/core';
 import type { ControlButton } from '@/types/CommonTypes';
 import { usePathEditorStore } from '@/stores/PathEditorStore';
@@ -56,6 +56,7 @@ import PathfindingAlgorithmsEnum from '@/modules/enums/pathfindingAlgorithmsEnum
 import MenuIcon from '@/components/icons/MenuIcon.vue';
 import SingleControlButton from '@/components/buttons/SingleControlButton.vue';
 import BreakLine from '@/components/common/BreakLine.vue';
+
 import EditorHistoryControl from '@/widgets/EditorHistoryControl.vue';
 import EditorResetButton from '@/widgets/EditorResetButton.vue';
 
@@ -101,5 +102,10 @@ const changePathAlg = (): void => {
 /** Activate or deactivate menu */
 const toggleMenu = (): void => set(isMenuActive, !get(isMenuActive));
 
-const isToolActive = (toolToCheck: string) => store.activePenMode === toolToCheck;
+/**
+ * Check if `toolToCheck` is currently active tool
+ * @param {string} toolToCheck Tool to check
+ * @return {boolean} True if tool is currently active tool
+ */
+const isToolActive = (toolToCheck: string): boolean => store.activePenMode === toolToCheck;
 </script>

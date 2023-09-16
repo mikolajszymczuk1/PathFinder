@@ -41,3 +41,18 @@ export const LargeIcon: Story = {
     largeIcon: true,
   },
 };
+
+export const ActiveIcon: Story = {
+  render: (args) => ({
+    components: { SingleControlButton },
+    setup() {
+      return { args };
+    },
+    template: '<SingleControlButton v-bind="args" />',
+  }),
+  args: {
+    iconName: 'fa-play',
+    largeIcon: false,
+    isActive: true,
+  },
+};
