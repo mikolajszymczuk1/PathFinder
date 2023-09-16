@@ -1,49 +1,48 @@
 <template>
-  <div class="flex flex-col gap-[4px]">
+  <div class="flex flex-col gap-[4px] select-none">
     <div
       class="flex gap-[4px]"
       v-for="row, indexRow in tableData"
       :key="indexRow"
       data-test="single-row"
     >
-        <GridTile
-          v-for="col, indexCol in row"
-          :key="`${indexRow}x${indexCol}`"
-          :content-type="col"
-          :row="indexRow"
-          :col="indexCol"
-          @tile-cords-brush="handleTileCordsBrush"
-          @tile-cords-point="handleTileCordsPoint"
-          :data-content-type="col"
-          data-test="single-tile"
-        />
+      <GridTile
+        v-for="col, indexCol in row"
+        :key="`${indexRow}x${indexCol}`"
+        :content-type="col"
+        :row="indexRow"
+        :col="indexCol"
+        @tile-cords-brush="handleTileCordsBrush"
+        @tile-cords-point="handleTileCordsPoint"
+        :data-content-type="col"
+        data-test="single-tile"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, type Ref, watch } from 'vue';
 import type { TileCords } from '@/types/CommonTypes';
 import { usePathEditorStore } from '@/stores/PathEditorStore';
-import { useWindowSize } from '@vueuse/core';
+import { useTableHistoryStore } from '@/stores/TableHistoryStore';
+import { useWindowSize, useMousePressed, get, set } from '@vueuse/core';
 import { getNewTilesSize } from '@/modules/commonFunctions/resizeCommon';
-import { useMousePressed } from '@vueuse/core';
-
-import GridTile from '@/components/GridTile.vue';
 import DrawModesEnum from '@/modules/enums/drawModesEnum';
 import CellModesEnum from '@/modules/enums/cellModesEnum';
-import { useTableHistoryStore } from '@/stores/TableHistoryStore';
 
-const store = usePathEditorStore();
+import GridTile from '@/components/GridTile.vue';
+
+const pathEditorStore = usePathEditorStore();
 const historyStore = useTableHistoryStore();
+
 const { width, height } = useWindowSize();
 const { pressed } = useMousePressed();
 
-const grabbedTile = ref<string | null>(null);
-const grabbedTileCoords = ref<TileCords>({row: -1, col: -1});
-const tileUnderneathGrabbed = ref<string>(CellModesEnum.EMPTY);
-
-const recordedTiles = ref<TileCords[] | null>(null);
+const grabbedTile: Ref<string> = ref('');
+const grabbedTileCoords: Ref<TileCords> = ref({ row: -1, col: -1 });
+const tileUnderneathGrabbed: Ref<string> = ref(CellModesEnum.EMPTY);
+const recordedTiles: Ref<TileCords[]> = ref([]);
 
 defineProps({
   /** Structure of grid */
@@ -55,20 +54,22 @@ defineProps({
 
 watch([width, height], () => {
   const { twidth, theight } = getNewTilesSize(width, height);
-  store.createTable(twidth, theight);
+  pathEditorStore.createTable(twidth, theight);
 });
 
-/** Handle emited cords from tile component and do store operation */
+/**
+ * Handle emited cords from tile component and do brush action
+ * @param {TileCords} cords Tile cords
+ */
 const handleTileCordsBrush = (cords: TileCords): void => {
-  if (!pressed.value) {
-    grabbedTile.value = null;
-    grabbedTileCoords.value = {row: -1, col: -1};
-
+  if (!get(pressed)) {
+    set(grabbedTile, '');
+    set(grabbedTileCoords, { row: -1, col: -1 });
     endRecordChanges();
     return;
   }
 
-  if (store.activePenMode === DrawModesEnum.SELECT) {
+  if (pathEditorStore.activePenMode === DrawModesEnum.SELECT) {
     grabTile(cords);
     return;
   }
@@ -76,35 +77,43 @@ const handleTileCordsBrush = (cords: TileCords): void => {
   recordChanges(cords);
 }
 
+/**
+ * Handle emited cords from tile component and do store operation
+ * @param {TileCords} cords Tile cords
+ */
 const handleTileCordsPoint = (cords: TileCords): void => {
-  store.updateTableWithTilesCoords([cords]);
+  pathEditorStore.updateTableWithTilesCords([cords]);
 }
 
-const recordChanges = (coords: TileCords) => {
-  if (recordedTiles.value === null) {
-    recordedTiles.value = [];
-  }
-
-  recordedTiles.value.push(coords);
-  store.updateTableWithTilesCoords(recordedTiles.value as TileCords[]);
+/**
+ * TODO: Add comment here
+ * @param {TileCords} cords Tile cords
+ */
+const recordChanges = (cords: TileCords): void => {
+  get(recordedTiles).push(cords);
+  pathEditorStore.updateTableWithTilesCords(get(recordedTiles) as TileCords[]);
 }
 
-const endRecordChanges = () => {
-  historyStore.pushHistory(store.tableData);
-  recordedTiles.value = null;
+/** TODO: Add comment here */
+const endRecordChanges = (): void => {
+  historyStore.pushHistory(pathEditorStore.tableData);
+  set(recordedTiles, []);
 }
 
+/**
+ * TODO: Add comment here
+ * @param {TileCords} cords Tile cords
+ */
 const grabTile = (cords: TileCords): void => {
-  /** Check if there is already grabbed tile */
-  if (grabbedTile.value === null) {
-    grabbedTile.value = store.tableData[cords.row][cords.col];
-    grabbedTileCoords.value = cords;
+  // Check if there is already grabbed tile
+  if (get(grabbedTile) === '') {
+    set(grabbedTile, pathEditorStore.tableData[cords.row][cords.col]);
+    set(grabbedTileCoords, cords);
   }
 
-  store.tableData[grabbedTileCoords.value.row][grabbedTileCoords.value.col] = tileUnderneathGrabbed.value;
-  tileUnderneathGrabbed.value = store.tableData[cords.row][cords.col];
-  store.tableData[cords.row][cords.col] = grabbedTile.value;
-
-  grabbedTileCoords.value = cords;
+  pathEditorStore.tableData[get(grabbedTileCoords).row][get(grabbedTileCoords).col] = get(tileUnderneathGrabbed);
+  set(tileUnderneathGrabbed, pathEditorStore.tableData[cords.row][cords.col]);
+  pathEditorStore.tableData[cords.row][cords.col] = get(grabbedTile);
+  set(grabbedTileCoords, cords);
 }
 </script>

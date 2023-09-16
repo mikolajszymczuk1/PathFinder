@@ -1,12 +1,11 @@
 <template>
   <div
     class="flex justify-center items-center w-[40px] h-[40px] rounded-[3px] text-white hover:scale-[0.90]
-      hover:bg-gray-highlight dark:hover:bg-white/20 select-none"
+      hover:bg-gray-highlight dark:hover:bg-white/20"
     :class="`${getClasses} ${getAnimationClasses}`"
     @mousemove.left="emitCordsBrush"
-    @click.left="emitCoordsPoint"
+    @click.left="emitCordsPoint"
     data-test="tile"
-    draggable="false"
   >
     <FontAwesomeIcon
       class="h-[auto]"
@@ -21,8 +20,14 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { TileCords } from '@/types/CommonTypes';
-import CellModesEnum from '@/modules/enums/cellModesEnum';
 import { getEnumValues } from '@/modules/commonFunctions/enumHelpers';
+import { usePathEditorStore } from '@/stores/PathEditorStore';
+import { useAnimationControllerStore } from '@/stores/AnimationControllerStore';
+import CellModesEnum from '@/modules/enums/cellModesEnum';
+import { get } from '@vueuse/core';
+
+const pathEditorStore = usePathEditorStore();
+const animationControllerStore = useAnimationControllerStore();
 
 const props = defineProps({
   /** Type of tile for example wall, start, stop, ... */
@@ -52,6 +57,11 @@ const emit = defineEmits<{
   (e: 'tileCordsBrush', cords: TileCords): void,
   (e: 'tileCordsPoint', cords: TileCords): void,
 }>();
+
+/** Return tile cords object */
+const tileCords = computed<TileCords>(() => {
+  return { row: props.row, col: props.col };
+});
 
 /** Return specific icon based on 'contentType' */
 const getIcon = computed<string>(() => {
@@ -117,12 +127,12 @@ const getAnimationClasses = computed<string>(() => {
 
 /** Emit row and col value to parent component */
 const emitCordsBrush = (): void => {
-  const cords: TileCords = { row: props.row, col: props.col };
-  emit('tileCordsBrush', cords);
+  if (!pathEditorStore.isTableCleared || !animationControllerStore.isAnimFinished) return;
+  emit('tileCordsBrush', get(tileCords));
 }
 
-const emitCoordsPoint = (): void => {
-  const cords: TileCords = { row: props.row, col: props.col };
-  emit('tileCordsPoint', cords);
+/** Emit row and col value to parent component */
+const emitCordsPoint = (): void => {
+  emit('tileCordsPoint', get(tileCords));
 }
 </script>

@@ -3,14 +3,14 @@ import { usePathEditorStore } from '@/stores/PathEditorStore';
 import { areStartAndGoalPlaced, areTilesCordsEqual } from '@/modules/commonFunctions/searchingHelpers';
 import { EDITOR_CONST } from '@/modules/consts/editorConst';
 import { delay } from '@/modules/commonFunctions/delayHelpers';
-import CellModesEnum from '@/modules/enums/cellModesEnum';
-import PathfindingAlgorithmsEnum from '@/modules/enums/pathfindingAlgorithmsEnum';
 import { bfs } from '@/modules/pathfindingAlgorithms/bfs';
 import { dfs } from '@/modules/pathfindingAlgorithms/dfs';
 import { gbfs } from '@/modules/pathfindingAlgorithms/gbfs';
 import { recontructShortestPath } from '@/modules/commonFunctions/pathfindingHelpers';
 import type { TileCords } from '@/types/CommonTypes';
 import { toast } from '@/modules/toasts/pathFinderToasts';
+import CellModesEnum from '@/modules/enums/cellModesEnum';
+import PathfindingAlgorithmsEnum from '@/modules/enums/pathfindingAlgorithmsEnum';
 import ToastTypeEnum from '@/modules/enums/toastTypesEnum';
 
 interface State {
