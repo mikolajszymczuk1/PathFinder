@@ -1,5 +1,6 @@
-import { expect, it, describe } from 'vitest';
+import { expect, it, describe, vi } from 'vitest';
 import { mount, type VueWrapper } from '@vue/test-utils';
+import { createTestingPinia } from '@pinia/testing';
 import CellModesEnum from '@/modules/enums/cellModesEnum';
 import GridTile from '@/components/GridTile.vue';
 
@@ -8,6 +9,7 @@ describe('GridTile', () => {
   const createComponent = (config = {}) => {
     wrapper = mount(GridTile, {
       global: {
+        plugins: [createTestingPinia({ createSpy: vi.fn, stubActions: false })],
         stubs: ['FontAwesomeIcon'],
       },
       ...config,
@@ -61,6 +63,21 @@ describe('GridTile', () => {
 
     await wrapper.trigger('click');
     const emitedCords = wrapper.emitted('tileCordsPoint');
+    expect(emitedCords).toHaveLength(1);
+    expect(emitedCords![0]).toEqual([{ col: 2, row: 6 }]);
+  });
+
+  it('Should emit cords when user move cursor on tile', async () => {
+    createComponent({
+      props: {
+        contentType: CellModesEnum.EMPTY,
+        col: 2,
+        row: 6,
+      }
+    });
+
+    await wrapper.trigger('mousemove');
+    const emitedCords = wrapper.emitted('tileCordsBrush');
     expect(emitedCords).toHaveLength(1);
     expect(emitedCords![0]).toEqual([{ col: 2, row: 6 }]);
   });

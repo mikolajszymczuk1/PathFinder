@@ -2,13 +2,12 @@ import { defineStore } from 'pinia';
 import type { TileCords } from '@/types/CommonTypes';
 import { isValueInEnum } from '@/modules/commonFunctions/enumHelpers';
 import { getStartAndGoalCords } from '@/modules/commonFunctions/searchingHelpers';
+import { toast } from '@/modules/toasts/pathFinderToasts';
+import { useTableHistoryStore } from '@/stores/TableHistoryStore';
 import DrawModesEnum from '@/modules/enums/drawModesEnum';
 import CellModesEnum from '@/modules/enums/cellModesEnum';
 import PathfindingAlgorithmsEnum from '@/modules/enums/pathfindingAlgorithmsEnum';
-import { toast } from '@/modules/toasts/pathFinderToasts';
 import ToastTypeEnum from '@/modules/enums/toastTypesEnum';
-
-import { useTableHistoryStore } from './TableHistoryStore';
 
 interface State {
   tableData: string[][],
@@ -23,10 +22,29 @@ export const usePathEditorStore = defineStore('pathEditor', {
     selectedAlgorithm: PathfindingAlgorithmsEnum.BFS,
   }),
   getters: {
-    /** Returns position of start and goald tiles */
+    /**
+     * Returns position of start and goald tiles
+     * @return {{ start: TileCords, goal: TileCords }} Start and goal positions
+     */
     startAndGoalCords(): { start: TileCords, goal: TileCords } {
       return getStartAndGoalCords(this.tableData);
     },
+
+    /**
+     * Return true if there are not animation staff
+     * @return {boolean} True if there are not animation staff
+     */
+    isTableCleared(): boolean {
+      for (let i = 0; i < this.tableData.length; i++) {
+        for (let j = 0; j < this.tableData[i].length; j++) {
+          if (this.tableData[i][j] === CellModesEnum.DISCOVERED || this.tableData[i][j] === CellModesEnum.PATH) {
+            return false;
+          }
+        }
+      }
+
+      return true;
+    }
   },
   actions: {
     /**
@@ -71,12 +89,16 @@ export const usePathEditorStore = defineStore('pathEditor', {
       toast(ToastTypeEnum.SUCCESS, 'Board have been successfully reset');
     },
 
-    updateTableWithTilesCoords(coords: TileCords[]) {
-      coords.forEach((coord, id) => {
-        this.tableData[coord.row][coord.col] = ((): string => {
+    /**
+     * TODO: Add comment here
+     * @param {TileCords[]} cords Array of tile cords
+     */
+    updateTableWithTilesCords(cords: TileCords[]) {
+      cords.forEach((cord, index) => {
+        this.tableData[cord.row][cord.col] = ((): string => {
           switch (this.activePenMode) {
             case DrawModesEnum.SELECT:
-              return this.tableData[coord.row][coord.col];
+              return this.tableData[cord.row][cord.col];
 
             case DrawModesEnum.DRAW_WALL:
               return CellModesEnum.WALL;
@@ -86,11 +108,11 @@ export const usePathEditorStore = defineStore('pathEditor', {
 
             case DrawModesEnum.DRAW_GOAL:
               this.deleteAllTilesByType(CellModesEnum.GOAL);
-              return id >= coords.length - 1? CellModesEnum.GOAL : CellModesEnum.EMPTY;
+              return index >= cords.length - 1 ? CellModesEnum.GOAL : CellModesEnum.EMPTY;
 
             case DrawModesEnum.DRAW_START:
               this.deleteAllTilesByType(CellModesEnum.START);
-              return id >= coords.length - 1? CellModesEnum.START : CellModesEnum.EMPTY;
+              return index >= cords.length - 1 ? CellModesEnum.START : CellModesEnum.EMPTY;
 
             default:
               return CellModesEnum.EMPTY;
@@ -136,7 +158,7 @@ export const usePathEditorStore = defineStore('pathEditor', {
           }
 
           this.tableData[rowIndex][colIndex] = CellModesEnum.EMPTY;
-        })
+        });
       });
     },
   },

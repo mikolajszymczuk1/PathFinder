@@ -31,6 +31,26 @@ describe('PathEditorStore', () => {
         goal: { row: 1, col: 1 },
       });
     });
+
+    it('isTableCleared should return true if there are not any path and discover tiles', () => {
+      const store = usePathEditorStore();
+
+      store.tableData = [
+        ['E', 'S', 'E'],
+        ['E', 'G', 'E'],
+        ['E', 'E', 'E'],
+      ];
+
+      expect(store.isTableCleared).toBeTruthy();
+
+      store.tableData = [
+        ['E', 'S', 'E'],
+        ['P', 'G', 'E'],
+        ['P', 'E', 'E'],
+      ];
+
+      expect(store.isTableCleared).toBeFalsy();
+    });
   });
 
   describe('actions', () => {
@@ -93,28 +113,28 @@ describe('PathEditorStore', () => {
       expect(store.selectedAlgorithm).toBe(PathfindingAlgorithmsEnum.DFS);
     });
 
-    it('updateTableWithTilesCoords should correctly change state of specific tiles', () => {
+    it('updateTableWithTilesCords should correctly change state of specific tiles', () => {
       const store = usePathEditorStore();
       const testCords: TileCords[] = [{ row: 0, col: 1 }, { row: 1, col: 2 }];
       store.createTable(2, 3);
       expect(store.tableData[testCords[0].row][testCords[0].col]).toBe(CellModesEnum.EMPTY);
 
-      store.updateTableWithTilesCoords(testCords);
+      store.updateTableWithTilesCords(testCords);
       expect(store.tableData[testCords[0].row][testCords[0].col]).toBe(CellModesEnum.EMPTY);
       expect(store.tableData[testCords[1].row][testCords[1].col]).toBe(CellModesEnum.EMPTY);
 
       store.selectDrawTool(DrawModesEnum.DRAW_GOAL);
-      store.updateTableWithTilesCoords(testCords);
+      store.updateTableWithTilesCords(testCords);
       expect(store.tableData[testCords[0].row][testCords[0].col]).toBe(CellModesEnum.EMPTY);
       expect(store.tableData[testCords[1].row][testCords[1].col]).toBe(CellModesEnum.GOAL);
 
       store.selectDrawTool(DrawModesEnum.DRAW_START);
-      store.updateTableWithTilesCoords(testCords);
+      store.updateTableWithTilesCords(testCords);
       expect(store.tableData[testCords[0].row][testCords[0].col]).toBe(CellModesEnum.EMPTY);
       expect(store.tableData[testCords[1].row][testCords[1].col]).toBe(CellModesEnum.START);
 
       store.selectDrawTool(DrawModesEnum.DRAW_WALL);
-      store.updateTableWithTilesCoords(testCords);
+      store.updateTableWithTilesCords(testCords);
       expect(store.tableData[testCords[0].row][testCords[0].col]).toBe(CellModesEnum.WALL);
       expect(store.tableData[testCords[1].row][testCords[1].col]).toBe(CellModesEnum.WALL);
     });
