@@ -2,6 +2,7 @@
 import { expect, it, describe, beforeEach } from 'vitest';
 import { setActivePinia, createPinia } from 'pinia';
 import { usePathEditorStore } from '@/stores/PathEditorStore';
+import { useAnimationControllerStore } from '@/stores/AnimationControllerStore';
 import type { TileCords } from '@/types/CommonTypes';
 import CellModesEnum from '@/modules/enums/cellModesEnum';
 import DrawModesEnum from '@/modules/enums/drawModesEnum';
@@ -137,6 +138,23 @@ describe('PathEditorStore', () => {
       store.updateTableWithTilesCords(testCords);
       expect(store.tableData[testCords[0].row][testCords[0].col]).toBe(CellModesEnum.WALL);
       expect(store.tableData[testCords[1].row][testCords[1].col]).toBe(CellModesEnum.WALL);
+    });
+
+    it('updateTableWithTilesCords should not do any operation when animation is running', () => {
+      const pathEditorStore = usePathEditorStore();
+      const animationControllerStore = useAnimationControllerStore();
+      const testCords: TileCords[] = [{ row: 0, col: 1 }];
+
+      pathEditorStore.createTable(2, 3);
+      pathEditorStore.selectDrawTool(DrawModesEnum.DRAW_GOAL);
+      pathEditorStore.updateTableWithTilesCords(testCords);
+
+      expect(pathEditorStore.tableData[testCords[0].row][testCords[0].col]).toBe(CellModesEnum.GOAL);
+
+      animationControllerStore.isPaused = false;
+      pathEditorStore.selectDrawTool(DrawModesEnum.DRAW_WALL);
+      pathEditorStore.updateTableWithTilesCords(testCords);
+      expect(pathEditorStore.tableData[testCords[0].row][testCords[0].col]).toBe(CellModesEnum.GOAL);
     });
 
     it('selectDrawTool should correctly set new pen mode', () => {
