@@ -27,6 +27,7 @@
   fill: white;
 }
 
+/* SUCCESS */
 .Vue-Toastification__toast--success.customToast {
   background-color: #9EE37D;
 }
@@ -35,6 +36,15 @@
   background-color: #B7EB9E;
 }
 
+.dark .Vue-Toastification__toast--success.customToast {
+  background-color: #5E43F3;
+}
+
+.dark .Vue-Toastification__toast--success.customToast > .toastIconContainer {
+  background-color: #FFAE64;
+}
+
+/* WARNING */
 .Vue-Toastification__toast--warning.customToast {
   background-color: #FFAE64;
 }
@@ -43,6 +53,11 @@
   background-color: #FDC28D;
 }
 
+.dark .Vue-Toastification__toast--warning.customToast {
+  background-color: #F8861B;
+}
+
+/* ERROR */
 .Vue-Toastification__toast--error.customToast {
   background-color: #FC6060;
 }
