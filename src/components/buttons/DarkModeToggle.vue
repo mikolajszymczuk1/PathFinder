@@ -15,8 +15,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref } from 'vue';
-import { get, set } from '@vueuse/core';
+import { ref, type Ref, onMounted } from 'vue';
+import { get, set, useStorage } from '@vueuse/core';
 import { toast } from '@/modules/toasts/pathFinderToasts';
 import ToastTypeEnum from '@/modules/enums/toastTypesEnum';
 
@@ -24,13 +24,25 @@ const LIGHT_MODE_ICON = 'sun';
 const DARK_MODE_ICON = 'moon';
 const DARK_MODE_CLASS = 'dark';
 
+/** Store dark mode active status in localStorage */
+const storage = useStorage('dark-mode', false);
+
 /** Dark mode active status */
 const isActive: Ref<boolean> = ref(false);
 
 /** Change mode status */
 const switchMode = (): void => {
   set(isActive, !get(isActive));
+  set(storage, !get(storage));
   document.documentElement.classList.toggle(DARK_MODE_CLASS);
   toast(ToastTypeEnum.SUCCESS, `Dark mode ${get(isActive) ? 'ON' : 'OFF'} !`);
 };
+
+onMounted(() => {
+  get(storage)
+    ? document.documentElement.classList.add(DARK_MODE_CLASS)
+    : document.documentElement.classList.remove(DARK_MODE_CLASS);
+
+  set(isActive, get(storage));
+});
 </script>
