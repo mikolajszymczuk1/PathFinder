@@ -10,12 +10,12 @@ describe('TableHistoryStore', () => {
   describe('getters', () => {
     it('Should return undefined with no history pushed', () => {
       const store = useTableHistoryStore();
-      expect(store.getPreviousTable()).toEqual(undefined);
+      expect(store.getPreviousTable()).toEqual('');
     });
 
     it('Should return undefined with no history pushed', () => {
       const store = useTableHistoryStore();
-      expect(store.getNextTable()).toEqual(undefined);
+      expect(store.getNextTable()).toEqual('');
     });
 
     it('Should return previous table with history pushed', () => {

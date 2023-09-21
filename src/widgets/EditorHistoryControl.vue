@@ -34,7 +34,7 @@ const historyStore = useTableHistoryStore();
 /** Undo history */
 const undoHistory = () => {
   const prevTable = historyStore.setPreviousTable();
-  if (prevTable === undefined) {
+  if (prevTable.length === 0) {
     return;
   }
 
@@ -44,7 +44,7 @@ const undoHistory = () => {
 /** Redo history */
 const redoHistory = () => {
   const nextTable = historyStore.setNextTable();
-  if (nextTable === undefined) {
+  if (nextTable.length === 0) {
     return;
   }
 

@@ -7,6 +7,8 @@ interface State {
   length: number,
 }
 
+type GetPrevNextTableFunction = (depth?: number) => string;
+
 export const useTableHistoryStore = defineStore('tableHistory', {
   state: (): State => ({
     tables: [],
@@ -19,14 +21,14 @@ export const useTableHistoryStore = defineStore('tableHistory', {
      * Returns the n-th previous table from history if possible. \
      * ``` This getter is not unhashing the table ``` \
      * ``` Can be used to get actual table ```
-     * @param {number} depth n-th table from pointer
      * @param {State} state store state
-     * @returns
+     * @param {number} depth n-th table from pointer
+     * @return {GetPrevNextTableFunction}
      */
-    getPreviousTable: (state: State) => {
-      return (depth = 1): string | undefined => {
+    getPreviousTable: (state: State): GetPrevNextTableFunction => {
+      return (depth = 1): string => {
         if (state.pointer < depth) {
-          return undefined;
+          return '';
         }
 
         return state.tables[state.pointer - depth];
@@ -36,14 +38,14 @@ export const useTableHistoryStore = defineStore('tableHistory', {
      * Returns the n-th next table from history if possible. \
      * ``` This getter is not unhashing the table ``` \
      * ``` Can be used to get actual table ```
-     * @param {number} depth n-th table from pointer
      * @param {State} state store state
+     * @param {number} depth n-th table from pointer
      * @returns
      */
-    getNextTable: (state: State) => {
-      return (depth = 1): string | undefined => {
+    getNextTable: (state: State): GetPrevNextTableFunction => {
+      return (depth = 1): string => {
         if (state.pointer + depth >= state.tables.length) {
-          return undefined;
+          return '';
         }
 
         return state.tables[state.pointer + depth];
@@ -80,21 +82,21 @@ export const useTableHistoryStore = defineStore('tableHistory', {
     },
 
     /** TODO: Add comment here */
-    popHistory(): string | undefined {
+    popHistory(): string {
       if (this.tables.length <= 1) {
-        return undefined;
+        return '';
       }
 
-      const grid = this.tables.shift();
+      const grid = this.tables.shift() as string;
       this.pointer -= 1;
       return grid;
     },
 
     /** TODO: Add comment here */
-    setPreviousTable(): string[][] | undefined {
+    setPreviousTable(): string[][] {
       const prevTable = this.getPreviousTable();
-      if (prevTable === undefined) {
-        return undefined;
+      if (prevTable === '') {
+        return [];
       }
 
       this.pointer -= 1;
@@ -102,10 +104,10 @@ export const useTableHistoryStore = defineStore('tableHistory', {
     },
 
     /** TODO: Add comment here */
-    setNextTable(): string[][] | undefined {
+    setNextTable(): string[][] {
       const nextTable = this.getNextTable();
-      if (nextTable === undefined) {
-        return undefined;
+      if (nextTable === '') {
+        return [];
       }
 
       this.pointer += 1;
