@@ -8,95 +8,113 @@ describe('TableHistoryStore', () => {
   });
 
   describe('getters', () => {
-    it('Should return undefined with no history pushed', () => {
-      const store = useTableHistoryStore();
-      expect(store.getPreviousTable()).toEqual('');
+    describe('getPreviousTable', () => {
+      it('Should return empty string with no history pushed', () => {
+        const store = useTableHistoryStore();
+        expect(store.getPreviousTable()).toEqual('');
+      });
+
+      it('Should return previous table with history pushed', () => {
+        const store = useTableHistoryStore();
+        const testString = 'there should be history hash value';
+
+        // Set history manually
+        store.tables.push(testString);
+        store.tables.push(testString);
+        store.pointer = 1
+
+        expect(store.getPreviousTable()).toEqual(testString);
+      });
     });
 
-    it('Should return undefined with no history pushed', () => {
-      const store = useTableHistoryStore();
-      expect(store.getNextTable()).toEqual('');
-    });
+    describe('getNextTable', () => {
+      it('Should return empty string with no history pushed', () => {
+        const store = useTableHistoryStore();
+        expect(store.getNextTable()).toEqual('');
+      });
 
-    it('Should return previous table with history pushed', () => {
-      const store = useTableHistoryStore();
-      const testString = 'there should be history hash value';
+      it('Should return next table with history pushed', () => {
+        const store = useTableHistoryStore();
+        const testString = 'there should be history hash value';
 
-      // Set history manually
-      store.tables.push(testString);
-      store.tables.push(testString);
-      store.pointer = 1
+        // Set history manually
+        store.tables.push(testString);
+        store.tables.push(testString);
+        store.pointer = 0;
 
-      expect(store.getPreviousTable()).toEqual(testString);
-    });
-
-    it('Should return next table with history pushed', () => {
-      const store = useTableHistoryStore();
-      const testString = 'there should be history hash value';
-
-      // Set history manually
-      store.tables.push(testString);
-      store.tables.push(testString);
-      store.pointer = 0;
-
-      expect(store.getNextTable()).toEqual(testString);
+        expect(store.getNextTable()).toEqual(testString);
+      });
     });
   });
 
   describe('actions', () => {
-    it('Should push data o history', () => {
-      const store = useTableHistoryStore();
-      const testTable = [['a', 'a', 'a']];
+    describe('pushHistory', () => {
+      it('Should push data to history', () => {
+        const store = useTableHistoryStore();
+        const testTable = [['a', 'a', 'a']];
 
-      store.pushHistory(testTable);
-      expect({
-        tables: store.tables,
-        pointer: store.pointer,
-      }).toStrictEqual({
-        tables: ['3a'],
-        pointer: 0
+        store.pushHistory(testTable);
+        expect({
+          tables: store.tables,
+          pointer: store.pointer,
+        }).toStrictEqual({
+          tables: ['3a'],
+          pointer: 0
+        });
       });
     });
 
-    it('Should pop history', () => {
-      const store = useTableHistoryStore();
+    describe('popHistory', () => {
+      it('Should pop history', () => {
+        const store = useTableHistoryStore();
 
-      store.tables = ['3a', '4a', '5a'];
-      store.pointer = 2;
+        store.tables = ['3a', '4a', '5a'];
+        store.pointer = 2;
 
-      store.popHistory();
+        store.popHistory();
 
-      expect({
-        tables: store.tables,
-        pointer: store.pointer,
-      }).toStrictEqual({
-        tables: ['4a', '5a'],
-        pointer: 1,
+        expect({
+          tables: store.tables,
+          pointer: store.pointer,
+        }).toStrictEqual({
+          tables: ['4a', '5a'],
+          pointer: 1,
+        });
       });
     });
 
-    it('Should change table length', () => {
-      const store = useTableHistoryStore();
-      store.setMaxLength(4);
-
-      expect(store.length).toBe(4);
+    describe('setPreviousTable', () => {
+      it('', () => {}); // TODO: Write tests for this function
     });
 
-    it('Should change table length and remove overflowing data', () => {
-      const store = useTableHistoryStore();
+    describe('setNextTable', () => {
+      it('', () => {}); // TODO: Write tests for this function
+    });
 
-      store.tables = ['1a', '2a', '3a', '4a', '5a', '6a'];
-      store.pointer = 5;
-      store.length = 6;
+    describe('setMaxLength', () => {
+      it('Should change table length', () => {
+        const store = useTableHistoryStore();
+        store.setMaxLength(4);
 
-      store.setMaxLength(3);
+        expect(store.length).toBe(4);
+      });
 
-      expect({
-        tables: store.tables,
-        pointer: store.pointer,
-      }).toStrictEqual({
-        tables: ['4a', '5a', '6a'],
-        pointer: 2,
+      it('Should change table length and remove overflowing data', () => {
+        const store = useTableHistoryStore();
+
+        store.tables = ['1a', '2a', '3a', '4a', '5a', '6a'];
+        store.pointer = 5;
+        store.length = 6;
+
+        store.setMaxLength(3);
+
+        expect({
+          tables: store.tables,
+          pointer: store.pointer,
+        }).toStrictEqual({
+          tables: ['4a', '5a', '6a'],
+          pointer: 2,
+        });
       });
     });
   });

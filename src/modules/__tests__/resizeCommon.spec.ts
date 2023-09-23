@@ -22,14 +22,18 @@ describe('resizeCommon', () => {
     });
   });
 
-  it('getCalcualtionNumberForWidth should returns specific number based on width', () => {
-    expect(getCalcualtionNumberForWidth(EDITOR_CONST.BREAKPOINTS.XLG + 1)).toBe(EDITOR_CONST.TILE_WIDTH_CALC_NUMBER_C);
-    expect(getCalcualtionNumberForWidth(EDITOR_CONST.BREAKPOINTS.MD + 1)).toBe(EDITOR_CONST.TILE_WIDTH_CALC_NUMBER_B);
-    expect(getCalcualtionNumberForWidth(EDITOR_CONST.BREAKPOINTS.MD - 1)).toBe(EDITOR_CONST.TILE_WIDTH_CALC_NUMBER_A);
+  describe('getCalcualtionNumberForWidth', () => {
+    it('should returns specific number based on width', () => {
+      expect(getCalcualtionNumberForWidth(EDITOR_CONST.BREAKPOINTS.XLG + 1)).toBe(EDITOR_CONST.TILE_WIDTH_CALC_NUMBER_C);
+      expect(getCalcualtionNumberForWidth(EDITOR_CONST.BREAKPOINTS.MD + 1)).toBe(EDITOR_CONST.TILE_WIDTH_CALC_NUMBER_B);
+      expect(getCalcualtionNumberForWidth(EDITOR_CONST.BREAKPOINTS.MD - 1)).toBe(EDITOR_CONST.TILE_WIDTH_CALC_NUMBER_A);
+    });
   });
 
-  it('getCalcualtionNumberForHeight should returns specific number based on width', () => {
-    expect(getCalcualtionNumberForHeight(EDITOR_CONST.BREAKPOINTS.SM)).toBe(EDITOR_CONST.TILE_HEIGHT_CALC_NUMBER_B);
-    expect(getCalcualtionNumberForHeight(EDITOR_CONST.BREAKPOINTS.SM - 1)).toBe(EDITOR_CONST.TILE_HEIGHT_CALC_NUMBER_A);
+  describe('getCalcualtionNumberForHeight', () => {
+    it('should returns specific number based on width', () => {
+      expect(getCalcualtionNumberForHeight(EDITOR_CONST.BREAKPOINTS.SM)).toBe(EDITOR_CONST.TILE_HEIGHT_CALC_NUMBER_B);
+      expect(getCalcualtionNumberForHeight(EDITOR_CONST.BREAKPOINTS.SM - 1)).toBe(EDITOR_CONST.TILE_HEIGHT_CALC_NUMBER_A);
+    });
   });
 });

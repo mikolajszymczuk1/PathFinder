@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { hashTable, unHashTable } from '@/modules/commonFunctions/tableHashHelpers';
 
 describe('Table history', () => {
-  describe('Hash function', () => {
+  describe('hashTable', () => {
     it('Should hash table', () => {
       const testTable = [
         ['A', 'A', 'D', 'D'],
@@ -41,7 +41,7 @@ describe('Table history', () => {
     });
   });
 
-  describe('Dehash function', () => {
+  describe('unHashTable', () => {
     it('Should return one row of A', () => {
       const testHash = '5A';
 
