@@ -64,4 +64,13 @@ describe('EditorToolbox', () => {
     await findMenuButton().trigger('click');
     expect(findMenu().exists()).toBeTruthy();
   });
+
+  it('Should correctly save selected algorithm index in local storage', async () => {
+    createComponent();
+    expect(localStorage.getItem('selected-alg-index')).toBe('0');
+    await findChangeAlgButton().trigger('click');
+    expect(localStorage.getItem('selected-alg-index')).toBe('1');
+    await findChangeAlgButton().trigger('click');
+    expect(localStorage.getItem('selected-alg-index')).toBe('2');
+  });
 });
