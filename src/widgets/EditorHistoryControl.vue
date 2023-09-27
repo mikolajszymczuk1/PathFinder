@@ -24,15 +24,24 @@
 <script setup lang="ts">
 import { useTableHistoryStore } from '@/stores/TableHistoryStore';
 import { usePathEditorStore } from '@/stores/PathEditorStore';
+import { useAnimationControllerStore } from '@/stores/AnimationControllerStore';
+import ToastTypeEnum from '@/modules/enums/toastTypesEnum';
+import { toast } from '@/modules/toasts/pathFinderToasts';
 
 import BreakLine from '@/components/common/BreakLine.vue';
 import SingleControlButton from '@/components/buttons/SingleControlButton.vue';
 
 const pathStore = usePathEditorStore();
 const historyStore = useTableHistoryStore();
+const animationControllerStore = useAnimationControllerStore();
 
 /** Undo history */
-const undoHistory = () => {
+const undoHistory = (): void => {
+  if (!animationControllerStore.isAnimFinished) {
+    toast(ToastTypeEnum.ERROR, 'You cannot use undo button while the animation is running !');
+    return;
+  }
+
   const prevTable = historyStore.setPreviousTable();
   if (prevTable.length === 0) {
     return;
@@ -42,7 +51,12 @@ const undoHistory = () => {
 };
 
 /** Redo history */
-const redoHistory = () => {
+const redoHistory = (): void => {
+  if (!animationControllerStore.isAnimFinished) {
+    toast(ToastTypeEnum.ERROR, 'You cannot use redo button while the animation is running !');
+    return;
+  }
+
   const nextTable = historyStore.setNextTable();
   if (nextTable.length === 0) {
     return;
