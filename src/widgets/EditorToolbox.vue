@@ -45,8 +45,8 @@
 </template>
 
 <script setup lang='ts'>
-import { ref, type Ref } from 'vue';
-import { get, set } from '@vueuse/core';
+import { ref, type Ref, onMounted } from 'vue';
+import { get, set, useStorage } from '@vueuse/core';
 import type { ControlButton } from '@/types/CommonTypes';
 import { usePathEditorStore } from '@/stores/PathEditorStore';
 import { getEnumValues } from '@/modules/commonFunctions/enumHelpers';
@@ -61,6 +61,9 @@ import EditorHistoryControl from '@/widgets/EditorHistoryControl.vue';
 import EditorResetButton from '@/widgets/EditorResetButton.vue';
 
 const store = usePathEditorStore();
+
+/** Store selected alg index in localStorage */
+const storage = useStorage('selected-alg-index', 0);
 
 /** Current index for algorithm select */
 const currentAlgorithmIndex: Ref<number> = ref(0);
@@ -91,9 +94,12 @@ const setDrawTool = (newTool: string): void => {
 /** Switch to another path finding alghoritm */
 const changePathAlg = (): void => {
   if (get(currentAlgorithmIndex) < searchAlgorithms.length - 1) {
-    set(currentAlgorithmIndex, get(currentAlgorithmIndex) + 1);
+    const newAlgorithmIndex = get(currentAlgorithmIndex) + 1;
+    set(currentAlgorithmIndex, newAlgorithmIndex);
+    set(storage, newAlgorithmIndex);
   } else {
     set(currentAlgorithmIndex, 0);
+    set(storage, 0);
   }
 
   store.changeAlgorithm(searchAlgorithms[get(currentAlgorithmIndex)]);
@@ -108,4 +114,9 @@ const toggleMenu = (): void => set(isMenuActive, !get(isMenuActive));
  * @return {boolean} True if tool is currently active tool
  */
 const isToolActive = (toolToCheck: string): boolean => store.activePenMode === toolToCheck;
+
+onMounted(() => {
+  store.selectedAlgorithm = searchAlgorithms[get(storage)];
+  set(currentAlgorithmIndex, get(storage));
+});
 </script>
