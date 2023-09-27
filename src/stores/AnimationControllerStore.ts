@@ -6,6 +6,7 @@ import { delay } from '@/modules/commonFunctions/delayHelpers';
 import { bfs } from '@/modules/pathfindingAlgorithms/bfs';
 import { dfs } from '@/modules/pathfindingAlgorithms/dfs';
 import { gbfs } from '@/modules/pathfindingAlgorithms/gbfs';
+import { rw } from '@/modules/pathfindingAlgorithms/rw';
 import { recontructShortestPath } from '@/modules/commonFunctions/pathfindingHelpers';
 import type { TileCords } from '@/types/CommonTypes';
 import { toast } from '@/modules/toasts/pathFinderToasts';
@@ -44,6 +45,11 @@ export const useAnimationControllerStore = defineStore('animationController', {
 
         case PathfindingAlgorithmsEnum.GBFS:
           discovered = gbfs(store.tableData, start, goal);
+          path = recontructShortestPath(store.tableData, discovered, goal);
+          break;
+
+        case PathfindingAlgorithmsEnum.RW:
+          discovered = rw(store.tableData, start, goal);
           path = recontructShortestPath(store.tableData, discovered, goal);
           break;
 
