@@ -1,5 +1,8 @@
-import type { TileCords } from '@/types/CommonTypes';
-import { getNeighbours, areTilesCordsEqual } from '@/modules/commonFunctions/searchingHelpers';
+import type { TileCords } from "@/types/CommonTypes";
+import {
+  getNeighbours,
+  areTilesCordsEqual,
+} from "@/modules/commonFunctions/searchingHelpers";
 
 /**
  * RW (Random Walk) algorithm
@@ -8,24 +11,37 @@ import { getNeighbours, areTilesCordsEqual } from '@/modules/commonFunctions/sea
  * @param {TileCords} goal Goal cordinates
  * @return {TileCords[]} Array of discovered tiles
  */
-export const rw = (grid: string[][], start: TileCords, goal: TileCords): TileCords[] => {
-  const visited: TileCords[] = [];
-  const queue: TileCords[] = [start];
-  visited.push(start);
+export const rw = (
+  grid: string[][],
+  start: TileCords,
+  goal: TileCords
+): TileCords[] => {
+  const path: TileCords[] = [start];
+  const sRoot: TileCords = start;
+  let foundGoal = false;
 
-  while (queue.length > 0) {
-    const current = queue.shift() as TileCords;
-    const neighbours = getNeighbours(grid, current);
-    const randomIndex = Math.floor(Math.random() * neighbours.length);
-    const randomNeighbour = neighbours[randomIndex];
+  const backtrack = (oldRoot: TileCords) => {
+    const neighbours = getNeighbours(grid, oldRoot)
+      .filter((n) => path.every((p) => !areTilesCordsEqual(n, p)))
+      .sort(() => Math.random() - 0.5);
 
-    if (areTilesCordsEqual(randomNeighbour, goal)) {
-      return visited;
-    }
+    neighbours.forEach((nRoot) => {
+      if (areTilesCordsEqual(nRoot, goal)) {
+        foundGoal = true;
+        return;
+      }
 
-    visited.push(randomNeighbour);
-    queue.push(randomNeighbour);
-  }
+      if (foundGoal) {
+        return;
+      }
 
-  return visited;
+      path.push(nRoot);
+
+      backtrack(nRoot);
+    });
+  };
+
+  backtrack(sRoot);
+
+  return path;
 };
